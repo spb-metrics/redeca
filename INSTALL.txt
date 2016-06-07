@@ -1,0 +1,53 @@
+* REDECA *
+
+Para instalar o redeca, é preciso ter MySQL (recomenda-se o 5.1 ou mais recente), PHP, Apache. É a melhor configuração.
+
+Para melhor desempenho, sugiro configurar o PHP como CGI
+Exemplo (UBUNTU):
+----------------------
+$ sudo aptitude -y install libapache2-mod-fcgid apache2-mpm-worker php5-cgi mysql-server
+$ sudo cat > /etc/apache/sites-enabled/redeca <<END
+<Directory /var/www/redeca>
+AddHandler   fcgid-script .phtml
+AddHandler   fcgid-script .php
+FCGIWrapper /usr/lib/cgi-bin/php5 .phtml
+FCGIWrapper /usr/lib/cgi-bin/php5 .php
+</Directory>
+
+<VirtualHost *>
+    ServerAdmin root@localhost
+    ServerName redeca.localhost
+    DocumentRoot /var/www/redeca
+    AddDefaultCharset UTF-8
+
+    ErrorLog /var/log/apache2/redeca_log_error
+    CustomLog /var/log/apache2/redeca_log combined
+    <Directory /var/www/redeca>
+    	Options Indexes FollowSymLinks MultiViews ExecCGI
+        AllowOverride all
+        Order allow,deny
+        allow from all
+    </Directory>
+
+</VirtualHost>
+END
+$ sudo echo "127.0.0.1 redeca.localhost" >> /etc/hosts
+$ sudo /etc/init.d/apache restart
+----------------------
+O exemplo acima criará um dominio "redeca.localhost", no qual estará instalado o redeca.
+
+
+pode-se tentar através do instalador automático, o install.php
+mas para um procedimento manual, é preciso:
+
+1) Verificar as pendências com o Apache: módulo rewrite principalmente precisa estar ativado
+2) criar uma base de dados e populá-la. Os arquivos necessários estão dentro de install/ e se você for usar a base de demo, basta importar o arquivo install/dump-demo.sql.gz
+2a) Senão, importe os arquivos, nesta ordem: install/tables.sql, install/default inserts.sql
+3) configure o arquivo .htaccess com as linhas
+RewriteEngine on
+RewriteRule .* index.php
+4) configure o arquivo application/dbconfig.ini
+5) configure o arquivo application/config.ini (finalzinho)
+6) copie a template do CSS, em public/styles/site.css.template
+para public/styles/site.css e altere as configurações necessárias
+

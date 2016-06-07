@@ -1,0 +1,73 @@
+<?php echo $this->render('header/header.phtml');?>
+
+<!-- ====================================== -->
+<!-- inicio : específico para cada template -->					
+<!-- ====================================== -->						  
+<div>
+	<?php echo $this->render('submenu/submenuEntity.phtml');?>
+
+	<!-- ============================================================================================== -->
+	<!-- É necessário informar o nome class da tabela em questão para carregar a cor background correta -->
+	<!-- Opções: 
+				#identification
+				#person
+				#education
+				#health
+				#income
+				#familyRelationship
+				#residence
+				#attendance
+				#activity	-->
+	<!-- ============================================================================================== -->
+
+	<?php if($this->collActivityDetail && sizeof($this->collActivityDetail) > 0 ):?>
+	<h1><?php echo $this->controller->activity->text->title;?></h1>
+	<table class="entity">
+		<tr>
+			<td align="center">
+				<tr class="write">
+					<td class="bold" align="center" width="38%"><?php echo $this->controller->activity->text->category;?></td>
+					<td class="bold" align="center" width="40%"><?php echo $this->controller->activity->text->activity;?></td>
+					<td colspan="2" class="bold" align="center" width="22%"><?php echo $this->controller->activity->text->action;?></td>
+				</tr>
+				<?php $countLine = 0; ?>
+				<?php foreach($this->collActivityDetail as $ad ):?>
+				<form id="<?php echo "action_"; echo $countLine;?>" method="post">
+					<input type="hidden" name="<?php echo ActivityForm::idActivityDetail();?>" value="<?php echo $ad->{ACD_ID_ACTIVITY_DETAIL};?>"/>
+						<tr <?php if($countLine%2!=0) echo 'class=write'; ?>>
+							<td align='left' width='40%'><?php echo $ad->findParentRow(CLS_CATEGORY)->{CAT_CATEGORY};?></td>
+							<td align='left' width='40%'><?php echo $ad->{ACD_ACTIVITY_DETAIL};?></td>		
+							<td align='center' width='7%'>
+								<input class="middleCenterObject" type="button" onclick="submitForm('<?php echo $this->baseUrl;?><?php echo ACTIVITY_DETAIL_CONTROLLER;?>/<?php echo DEFAULT_VIEW_ACTION;?>','<?php echo "action_"; echo $countLine;?>');" value="<?php echo $this->labels->button->edit;?>"/>
+							</td>
+							<td align='center' width='15%'>
+								<input class="middleCenterObject" type="button" onclick="submitForm('<?php echo $this->baseUrl;?><?php echo ACTIVITY_DETAIL_CONTROLLER;?>/<?php echo DEFAULT_CONFIRM_ACTION;?>','<?php echo "action_"; echo $countLine;?>');" value="<?php echo $this->controller->activity->text->closeactivity;?>"/>
+							</td>											
+						</tr>
+				</form>
+				<?php $countLine ++;?>
+				<?php endforeach;?>
+			</td>
+		</tr>
+
+		<?php else:?>
+		<table class=entity>
+		<tr>
+			<td align="center"> 
+				<?php echo $this->controller->activity->text->notactivity;?>
+			</td>	
+		</tr>
+		<?php endif;?>
+
+		<tr class="write">
+			<td colspan="4" align="left"><br>
+				<input type="submit" onclick="document.location='<?php echo $this->baseUrl;?><?php echo ACTIVITY_DETAIL_CONTROLLER;?>/<?php echo DEFAULT_NEW_ACTION;?>'" value="<?php echo $this->controller->activity->text->newactivity;?>">
+			</td>
+		</tr>
+	</table>
+</div>																  
+<!-- =================================== -->
+<!-- fim : específico para cada template -->					
+<!-- =================================== -->		
+					
+<?php echo $this->render('footer/footer.phtml');?>

@@ -1,0 +1,26 @@
+<?php 
+	//variável utilizada para setar background do submenu 
+	$stringUri = $_SERVER["REQUEST_URI"];
+?>
+
+<table class="withoutEdge" width="99%" cellpadding="0">
+	<tr>
+		<td>
+			<div>
+				<ul class="menuRoot">
+				  <?php if(ResourcePermission::isAllowResource(FAMILYRELATIONSHIP_CONTROLLER)){?>
+				  <li <?php $stringmatch = FAMILYRELATIONSHIP_CONTROLLER; if (preg_match("%($stringmatch)%", "$stringUri")){echo "class='current'";}?> ><a href="<?php echo $this->baseUrl;?><?php echo FAMILYRELATIONSHIP_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php echo $this->form->personId();?>/<?php echo $this->form->getPersonId();?>"><b><?php echo $this->labels->title->relationship;?></b></a></li>
+				  <?php }?>
+				  <?php if(ResourcePermission::isAllowResource(BIOLOGICALRELATIONSHIP_CONTROLLER)){?>
+				  <li <?php $stringmatch = BIOLOGICALRELATIONSHIP_CONTROLLER; if (preg_match("%($stringmatch)%", "$stringUri")){echo "class='current'";}?> ><a href="<?php echo $this->baseUrl;?><?php echo BIOLOGICALRELATIONSHIP_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php echo $this->form->personId();?>/<?php echo $this->form->getPersonId();?>"><b><?php echo $this->labels->title->biological;?></b></a></li>
+				  <?php }?>
+				  <?php if(ResourcePermission::isAllowResource(FAMILYEXPENSE_CONTROLLER)){?>
+				  <li <?php $stringmatch = FAMILYEXPENSE_CONTROLLER; if (preg_match("%($stringmatch)%", "$stringUri")){echo "class='current'";}?> ><a href="<?php echo $this->baseUrl;?><?php echo FAMILYEXPENSE_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php echo $this->form->personId();?>/<?php echo $this->form->getPersonId();?>"><b><?php echo $this->labels->title->fexpense;?></b></a></li>
+				  <?php }?>
+				</ul>
+			</div>
+			<input type="hidden" id="baseurl" value="<?php echo $this->baseUrl;?>"/>
+		</td>
+	</tr>
+</table>
+

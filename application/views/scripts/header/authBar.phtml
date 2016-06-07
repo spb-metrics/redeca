@@ -1,0 +1,39 @@
+<?php 
+	//variável utilizada para setar background do submenu 
+	$stringUri = $_SERVER["REQUEST_URI"];
+	
+	$stringmatchEntity = ENTITY_CONTROLLER; 
+	$stringmatchRegion = REGION_CONTROLLER; 
+	$stringmatchUser = USER_CONTROLLER; 
+	$stringmatchArea = AREA_CONTROLLER; 
+	$stringmatchClassification = CLASSIFICATION_CONTROLLER; 
+	$stringmatchProgram = PROGRAM_CONTROLLER; 
+	$stringmatchActivity = ACTIVITY_CONTROLLER; 
+	$stringmatchProfile = PROFILE_CONTROLLER;
+	$stringmatchAddInf = ADDITIONALINFORMATION_CONTROLLER;
+	$stringmatchImport = IMPORT_CONTROLLER;
+	$stringmatchGroup = GROUP_CONTROLLER;
+	$controllerNetwork = NETWORK_CONTROLLER;
+	$controllerSearch = SEARCH_CONTROLLER;
+	
+	if(preg_match("%($controllerSearch)|($controllerNetwork)|($stringmatchEntity)|($stringmatchRegion)|($stringmatchUser)|($stringmatchArea)|($stringmatchClassification)|($stringmatchProgram)|($stringmatchActivity)|($stringmatchProfile)|($stringmatchAddInf)|($stringmatchImport)|($stringmatchGroup)%", "$stringUri"))
+	{
+		$setAdministrator = TRUE;
+	}
+?>
+  <div id="menuUser">
+<?php if($this->user):?>
+	<div id=authBar>
+		<span>
+			<img width="24" height="35" src="<?php echo $this->baseUrl;?>/public/styles/user.gif">
+			<?php echo $this->labels->auth->logged->as;?>&nbsp;<b><?php echo $this->user->name; ?></b>
+		</span>
+		<span style='float:right;'>
+			<a href="<?php echo $this->baseUrl . USER_CONTROLLER . '/' .DEFAULT_VIEW_CHANGE_PASSWORD_ACTION ?>"><img border="0" width="20" height="20" src="<?php echo $this->baseUrl;?>/public/styles/edit.gif"></a>
+			<a style="text-decoration: none" href="<?php echo $this->baseUrl . USER_CONTROLLER . '/' .DEFAULT_VIEW_CHANGE_PASSWORD_ACTION ?>"><?php echo $this->labels->auth->alter->password;?></a>
+			<a href="<?php echo $this->baseUrl . AUTH_CONTROLLER . '/logout' ?>"><img border="0" width="20" height="20" src="<?php echo $this->baseUrl;?>/public/styles/logout.gif"></a>
+			<a style="text-decoration: none" href="<?php echo $this->baseUrl . AUTH_CONTROLLER . '/logout' ?>"><?php echo $this->labels->auth->logout;?></a>
+		</span>
+	</div>
+</div>
+<?php endif;?>

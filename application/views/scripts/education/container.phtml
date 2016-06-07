@@ -1,0 +1,90 @@
+<?php echo $this->render('header/container.phtml'); ?>
+<table class="icontainer" width="98%">
+	<?php $levelInstruction = $this->levelInstruction;?>
+	<tr>
+		<td>
+			<b><?php echo $this->controller->education->container->degree;?></b>
+		</td>
+		<td>
+			<?php
+				if(!$levelInstruction || !$levelInstruction->findParentRow(CLS_DEGREETYPE)->{DTP_DEGREE} || $levelInstruction->findParentRow(CLS_DEGREETYPE)->{DTP_DEGREE} == '')				
+					echo $this->labels->text->nodata;
+				else
+					echo abbreviate($levelInstruction->findParentRow(CLS_DEGREETYPE)->{DTP_DEGREE}, 21);
+			?>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<b><?php echo $this->controller->education->container->series;?></b>
+		</td>
+		<td>
+			<?php
+				if(count($levelInstruction) > 0 && $levelInstruction->findDependentRowset(CLS_REGISTRATION))
+				{
+					if(count($levelInstruction->findDependentRowset(CLS_REGISTRATION)) > 0)
+					{
+						foreach($levelInstruction->findDependentRowset(CLS_REGISTRATION) as $syt)
+						{
+							if(!$syt->findParentRow(CLS_SCHOOLYEARTYPE)->{SYT_SCHOOL_YEAR} ||$syt->findParentRow(CLS_SCHOOLYEARTYPE)->{SYT_SCHOOL_YEAR} == '')
+							{
+								echo $this->labels->text->nodata;
+							}
+							else
+							{
+								echo abbreviate($syt->findParentRow(CLS_SCHOOLYEARTYPE)->{SYT_SCHOOL_YEAR}, 21);	
+							}
+						}
+					}
+					else
+					{
+						echo $this->labels->text->nodata;
+					}
+				}
+				else
+				{
+					echo $this->labels->text->nodata;
+				}
+			?>
+		</td>
+	</tr>
+	<tr>
+		<td >
+			<b><?php echo $this->controller->education->container->period;?></b>
+		</td>
+		<td>
+			<?php  
+				if(count($levelInstruction) > 0 && $levelInstruction->findDependentRowset(CLS_REGISTRATION))
+				{
+					if(count($levelInstruction->findDependentRowset(CLS_REGISTRATION)) > 0)
+					{
+						foreach($levelInstruction->findDependentRowset(CLS_REGISTRATION) as $pt)
+						{
+							if($pt->findParentRow(CLS_PERIODTYPE)->{PTY_PERIOD} == '')
+							{
+								echo $this->labels->text->nodata;
+							}
+							else
+							{
+								echo abbreviate($pt->findParentRow(CLS_PERIODTYPE)->{PTY_PERIOD}, 21);	
+							}
+						}
+					}
+					else
+					{
+						echo $this->labels->text->nodata;
+					}	
+				}
+				else
+				{
+					echo $this->labels->text->nodata;
+				}
+			?>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<input class="small" type="submit" onclick="parent.document.location='<?php echo $this->baseUrl;?><?php echo EDUCATION_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php if($this->form)echo $this->form->personId();?>/<?php if($this->form)echo $this->form->getPersonId();?>'" value="<?php echo $this->labels->button->showDetail;?>"/>
+		</td>
+	</tr>	
+</table>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<help>
+	<items>
+		<text1>Monte o que irá ser informado em seu relatório através dos itens abaixo.</text1>
+		<text2>A exportação de dados para arquivos do tipo ARFF pode levar vários minutos.</text2>
+		<text3>Os Filtros não se aplicam a exportação do tipo ARFF.</text3>
+	</items>
+</help>

@@ -1,0 +1,103 @@
+<?php 
+	//variável utilizada para setar background do submenu 
+	$stringUri = $_SERVER["REQUEST_URI"];
+	
+	$controllerReport 		= REPORT_CONTROLLER;
+	$stringmatchEntity 		= ENTITY_CONTROLLER; 
+	$stringmatchRegion 		= REGION_CONTROLLER; 
+	$stringmatchUser 		= USER_CONTROLLER; 
+	$stringmatchArea 		= AREA_CONTROLLER; 
+	$stringmatchClassification 	= CLASSIFICATION_CONTROLLER; 
+	$stringmatchProgram 		= PROGRAM_CONTROLLER; 
+	$stringmatchActivity 		= ACTIVITY_CONTROLLER; 
+	$stringmatchProfile 		= PROFILE_CONTROLLER;
+	$stringmatchAddInf 		= ADDITIONALINFORMATION_CONTROLLER;
+	$stringmatchImport 		= IMPORT_CONTROLLER;
+	$stringmatchGroup 		= GROUP_CONTROLLER;
+	$controllerNetwork 		= NETWORK_CONTROLLER;
+	$controllerSearch 		= SEARCH_CONTROLLER;
+	$controllerAssociate 		= ASSOCIATE_ENTITY_CONTROLLER;
+	
+	if(preg_match("%($controllerReport)%", "$stringUri"))
+	{
+		$setAdministrator = TRUE;
+	}
+	
+	if(!UserLogged::isTechnician())
+	{
+		$controllerClass = CLASS_CONTROLLER;
+	}
+?>
+<!-- inicio menu/menu.phtml -->
+<div id="logo">
+	<img id='riscoColorido' src="<?php echo $this->baseUrl;?>/public/styles/barra_colorida.jpg" />
+	<div id='logoImage'></div>
+		<?php 
+/*
+			if($setAdministrator !== TRUE)
+			{
+		//		echo "<div id='logoImage'></div>";
+				echo "<div  id='cantoRedondo'>";
+			}
+			else
+			{
+//				echo "<div id='logoImageBig'></div>";
+				echo "<div>";
+			}
+*/
+		?>
+	<div id='logoMenu'>
+	   <div id='menuTopo'>
+		<ul class="menuRoot">
+				<?php $flagGroup = false; if(ResourcePermission::isAllowResource(SEARCH_CONTROLLER)){?>
+				  <li <?php 
+					$partialUriHistory	= '/history/view/history_id/';
+					$stringmatchSearch 	= SEARCH_CONTROLLER; 
+					$stringmatchPerson 	= PERSON_CONTROLLER;
+					$stringmatchEducation 	= EDUCATION_CONTROLLER;
+					$stringmatchIncome 	= INCOME_CONTROLLER;
+					$stringmatchResidence 	= RESIDENCE_CONTROLLER;
+					$stringmatchAttendence 	= ATTENDANCE_CONTROLLER;
+					$stringmatchhealth	= HEALTH_CONTROLLER;
+												
+					$stringmatchadditional	= str_replace("/","",ADDITIONALINFORMATION_CONTROLLER);
+					
+					if(!preg_match("%($stringmatchadditional$stringmatchSearch)%", "$stringUri"))
+					{
+						if(preg_match("%($stringmatchhealth)|($stringmatchEducation)|($stringmatchAttendence)|($stringmatchIncome)|($stringmatchResidence)|($stringmatchSearch)|($stringmatchPerson/[0-9])|($stringmatchPerson/edit)|($partialUriHistory)%", "$stringUri"))
+						{
+							echo "class='current'";
+							$flagGroup = true;
+						}
+					}
+					
+					  ?>>
+					  <a href="<?php echo $this->baseUrl;?><?php echo SEARCH_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>"><b><?php echo $this->labels->title->search;?></b></a></li>
+				<?php }?>
+				<?php if(ResourcePermission::isAllowResource(REPORT_CONTROLLER)){?>
+				  <li <?php $stringmatch = REPORT_CONTROLLER; if (preg_match("%($stringmatch)%", "$stringUri")){echo "class='current'";}?>><a href="<?php echo $this->baseUrl;?><?php echo REPORT_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>"><b><?php echo $this->labels->title->report;?></b></a></li>
+				<?php }?>
+				<?php if(ResourcePermission::isAllowResource(ENTITY_CONTROLLER)){?>
+				  <li <?php 					  			
+					if(preg_match("%($controllerClass)|($controllerAssociate)|($stringmatchEntity)|($stringmatchRegion)|($stringmatchUser)|($stringmatchArea)|($stringmatchClassification)|($stringmatchProgram)|($stringmatchActivity)|($stringmatchProfile)|($stringmatchAddInf)|($stringmatchImport)|($stringmatchGroup)%", "$stringUri"))
+					{
+						if($flagGroup === false)
+							echo "class='current'";
+					}
+						?>><a href="<?php echo $this->baseUrl;?><?php echo ENTITY_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>"><b><?php echo $this->labels->title->adm;?></b></a></li>
+				<?php }?>
+				<?php if(ResourcePermission::isAllowResource(CLASS_CONTROLLER)&& UserLogged::isTechnician()){?>
+				  <li <?php $stringmatch = CLASS_CONTROLLER; if (preg_match("%($stringmatch/)%", "$stringUri")){echo "class='current'";}?>><a href="<?php echo $this->baseUrl;?><?php echo CLASS_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>"><b><?php echo $this->labels->title->classes;?></b></a></li>
+				<?php }?>
+				<?php if(ResourcePermission::isAllowResource(NETWORK_CONTROLLER)){?>
+				  <li <?php $stringmatch = NETWORK_CONTROLLER; if (preg_match("%($stringmatch)%", "$stringUri")){echo "class='current'";}?>><a href="<?php echo $this->baseUrl;?><?php echo NETWORK_CONTROLLER;?>/<?php echo DEFAULT_VIEWENTITY_ACTION;?>"><b><?php echo $this->labels->title->network;?></b></a></li>
+				<?php }?>					
+				</ul>
+			   </div><!-- fecha menuTopo -->
+			</div>
+						   <!-- este div é apenas para colocar o canto redondo do lado esquerdo -->
+			   <div id='cantoRedondo'>
+			   </div>
+		</div>
+
+<!-- fim de menu.phtml -->

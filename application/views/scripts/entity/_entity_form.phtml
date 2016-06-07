@@ -1,0 +1,366 @@
+<?php 
+if(count($this->address) > 0)
+	$address = $this->address; 
+elseif($this->entities)
+{
+	$address = $this->entities->findParentRow(CLS_ADDRESS);
+	$phones 			= $this->entities->findManyToManyRowset(CLS_TELEPHONENUMBER, CLS_ENTITYTELEPHONE);
+	$areas 				= $this->entities->findManyToManyRowset(CLS_ENTITYAREATYPE, CLS_ENTITYAREA);
+	$classifications 	= $this->entities->findManyToManyRowset(CLS_ENTITYCLASSIFICATIONTYPE, CLS_ENTITYCLASSIFICATION);
+	$groups 			= $this->entities->findDependentRowset(CLS_AUTH_GROUP_ENTITY);
+	
+}
+if($address)
+{
+	$neighborhood = $address->findParentRow(CLS_NEIGHBORHOOD);
+	$type = $address->findParentRow(CLS_ADDRESSTYPE);
+}
+if($neighborhood)
+{
+	$regions = $neighborhood->findManyToManyRowset(CLS_REGION, CLS_NEIGHBORHOODREGION);
+	$city = $neighborhood->findParentRow(CLS_CITY);
+	if($city)
+		$uf = $city->findParentRow(CLS_UF);
+}
+
+//Array para manter estado dos programas já cadastrados na entidade ou dos programas selecionados no form
+if(!$this->errorMessages)
+{
+	if($this->entities->findDependentRowset(CLS_PROGRAM) && sizeof($this->entities->findDependentRowset(CLS_PROGRAM)) > 0)
+	{	
+		foreach($this->entities->findDependentRowset(CLS_PROGRAM) as $current)
+		{
+			$arrayProgram[] = $current->{PGR_ID_PROGRAM_TYPE};
+		}
+	}
+}
+else
+{	
+	$arrayProgram = $this->form->getProgramId();
+}
+
+// Array para manter o combo selecionado com as areas da entidade
+foreach($areas as $current)
+	$arrayArea[$current->{EAT_ID_ENTITY_AREA}] = $current->{EAT_ID_ENTITY_AREA};
+// Array para manter o combo selecionado com as classificacoes da entidade	
+foreach($classifications as $current)
+	$arrayClassif[$current->{ECT_ID_ENTITY_CLASSIFICATION}] = $current->{ECT_ID_ENTITY_CLASSIFICATION};
+
+// Array para manter estado do combo de area da entidade
+if($this->areaForm->getId() && is_array($this->areaForm->getId()))
+foreach($this->areaForm->getId() as $id)
+	$arrayFormArea[$id] = $id;  
+// Array para manter estado do combo de classificacao da entidade
+if($this->classifForm->getId() && is_array($this->classifForm->getId()))
+foreach($this->classifForm->getId() as $id)
+	$arrayFormClassif[$id] = $id;  
+
+// Array para manter o combo de grupo selecionado com os grupos da entidade
+foreach($groups as $current)
+	$arrayGroup[$current->{AGP_ID_GROUP}] = $current->{AGP_ID_GROUP};
+
+// Array para manter estado do combo de grupo em caso de erros de validação
+if($this->entityForm->getGroupEntity() && is_array($this->entityForm->getGroupEntity()))
+foreach($this->entityForm->getGroupEntity() as $id)
+	$arrayFormGroup[$id] = $id;
+
+
+$this->form->setAdrAddressType($type->{ADT_DESCRIPTION});
+$this->form->setAdrIdAddress($address->{ADR_ID_ADDRESS});
+$this->form->setAdrAddress($address->{ADR_ADDRESS});
+$this->form->setAdrZipcode($address->{ADR_ZIP_CODE});
+$this->form->setAdrUf($uf->{UF_ABBREVIATION});
+$this->form->setAdrCity($city->{CTY_CITY});
+$this->form->setAdrNeighborhood($neighborhood->{NHD_NEIGHBORHOOD});
+if($this->form->getAdrNumber())
+	$this->form->setAdrNumber($this->form->getAdrNumber());
+else
+	$this->form->setAdrNumber($this->entities->{ENT_NUMBER});
+if($this->form->getAdrComplement())
+	$this->form->setAdrComplement($this->form->getAdrComplement());
+else
+	$this->form->setAdrComplement($this->entities->{ENT_COMPLEMENT});
+?>
+
+<tr>
+	<td>
+		<table class="borderBlack" width="100%">
+			<tr>
+				<td colspan="4">
+					<h1><?php echo $this->controller->entity->text->edit;?></h1>
+				</td>
+			</tr>
+			<tr>
+				<td align="right" colspan="4" height="30">
+					<?php echo $this->render('navigation/navigationNetworkEntity.phtml');?>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4">
+					<input type="button" name="name" value="<?php echo $this->labels->button->zipcode->search;?>" onclick="switchDisplay('div_iframe_address');"/>
+				</td>
+			</tr>
+			<tr>
+				<td align="right"><b><?php echo $this->controller->entity->text->name;?>&nbsp;(*):</b></td>
+				<td colspan="3" align="left">
+					<?php ($this->entityForm->getId()) ? $entityId = $this->entityForm->getId() : $entityId = FALSE;
+						(is_array($entityId))? $entityId = $entityId[0]: $entityId = $entityId;
+					?>
+					<input class="small" type="hidden" name="<?php echo EntityForm::id();?>" value="<?php if($entityId) echo $entityId; else echo $this->entities->{ENT_ID_ENTITY};?>"/>
+					<?php printErrorsByField(EntityForm::id(), $this->errorMessages);?>
+					<input size="88" type="text" name="<?php echo EntityForm::entityName();?>" value="<?php if($this->entityForm->getEntityName()) echo $this->entityForm->getEntityName(); else echo $this->entities->{ENT_NAME};?>"/>
+					<?php printErrorsByField(EntityForm::entityName(), $this->errorMessages);?>
+				<br>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4"  width="100%">
+					<div id="div_iframe_address" style="display:none">
+						<?php echo $this->render(SEARCHADDRESS_CONTROLLER.'/iframe_search.phtml');?>
+					</div>
+					<!-- campos de endereço -->
+					<?php echo $this->render(SEARCHADDRESS_CONTROLLER.'/_address.phtml');?>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4" align="center" width="100%">
+					<!-- campos de numero/complemento/referencia  -->
+					<table class="withoutEdge" width="100%">
+						<tr>
+							<td width="17%" align="right" ><b><?php echo $this->labels->postalcode->text->number;?>:</b></td>
+							<td width="83%" colspan="3">
+					  			<input size="9" type="text" name="<?php echo BasicForm::adr_number();?>" value="<?php echo $this->form->getAdrNumber();?>"/>
+					  			<?php printErrorsByField(BasicForm::adr_number(), $this->errorMessages);?>
+							</td>
+						</tr>
+						<tr>
+							<td width="17%" align="right" ><b><?php echo $this->labels->postalcode->text->complement;?>:</b></td>
+							<td width="83%" colspan="3">
+								<input size="30" type="text" name="<?php echo BasicForm::adr_complement();?>" value="<?php echo $this->form->getAdrComplement();?>">
+								<?php printErrorsByField(BasicForm::adr_complement(), $this->errorMessages);?>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<?php // Variavaeis para manter estado
+				$phoneId 	= $this->entityForm->getPhoneId();
+				$pNumber 	= $this->entityForm->getPhoneNumber();
+				$pCode 		= $this->entityForm->getPhoneCodeArea();
+				$pType 		= $this->entityForm->getPhoneType();
+				?>
+			<?php $ind = 0; // indice usado para manter estado dos campos relacionados ao telefone ?>
+			<?php if(count($phones) < 1):?>
+				<tr>
+					<td align="right" width="17%"><b><?php echo $this->controller->entity->text->telephone;?>:</b></td>
+					<td align="left" width="20%" >
+						<select name="<?php echo EntityForm::phoneType();?>[]" >
+							<option value=""><?php echo $this->labels->text->select;?>...</option>
+						    <?php foreach($this->phoneTypes as $current): ?>
+						    	<option value="<?php echo $current->{TTP_ID_TELEPHONE};?>" 
+						    	<?php if($pType && $pType[0] == $current->{TTP_ID_TELEPHONE}) echo 'selected';?> >
+						    	<?php echo $current->{TTP_TELEPHONE};?></option>
+						    <?php endforeach; ?>
+						</select>
+						<br/>
+						<?php printErrorsByField(EntityForm::phoneType().$ind, $this->errorMessages);?>
+					</td>
+					<td align="" width="5%" >
+						<input size="3" type="text" name="<?php echo EntityForm::phoneCodeArea();?>[]" value="<?php if($pCode) echo $pCode[0]; else echo $phone->{TNB_DDD};?>"/>
+						
+						<?php printErrorsByField(EntityForm::phoneCodeArea().$ind, $this->errorMessages);?>
+					</td>
+					<td align="" >
+						<input size="9" type="text" name="<?php echo EntityForm::phoneNumber();?>[]" value="<?php if($pNumber) echo $pNumber[0]; else echo $phone->{TNB_NUMBER};?>"/>
+						
+						<?php printErrorsByField(EntityForm::phoneNumber().$ind, $this->errorMessages);?>
+					</td>
+				</tr>
+			<?php else: ?>				
+				<?php foreach($phones as $phone):?>
+				<tr>
+					<td align="right" width="17%"><b><?php echo $this->controller->entity->text->telephone;?>:</b></td>
+					<?php $ptypeId = $phone->findParentRow(CLS_TELEPHONETYPE)->{TTP_ID_TELEPHONE}; ?>
+						<td align="left" width="20%" >
+							<select name="<?php echo EntityForm::phoneType();?>[]">
+								<option value="">--</option>
+							    <?php foreach($this->phoneTypes as $current):?>
+							    	<option value="<?php echo $current->{TTP_ID_TELEPHONE};?>" 
+							    	<?php if($pType && $pType[$ind] == $current->{TTP_ID_TELEPHONE})echo 'selected'; elseif($ptypeId == $current->{TTP_ID_TELEPHONE}) echo 'selected';?> >
+							    		<?php echo $current->{TTP_TELEPHONE};?>
+							    	</option>
+							    <?php endforeach;?>
+							</select>
+							<br/>
+							<?php printErrorsByField(EntityForm::phoneType().$ind, $this->errorMessages);?>
+						</td>
+						<td align="" width="5%" >
+							<input size="3" type="text" name="<?php echo EntityForm::phoneCodeArea();?>[]" value="<?php if($pCode) echo $pCode[$ind]; else echo $phone->{TNB_DDD};?>"/>
+							
+							<?php printErrorsByField(EntityForm::phoneCodeArea().$ind, $this->errorMessages);?>
+						</td>
+						<td align="" >
+							<input size="9" type="hidden" name="<?php echo EntityForm::phoneId();?>[]" value="<?php if($phoneId) echo $phoneId[$ind]; else echo $phone->{TNB_ID_TELEPHONE_NUMBER};?>"/>
+							<?php printErrorsByField(EntityForm::phoneId().$ind, $this->errorMessages);?>
+							<input size="9" type="text" name="<?php echo EntityForm::phoneNumber();?>[]" value="<?php if($pNumber) echo $pNumber[$ind]; else echo $phone->{TNB_NUMBER};?>"/>
+							<?php printErrorsByField(EntityForm::phoneNumber().$ind, $this->errorMessages);?>
+						</td>
+				</tr>
+				<?php $ind++; ?>
+				<?php endforeach;?>
+				<tr>
+					<td align="right" width="17%"><b><?php echo $this->controller->entity->text->telephone;?>:</b></td>
+					<?php $ptypeId = $phone->findParentRow(CLS_TELEPHONETYPE)->{TTP_ID_TELEPHONE}; ?>
+						<td align="left" width="20%" >
+							<select name="<?php echo EntityForm::phoneType();?>[]">
+								<option value="">--</option>
+							    <?php foreach($this->phoneTypes as $current):?>
+							    	<option value="<?php echo $current->{TTP_ID_TELEPHONE};?>" 
+							    	<?php if($pType && $pType[$ind] == $current->{TTP_ID_TELEPHONE})echo 'selected';?> >
+							    		<?php echo $current->{TTP_TELEPHONE};?>
+							    	</option>
+							    <?php endforeach;?>
+							</select>
+							<br/>
+							<?php printErrorsByField(EntityForm::phoneType().$ind, $this->errorMessages);?>
+						</td>
+						<td align="" width="5%" >
+							<input size="3" type="text" name="<?php echo EntityForm::phoneCodeArea();?>[]" value="<?php if($pCode) echo $pCode[$ind];?>"/>
+							
+							<?php printErrorsByField(EntityForm::phoneCodeArea().$ind, $this->errorMessages);?>
+						</td>
+						<td align="" >
+							<input size="9" type="hidden" name="<?php echo EntityForm::phoneId();?>[]" value="<?php if($phoneId) echo $phoneId[$ind];?>"/>
+							<?php printErrorsByField(EntityForm::phoneId().$ind, $this->errorMessages);?>
+							<input size="9" type="text" name="<?php echo EntityForm::phoneNumber();?>[]" value="<?php if($pNumber) echo $pNumber[$ind];?>"/>
+							<?php printErrorsByField(EntityForm::phoneNumber().$ind, $this->errorMessages);?>
+						</td>
+				</tr>
+			<?php endif; ?>
+			<?php if($this->isAdm): ?>
+			<tr>
+				<td align="right"><b><?php echo $this->controller->entity->text->area;?>&nbsp;<b>(*):</b></td>
+				<td colspan="3" align="left">
+					<select name="<?php echo AreaForm::id();?>[]" multiple size="5">
+						<option value="">-- <?php echo $this->controller->entity->text->area;?></option>
+						<?php if(count($arrayFormArea) > 0) $arrayToVerifyArea = $arrayFormArea; else $arrayToVerifyArea = $arrayArea;?>
+						<?php foreach($this->allAreas as $current):?>
+							<option value="<?php echo $current->{EAT_ID_ENTITY_AREA};?>" <?php if(in_array($current->{EAT_ID_ENTITY_AREA},$arrayToVerifyArea))echo 'selected' ?> title="<?php echo $current->{EAT_ENTITY_AREA};?>"><?php echo $current->{EAT_ENTITY_AREA};?></option>
+						<?php endforeach;?>
+					</select>
+					<?php printErrorsByField(AreaForm::id(), $this->errorMessages);?>
+				</td>
+			</tr>
+			<tr>
+				<td align="right"><b><?php echo $this->controller->entity->text->classification;?>&nbsp;<b>(*):</b></td>
+				<td colspan="3" align="left">
+					<select name="<?php echo ClassificationForm::id();?>[]" multiple size="5">
+						<option value="">-- <?php echo $this->controller->entity->text->classification;?></option>
+						<?php if(count($arrayFormArea) > 0) $arrayToVerifyClassif = $arrayFormClassif; else $arrayToVerifyClassif = $arrayClassif;?>
+						<?php foreach($this->allClassifications as $current):?>
+							<option value="<?php echo $current->{ECT_ID_ENTITY_CLASSIFICATION};?>" <?php if(in_array($current->{ECT_ID_ENTITY_CLASSIFICATION},$arrayToVerifyClassif))echo 'selected' ?> title="<?php echo $current->{ECT_ENTITY_CLASSIFICATION};?>"><?php echo $current->{ECT_ENTITY_CLASSIFICATION};?></option>
+						<?php endforeach;?>
+					</select>
+					<?php printErrorsByField(ClassificationForm::id(), $this->errorMessages);?>
+				</td>
+			</tr>
+			<tr>
+				<td align="right">
+					<b><?php echo $this->controller->entity->admin->selectTitle;?>:</b>&nbsp;<b>(*):</b>
+				</td>
+				<td colspan="3" align="left">
+					<?php if(sizeof($this->allTypeProgram) > 0):?>
+						<?php
+							$programTypeError = null;
+							$keysArrayError = array_keys($this->errorMessages);
+							
+							foreach($keysArrayError as $key)
+							{
+								$compareClass 		= substr($key, 0, 21);
+								$compareDetail		= substr($key, 0, 25);
+								$compareAssistance	= substr($key, 0, 26);	
+								
+								if("program_id_usedClass_" == $compareClass)
+								{
+									$programTypeError[] = substr($key, 21);
+								}	
+								
+								if("program_id_usedActDetail_" == $compareDetail)
+								{
+									$programTypeError[] = substr($key, 25);
+								}
+								
+								if("program_id_usedAssistance_" == $compareAssistance)
+								{
+									$programTypeError[] = substr($key, 26);
+								}
+							}
+							$resultProgramError = array_unique($programTypeError);
+						?>
+						<select name="<?php echo EntityForm::programId();?>[]" multiple size="5">
+							<?php
+								foreach($this->allTypeProgram as $program)
+								{	
+									echo "<option value='";echo $program->{PGT_ID_PROGRAM_TYPE}."' title='".$program->{PGT_PROGRAM_TYPE}.": ".$program->findParentRow(CLS_TARGETMARKET)->{TMK_TARGET_MARKET}."' ";
+									if(in_array($program->{PGT_ID_PROGRAM_TYPE},$arrayProgram))
+									{											
+										echo " selected >";
+									}	
+									else
+									{
+										if(in_array($program->{PGT_ID_PROGRAM_TYPE},$resultProgramError))
+										{
+											echo "style='color:#CC0035;'";
+										}
+										echo ">";	
+									}
+									echo $program->{PGT_PROGRAM_TYPE};echo "&nbsp;:&nbsp;"; echo $program->findParentRow(CLS_TARGETMARKET)->{TMK_TARGET_MARKET};
+									"</option>";
+								}
+							?>
+						</select>
+						<?php	
+							foreach($this->allTypeProgram as $program)
+							{
+								printErrorsByField($this->entityForm->programId()."_usedClass_".$program->{PGT_ID_PROGRAM_TYPE}, $this->errorMessages);
+								echo "<p>";
+								printErrorsByField($this->entityForm->programId()."_usedActDetail_".$program->{PGT_ID_PROGRAM_TYPE}, $this->errorMessages);
+							}
+						?>
+					<?php else:?>
+						<b class="bigWriteRed"><?php echo $this->controller->entity->admin->noProgram;?></b>
+					<?php endif;?>
+				</td>
+			</tr>
+			<tr>
+				<td align="right"><b><?php echo $this->controller->entity->text->group;?>&nbsp;<b>(*):</b></td>
+				<td colspan="3" align="left">
+					<select name="<?php echo $this->form->groupEntity();?>[]" multiple size="5">
+						<option value="">-- <?php echo $this->controller->entity->text->group;?></option>
+						<?php if(count($arrayFormGroup) > 0) $arrayToVerifyGroup = $arrayFormGroup; else $arrayToVerifyGroup = $arrayGroup;?>
+						<?php foreach($this->groups as $current):?>
+							<option value="<?php echo $current->{AGP_ID_GROUP};?>" <?php if(in_array($current->{AGP_ID_GROUP},$arrayToVerifyGroup))echo 'selected' ?> title="<?php echo $current->{AGP_GROUP};?>"><?php echo $current->{AGP_GROUP};?></option>
+						<?php endforeach;?>
+					</select>
+					<?php printErrorsByField($this->form->groupEntity(), $this->errorMessages);?>
+				</td>
+			</tr>
+			<?php endif; ?>
+			<tr>
+				<td align="right"><b><?php echo $this->controller->entity->text->email;?>:</b></td>
+				<td colspan="3" align="left">
+					<input size="88" type="text" name="<?php echo EntityForm::email();?>" value="<?php if($this->entityForm->getEmail()) echo $this->entityForm->getEmail(); else echo $this->entities->{ENT_EMAIL};?>"/>
+					<?php printErrorsByField(EntityForm::email(), $this->errorMessages);?>
+				</td>
+			</tr>
+			<tr>
+				<td align="right"><b><?php echo $this->controller->entity->text->homepage;?>:</b></td>
+				<td colspan="3" align="left">
+					<input size="88" type="text" name="<?php echo EntityForm::homePage();?>" value="<?php if($this->entityForm->getHomePage()) echo $this->entityForm->getHomePage(); else echo $this->entities->{ENT_HOMEPAGE};?>"/>
+					<?php printErrorsByField(EntityForm::homePage(), $this->errorMessages);?>
+				</td>
+			</tr>
+		</table>
+	</td>
+</tr>
+

@@ -1,0 +1,114 @@
+<tr>
+	<td class="bold">
+		<table width="100%" class="withoutEdge">
+			<tr>
+				<td>
+					<h1><?php echo $this->labels->create->activity;?></h1>
+				<hr></td>
+			</tr>
+			<tr>
+				<td><?php echo $this->helpcontroller->text1?><hr></td>
+			</tr>
+			<tr>
+				<td align="right">
+					<?php echo $this->render('navigation/navigationEntity.phtml');?>
+				</td>
+			</tr>
+		</table>
+		
+		<table width="100%" class="borderBlack">
+			<tr>
+				<td colspan="4" height="30">
+					<h1><?php echo $this->controller->classification->text->descriptionregister;?></h1>
+				</td>
+			</tr>
+			
+			<!-- =================================================================================================================== -->
+			<!-- ============= FORM utilizado para persistir uma classificação:  salvar e editar um programa ======================= -->
+			<!-- =================================================================================================================== -->
+			<form action="<?php echo $this->baseUrl;?><?php echo CLASSIFICATION_CONTROLLER;?>/<?php if($this->escape($this->form->getId()) != null){echo DEFAULT_EDIT_ACTION;}else{echo DEFAULT_ADD_ACTION;}?>" method="post">
+				<tr>
+					<td colspan="4" height="30">
+						<?php echo $this->helpcontroller->text2?>
+					</td>
+				</tr>
+				<tr>
+					<td width="23%" align="right"><b><?php echo $this->controller->classification->text->typeexpertise;?>:</b></td>
+					<td width="47%">
+						<input type="hidden" name="<?php echo $this->form->id();?>" value="<?php echo $this->escape($this->form->getId());?>"/>
+						<input type="text" size="50" name="<?php echo ClassificationForm::classificationName();?>" value="<?php echo $this->escape($this->form->getClassificationName());?>" />
+					</td>
+					<td width="20%">
+						<select name="<?php echo $this->form->status();?>">
+							<option value="<?php echo Constants::ENABLE;?>"><?php echo $this->labels->text->enable;?></option>
+							<option value="<?php echo Constants::DISABLE;?>" <?php if($this->form->getStatus() == Constants::DISABLE) echo "selected";?>><?php echo $this->labels->text->disable;?></option>
+						</select>
+					</td>
+					<td width="10%">
+						<input class="small" type="submit" value="<?php echo $this->labels->button->save;?>"/>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+						<?php printErrorsByField($this->form->classificationName(), $this->errorMessages);?>
+					</td>
+					<td colspan="2">
+						<?php printErrorsByField($this->form->status(), $this->errorMessages);?>
+					</td>
+				</tr>
+			</form>
+			<!-- =================================================================================================================== -->
+			<!-- ===================================================== fim do FORM ================================================= -->
+			<!-- =================================================================================================================== -->
+		</table>
+		<br><br>
+	</td>
+</tr>
+
+<tr>
+	<td class="bold">
+		<table class="borderBlack" width="100%">
+			<!-- =================================================================================================================== -->
+			<!-- ============== FORM utilizado para carregar uma ou mais classificações para serem excluídas ======================= -->
+			<!-- ================== FORM utilizado para carregar uma classificação para ser excluída =============================== -->
+			<!-- =================================================================================================================== -->
+			<form id="<?php echo CLASSIFICATION_FORM;?>" method="post">
+				<tr>
+					<td width="23%" align="right"><b><?php echo $this->controller->classification->text->registeredclassification;?>:</b></td>
+					<td width="77%">
+						<select id="typeClassification" name="<?php echo $this->form->id();?>[]" size="10" multiple>
+							<?php 
+								foreach($this->classifications as $classification)
+								{	
+									echo "<option value='".$classification->{ECT_ID_ENTITY_CLASSIFICATION}."' title='".$classification->{ECT_ENTITY_CLASSIFICATION}."'>".$classification->{ECT_ENTITY_CLASSIFICATION};
+									if($classification->{ECT_STATUS} == Constants::DISABLE)
+											echo "&nbsp;*&nbsp;".$this->labels->text->disable."&nbsp;*";
+									echo "</option>";
+								}
+							?>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td class="alignLeft">
+						<input type="submit" value="<?php echo $this->labels->button->edit;?>" 
+						onClick="javascript: return reportMultipleSelected('<?php echo $this->baseUrl;?><?php echo CLASSIFICATION_CONTROLLER;?>/<?php echo DEFAULT_VIEW_ACTION;?>',this.form, 'typeClassification');">&nbsp;
+						<input type="submit" value="<?php echo $this->labels->button->disable;?>" 
+						onClick="javascript: return actionName('<?php echo $this->baseUrl;?><?php echo CLASSIFICATION_CONTROLLER;?>/<?php echo DEFAULT_CONFIRM_ACTION;?>',this.form);">
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td>
+						<?php printErrorsByField($this->form->id(), $this->errorMessages);?>
+					</td>
+				</tr>
+			</form>
+			<!-- =================================================================================================================== -->
+			<!-- ===================================================== fim do FORM ================================================= -->
+			<!-- =================================================================================================================== -->
+		</table>
+	</td>
+</tr>

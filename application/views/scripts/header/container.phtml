@@ -1,0 +1,19 @@
+<?php
+/*
+ * Created on 19/03/2009
+ * Author: jordao
+ */
+
+//header("Content-type: text/html; charset=ISO-8859-1");
+header("Content-type: text/html; charset=UTF-8");
+header("Cache-Control: no-store, no-cache, must-revalidate");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+?>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<?php
+echo $this->render('global.phtml');
+?>

@@ -1,0 +1,49 @@
+<?php echo $this->render('header/header.phtml');?>										 		  						
+									  
+<!-- ===================================== -->
+<!-- inicio : específico com cada template -->					
+<!-- ===================================== -->						  
+<div>
+	<?php echo $this->render('submenu/submenuAdm.phtml');?>
+
+	<!-- ============================================================================================== -->
+	<!-- É necessário informar o nome class da tabela em questão para carregar a cor background correta -->
+	<!-- Opções: 
+				#identification
+				#person
+				#education
+				#health
+				#income
+				#familyRelationship
+				#residence
+				#attendance
+				#activity	-->
+	<!-- ============================================================================================== -->
+	<table class="report" width="98%">
+		<tr>
+			<td align="center">
+				<?php echo $this->render('navigation/navigationSetup.phtml');?>
+			</td>
+		</tr>
+		<tr>
+			<td align="center">
+				<?php
+					if(!$this->errorMessages)
+					{
+						echo $this->render('region/_editForm.phtml');
+					}
+					else
+					{
+						echo "<b class='bigWriteRed'>".$this->errorMessages."</b><p>";
+					}
+				?>
+				<?php ?>
+			</td>
+		</tr>
+	</table>
+</div>																  
+<!-- =================================== -->
+<!-- fim : específico para cada template -->					
+<!-- =================================== -->		
+					
+<?php echo $this->render('footer/footer.phtml');?>	

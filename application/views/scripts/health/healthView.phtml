@@ -1,0 +1,116 @@
+<tr>
+	<td width="22%">
+		<b><?php echo $this->controller->health->text->drugs;?></b>
+	</td>
+	<td colspan="2">
+		<?php 
+			if(sizeof($this->healthByPerson) <= 0 || $this->healthByPerson->{HLT_DRUG_USER} == 0)
+			{
+				echo $this->labels->text->nodata;
+			}
+			elseif(sizeof($this->healthByPerson) > 0 && $this->healthByPerson->{HLT_DRUG_USER} == 1)
+			{
+				echo $this->labels->text->yes;
+			}
+			elseif(sizeof($this->healthByPerson) > 0 && $this->healthByPerson->{HLT_DRUG_USER} == 2)
+			{
+				echo $this->labels->text->not;
+			}
+		?>
+	</td>
+</tr>
+<tr>
+	<td width="22%">
+		<b><?php echo $this->controller->health->text->vaccination;?></b>
+	</td>
+	<td colspan="2">
+		<?php 
+			if(sizeof($this->healthByPerson) > 0 && $this->healthByPerson->{HLT_VACCINE} == 1)
+			{
+				echo $this->labels->text->yes;				
+				echo "<br>";
+				echo $this->controller->health->text->information;
+				echo "&nbsp;";
+				echo "<b>";
+				echo $this->form->dateFormatForm($this->healthByPerson->{HLT_VACCINE_TO_DATE});
+				echo "</b>";
+			}
+			elseif(sizeof($this->healthByPerson) > 0 && $this->healthByPerson->{HLT_VACCINE} == 2)
+			{
+				echo $this->labels->text->not;				
+				echo "<br>";
+				echo $this->controller->health->text->information;
+				echo "&nbsp;";
+				echo "<b>";
+				echo $this->form->dateFormatForm($this->healthByPerson->{HLT_VACCINE_TO_DATE});
+				echo "</b>";
+			}
+			else
+			{
+				echo $this->labels->text->nodata;
+			}
+		?>
+	</td>
+</tr>
+<tr>
+	<td width="22%">
+		<b><?php echo $this->controller->health->text->agreement;?></b>
+	</td>
+	<td colspan="2">
+		<?php 
+			if(sizeof($this->healthByPerson) <= 0 || !$this->healthByPerson->{HLT_HEALTH_PLAN})
+			{
+				echo $this->labels->text->nodata;
+			}
+			elseif(sizeof($this->healthByPerson) > 0 && $this->healthByPerson->{HLT_HEALTH_PLAN} != $this->labels->text->not)
+			{
+				echo $this->healthByPerson->{HLT_HEALTH_PLAN};
+			}
+			else
+			{
+				echo $this->labels->text->not;
+			}
+		?>
+	</td>
+</tr>
+<tr>
+	<td width="22%">
+		<b><?php echo $this->controller->health->text->framework;?></b>
+	</td>
+	<td colspan="2">
+		<?php
+			if(sizeof($this->healthByPerson) > 0)
+			{
+				$resultFramework = $this->healthByPerson->findDependentRowset(CLS_FRAMEWORKHEALTH);
+
+				if(sizeof($resultFramework) > 0)
+				{
+					$typeHealth = $this->healthByPerson->findManyToManyRowset(CLS_FRAMEWORKHEALTHTYPE, CLS_FRAMEWORKHEALTH);
+				
+					foreach($typeHealth as $th)
+					{
+						echo "<b>";echo $th->{FHT_FRAMEWORK_HEALTH}; echo "</b>";
+						echo "<br>";
+						
+						foreach($this->healthByPerson->findDependentRowset(CLS_FRAMEWORKHEALTH) as $healthPerson)
+						{
+							if($healthPerson->{FHL_ID_FRAMEWORK_HEALTH} == $th->{FHL_ID_FRAMEWORK_HEALTH})
+							{
+								echo $healthPerson->{FHL_FRAMEWORK_HEALTH_DESCRIPTION};
+								echo "<p>";
+							}
+						}
+					}
+				}
+				else
+				{
+					echo $this->labels->text->nodata;
+				}	
+			}
+			else
+			{
+				echo $this->labels->text->nodata;		
+			}
+		?>	
+	</td>
+</tr>

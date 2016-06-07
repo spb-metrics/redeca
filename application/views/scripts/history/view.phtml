@@ -1,0 +1,43 @@
+<?php echo $this->render('header/header.phtml');?>										 		  						
+									  
+<!-- ===================================== -->
+<!-- inicio : específico com cada template -->					
+<!-- ===================================== -->						  
+<div>
+
+	<!-- ============================================================================================== -->
+	<!-- É necessário informar o nome class da tabela em questão para carregar a cor background correta -->
+	<!-- Opções: 
+				#identification
+				#person
+				#education
+				#health
+				#income
+				#familyRelationship
+				#residence
+				#attendance
+				#activity
+				#benefit
+								-->
+	<!-- ============================================================================================== -->
+	<?php 
+		if(count($this->errorMessages) > 0)
+		{
+			// Imprime mensagem de validacao
+			printErrorsByField(HistoryForm::historyId(), $this->errorMessages);
+		}
+		else
+		{
+			// Renderiza o template de acordo com o resource		
+			echo $this->render($this->templateName.'.phtml');
+		}
+			 
+	?>
+	
+	
+</div>																  
+<!-- =================================== -->
+<!-- fim : específico para cada template -->					
+<!-- =================================== -->		
+					
+<?php echo $this->render('footer/footer.phtml');?>	

@@ -1,0 +1,44 @@
+<tr>
+	<td width="100%" align="center">
+		<h1>
+			<?php echo ($this->labels->confirm->delete->title);?>
+		</h1>
+		<!-- ===================================================================================================== -->
+		<!-- =================================== FORM utilizado para excluir um benefício ======================== -->
+		<!-- ============================================================================+======================== -->
+		<form action="<?php echo $this->baseUrl;?><?php echo BENEFIT_CONTROLLER;?>/<?php echo $this->action;?>" method="post">
+			<p>
+				<?php if($this->programsByPerson && sizeof($this->programsByPerson) > 0 ):?>
+					<?php echo $this->labels->confirm->delete->text;?>&nbsp;?<br>
+					<?php
+						foreach($this->programsByPerson as $id)
+						{
+							echo "<br>".$this->controller->benefit->text->benefitName.":&nbsp;";
+							echo "<input type='hidden' name='";
+							echo BenefitForm::idPerson();
+							echo "'";
+							echo " value='";
+							echo $id->{SPG_ID_PERSON};
+							echo "'/>";
+							echo "<input type='hidden' name='";
+							echo BenefitForm::idProgram();
+							echo "'";
+							echo " value='";
+							echo $id->{SPG_ID_PR_SOCIAL};
+							echo "'/>";
+							echo "<b>". $id->findParentRow(CLS_SOCIALPROGRAMTYPE)->{SCP_BENEFIT}."</b><br>";
+							$idPerson = $id->{SPG_ID_PERSON};
+						}
+					?>
+				<?php endif; ?>
+			</p>
+			<div>
+				<input type="submit" name="<?php echo E_CONFIRM; ?>" value="<?php echo $this->labels->confirm->button->yes;?>" />
+				<input type="button" onClick="document.location='<?php echo $this->baseUrl;?><?php echo BENEFIT_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php echo $this->form->personId();?>/<?php echo $idPerson;?>'" value="<?php echo $this->labels->confirm->button->cancel;?>" />
+			</div>
+		</form>	
+		<!-- =================================================================================================================== -->
+		<!-- ================================================ fim do FORM ====================================================== -->
+		<!-- =================================================================================================================== -->		
+	</td>
+</tr>

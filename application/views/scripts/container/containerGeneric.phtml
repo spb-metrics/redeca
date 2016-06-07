@@ -1,0 +1,35 @@
+<?php 
+// Turn available received parameters
+foreach( $this->rparam as $k => $v )  {
+   ${$k} = $v;
+}
+?>
+<script type="text/javascript" src="<?php echo $this->baseUrl ?>/public/jquery/container.js"></script>	
+<!-- main div from containerGeneric.phtml for $controllerName -->
+
+<div class="container" id="max_<?php echo $idCSS ?>">
+	<h1 onClick="showContainer('<?php echo $idCSS ?>','<?php echo $this->baseUrl.$controllerName;?>/<?php echo DEFAULT_CONTAINER_ACTION;?>/<?php if($this->form)echo $this->form->personId();?>/<?php if($this->form)echo $this->form->getPersonId();?>')">
+		<img  class=left id="imgShow<?php echo $idCSS ?>" src="<?php echo $this->baseUrl ?>/public/images/show.png" />
+		<?php echo $title ?>
+	</h1>
+</div>
+<div id="main_<?php echo $idCSS ?>" style="display: none;" class="container">
+
+	<h1  onClick="hideContainer('<?php echo $idCSS ?>')">
+		<img class=left id="imgHide<?php echo $idCSS ?>" src="<?php echo $this->baseUrl ?>/public/images/hide.png"/>
+		<?php echo $title ?>
+	</h1>
+
+	<div id="loading<?php echo $idCSS ?>"><center><img src="<?php echo $this->baseUrl ?>/public/images/loading.gif"></center></div>
+	<div id="<?php echo $idCSS ?>"></div>
+</div>
+
+<?php if($show) { ?>
+<script type="text/javascript">	
+showContainer('<?php echo $idCSS ?>', '<?php echo $this->baseUrl.$controllerName ?>/<?php echo DEFAULT_CONTAINER_ACTION;?>/<?php if($this->form)echo $this->form->personId();?>/<?php if($this->form)echo $this->form->getPersonId();?>');
+</script>
+<?php }
+?>
+<!-- end container in containerGeneric.phtml -->
+
+

@@ -1,0 +1,118 @@
+<table width="100%">
+	<form action="<?php echo $this->baseUrl;?><?php echo REGION_CONTROLLER;?>/<?php echo DEFAULT_ADD_ACTION;?>" method="post">
+		<tr>
+			<td  colspan="2">
+				<h1><?php echo $this->controller->region->title->registerRegion;?></h1>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<?php echo $this->helpcontroller->text1?>
+			</td>
+		</tr>
+		<tr>
+			<td  colspan="2">
+				&nbsp;
+			</td>
+		</tr>
+		<tr>
+			<td width="20%">
+				<b><?php echo $this->controller->region->text->nameRegion;?></b>
+			</td>
+			<td>
+				<input size="30" type="text" name="<?php echo RegionForm::region()?>" value="<?php echo $this->form->getRegion()?>"><br>
+				<?php printErrorsByField($this->form->region(), $this->errorMessages); ?>
+			</td>
+		</tr>
+		<!-- estado -->
+		<tr>
+			<td  colspan="2">
+				<b><?php echo $this->controller->region->text->state;?></b>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">				
+				<?php printErrorsByField($this->form->state(), $this->errorMessages); ?>
+				<select name="<?php echo $this->form->state();?>" onchange="actionName('<?php echo $this->baseUrl;?><?php echo REGION_CONTROLLER;?>/<?php echo DEFAULT_CITY_ACTION;?>', this.form);this.form.submit();">
+					<option value=""><?php echo $this->labels->text->select;?>...</option>
+					<?php foreach($this->state as $state) { ?>
+						<option value="<?php echo $state->{UF_ID_UF}?>" <?php if($this->form->getState() == $state->{UF_ID_UF}) echo "selected";?>><?php echo $state->{UF_ABBREVIATION}?></option>
+					<?php } ?>
+				</select>										
+			</td>
+		</tr>
+		<!-- cidades -->
+		<?php if($this->city):?>
+		<tr>
+			<td  colspan="2">
+				<b><?php echo $this->controller->region->text->city;?></b>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">				
+				<?php printErrorsByField($this->form->city(), $this->errorMessages); ?>
+				<select name="<?php echo $this->form->city();?>" onchange="actionName('<?php echo $this->baseUrl;?><?php echo REGION_CONTROLLER;?>/<?php echo DEFAULT_NEIGHBORHOOD_ACTION;?>', this.form);this.form.submit();">
+					<option value=""><?php echo $this->labels->text->select;?>...</option>
+					<?php foreach($this->city as $city) { ?>
+						<option value="<?php echo $city->{CTY_ID_CITY}?>"<?php if($this->form->getCity() == $city->{CTY_ID_CITY}) echo "selected";?>><?php echo $city->{CTY_CITY}?></option>
+					<?php } ?>
+				</select>							
+			</td>
+		</tr>
+		<?php endif;?>
+		<?php if($this->neighborhoods):?>
+		<?php if(count($this->neighborhoods) > 0):?>
+		<tr>
+			<td  colspan="2">
+				<b><?php echo $this->controller->region->text->includeNeighborhood;?></b>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<?php printErrorsByField($this->form->neighborhood(), $this->errorMessages); ?>
+				<table width="100%" class="noBorder">
+					<tr>
+						<td width="45%">
+							<b><?php echo $this->controller->region->text->option;?></b><br>
+							<select class="slctRegion" multiple="" id="listOptions" ondblclick="moveSelectedOptions(this.form['listOptions'],this.form['changeLog.reasonIds'],true);selected(this.form['changeLog.reasonIds']);">
+								<?php foreach($this->neighborhoods as $neighborhood) { ?>
+									<option value="<?php echo $neighborhood->{NHD_ID_NEIGHBORHOOD}?>" id="listOptions1" title="<?php echo $neighborhood->{NHD_NEIGHBORHOOD}?>"><?php echo $neighborhood->{NHD_NEIGHBORHOOD}?></option>
+								<?php } ?>
+							</select>
+						</td>
+						<td width="0%" align="center">
+							<p> &nbsp; </p>
+							<p><input type="button" style="width: 1cm;" value="&gt;" onclick="moveSelectedOptions(this.form['listOptions'],this.form['changeLog.reasonIds'],true);selected(this.form['changeLog.reasonIds']);" name="ad"/></p>
+							<p><input type="button" style="width: 1cm;" value="&gt;&gt;" onclick="moveAllOptions(this.form['listOptions'],this.form['changeLog.reasonIds'],true);selected(this.form['changeLog.reasonIds']);" name="adAll"></p>
+							<p><input type="button" style="width: 1cm;" value="&lt;&lt;" onclick="moveAllOptions(this.form['changeLog.reasonIds'],this.form['listOptions'],true)" name="remAll"></p>
+							<p><input type="button" style="width: 1cm;" value="&lt;" onclick="moveSelectedOptions(this.form['changeLog.reasonIds'],this.form['listOptions'],true)" name="rem"/></p>
+						</td>
+						<td width="45%">
+							<b><?php echo $this->controller->region->text->include;?></b><br>
+							<select class="slctRegion" multiple="" name="<?php echo RegionForm::neighborhood()?>[]" id="changeLog.reasonIds" ondblclick="moveSelectedOptions(this.form['changeLog.reasonIds'],this.form['listOptions'],true)">
+							</select>							
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<?php else:?>
+		<tr>
+			<td  colspan="2">
+				<b><?php echo $this->controller->region->text->noNeighborhood;?></b>
+			</td>
+		</tr>
+		<?php endif;?>		
+		<tr>
+			<td colspan="2">
+				<input type="submit" value="<?php echo $this->labels->button->save;?>"/>
+			</td>
+		</tr>
+		<?php endif;?>
+		<tr>
+			<td colspan="2">
+				<input type="button" value="<?php echo $this->labels->button->back;?>" onClick="document.location='<?php echo $this->baseUrl;?><?php echo REGION_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>'">				
+			</td>
+		</tr>		
+	</form>
+</table>

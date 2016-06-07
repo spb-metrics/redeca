@@ -1,0 +1,118 @@
+<?php echo $this->render('header/header.phtml');?>										 		  						
+									  
+<!-- ===================================== -->
+<!-- inicio : específico com cada template -->					
+<!-- ===================================== -->						  
+<div>
+	<?php $stringUri = $_SERVER["REQUEST_URI"]; $stringmatch = FAMILYEXPENSE_CONTROLLER;?>
+	<?php if (preg_match("%($stringmatch)%", "$stringUri")):?>
+		<?php echo $this->render('submenu/subMenuRelationship.phtml');?>
+	<?php else:?>
+		<?php echo $this->render('submenu/submenuPerson.phtml');?>
+	<?php endif;?>
+
+	<!-- ============================================================================================== -->
+	<!-- É necessário informar o nome class da tabela em questão para carregar a cor background correta -->
+	<!-- Opções: 
+				#identification
+				#person
+				#education
+				#health
+				#income
+				#familyRelationship
+				#residence
+				#attendance
+				#activity
+				#benefit
+								-->
+	<!-- ============================================================================================== -->
+	<?php if($this->errorMessages[$this->form->personId()]):?>
+		<br>
+		<b>
+			<?php echo $this->controller->history->text->paraminvalid;?>
+		</b>
+	<?php elseif($this->errorMessages[$this->form->resourceId()]):?>
+		<br>
+		<?php printErrorsByField(HistoryForm::resourceId(), $this->errorMessages);?>
+		
+	<?php elseif(count($this->history) <= 0):?>
+		<br>
+		<?php if(count($this->errorMessages) > 0):?> 
+			<?php printErrorsByField(HistoryForm::resourceId(), $this->errorMessages);?>
+			<?php printErrorsByField(HistoryForm::personId(), $this->errorMessages);?>
+		<?php else:?>
+			<b><?php printMessage($this->controller->history->text->nodatafound) ;?></b>
+		<?php endif;?>
+		
+	<?php else:?>
+		<form name="" id="navigation" method="post" action="" >
+		<table class="history" width="98%">
+			<tr>
+				<td align="center">
+					<table width="100%">
+						<tr>
+							<td colspan="2">
+								<h1><?php echo $this->controller->history->title;?></h1>							
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2"> 
+								<?php echo $this->helpcontroller->text1?>
+								<hr>
+							</td>
+						</tr>
+						<tr>
+							<td width="50%">
+								<b><?php echo $this->controller->history->text->date;?></b>
+							</td>
+							<td width="50%">
+								<b><?php echo $this->controller->history->text->user;?></b>							
+							</td>
+						</tr>
+						<?php foreach($this->history as $current):?>
+						<tr>
+							<td>
+								<a href="<?php echo $this->baseUrl . HISTORY_CONTROLLER.'/'.DEFAULT_VIEW_ACTION.'/'. $this->form->historyId() .'/'. $current->{PCH_ID_CHANGE_HISTORY}; ?>" ><?php echo $this->form->dateFormatForm($current->{PCH_DATE_OPERATION});?>
+								-
+								<?php if($current->{PCH_TABLE_NAME} == TBL_LEVEL_INSTRUCTION):?>
+									<?php echo $this->labels->title->levelinstruction;?>
+								<?php elseif($current->{PCH_TABLE_NAME} == TBL_REGISTRATION):?>
+									<?php echo $this->labels->title->registration;?>
+								<?php elseif($current->{PCH_TABLE_NAME} == TBL_HEALTH):?>
+									<?php echo $this->labels->title->health;?>
+								<?php elseif($current->{PCH_TABLE_NAME} == TBL_PREGNANCY):?>
+									<?php echo $this->labels->title->pregnancy;?>
+								<?php elseif($current->{PCH_TABLE_NAME} == TBL_SOCIAL_PROGRAM):?>
+									<?php echo $this->labels->title->benefit;?>
+								<?php elseif($current->{PCH_TABLE_NAME} == TBL_INCOME):?>
+									<?php echo $this->labels->title->income;?>
+								<?php elseif($current->{PCH_TABLE_NAME} == TBL_RESIDENCE):?>
+									<?php echo $this->labels->title->residence;?>
+								<?php elseif($current->{PCH_TABLE_NAME} == TBL_EXPENSE):?>
+									<?php echo $this->labels->title->fexpense;?>
+								<?php endif;?>
+								</a>
+							</td>
+							<td>
+								<a href="<?php echo $this->baseUrl . HISTORY_CONTROLLER.'/'.DEFAULT_VIEW_ACTION.'/'. $this->form->historyId() .'/'. $current->{PCH_ID_CHANGE_HISTORY}; ?>" ><?php echo $current->findParentRow(CLS_AUTH_USER)->{AUTH_NAME_USER};?></a>
+							</td>
+						</tr>
+						<?php endforeach;?>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td align="center">
+					<?php echo $this->render('/navBar.phtml');?>
+				</td>
+			</tr>
+		</table>
+		</form>
+		
+	<?php endif;?>
+</div>																  
+<!-- =================================== -->
+<!-- fim : específico para cada template -->					
+<!-- =================================== -->		
+					
+<?php echo $this->render('footer/footer.phtml');?>	

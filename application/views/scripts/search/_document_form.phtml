@@ -1,0 +1,32 @@
+<h2><?php echo $this->controller->search->text->bydocument;?></h2>
+<table width="100%">
+	<tr>
+		<td colspan="4"><?php echo $this->helpcontroller->text1;?><br><br></td>
+	</tr>
+	<form action="<?php echo $this->baseUrl;?><?php echo SEARCH_CONTROLLER;?>/<?php echo DEFAULT_SEARCH_BY_DOCUMENT_ACTION;?>" method="post">
+	<tr>
+		<td class="bold" align="right" width="15%"><?php echo $this->controller->search->text->number;?><br><br></td>
+		<td>
+			<input size="42" type="text" name="<?php echo $this->form->docNumber();?>" value=""/><br>
+			<?php printErrorsByField($this->form->docNumber(), $this->errorMessages);?>
+		</td>
+		<td class="bold" align="right" width="15%"><?php echo $this->controller->search->text->document;?></td>
+		<td width="30%">
+			<select name="<?php echo $this->form->docType();?>">
+				<?php foreach($this->documentOptions as $k=>$v):?>
+					<option value="<?php echo $k;?>"><?php echo $v;?></option>
+				<?php endforeach;?>
+			</select><br>
+			<?php printErrorsByField($this->form->docType(), $this->errorMessages);?><br>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="4" align=center>
+			<input type="submit" value="<?php echo $this->controller->search->button->search;?>"/><br><br>
+		</td>
+	</tr>
+	</form>
+	<tr>
+		<td colspan="4">&loz;&nbsp;<?php echo $this->helpcontroller->text2;?></td>
+	</tr>
+</table>

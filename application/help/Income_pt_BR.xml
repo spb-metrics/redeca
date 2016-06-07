@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<help>
+	<items>
+		<text1>Nesta parte pode ser informado o valor de cada renda que a pessoa possui.</text1>
+		<text2>Aqui você informa a situação da pessoa no mercado de trabalho, caso ela trabalhe é possível cadastar dados sobre o trabalho.</text2>
+		<text3>Você pode buscar o endereço de onde esta pessoa trabalha clicando em "Alterar endereço".</text3>
+		<text4>Você pode informar um ou mais telefones do local de trabalho da pessoa.</text4>		
+	</items>
+</help>

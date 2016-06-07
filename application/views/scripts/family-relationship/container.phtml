@@ -1,0 +1,49 @@
+<?php
+echo  $this->render('header/container.phtml'); 
+$rf = $this->relationshipByPerson;?>
+<?php if($rf && sizeof($rf) > 0):?>
+		<table class="icontainer" width="98%" >
+		<?php foreach($rf as $kingship):?>
+			<?php $collType = $kingship->findDependentRowset(CLS_FAMILY);?>
+			<?php foreach($collType as $unique):?>	
+				<?php if($this->form->getPersonId() != $unique->findParentRow(CLS_PERSON)->{PRS_ID_PERSON}):?>		
+					<tr>
+						<td>
+
+<a href='<?php echo $this->baseUrl;?><?php echo PERSON_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php if($this->form)echo $this->form->personId();?>/<?php echo $unique->findParentRow(CLS_PERSON)->{PRS_ID_PERSON};?>'>
+
+<?php echo abbreviate($unique->findParentRow(CLS_PERSON)->{PRS_NAME}, 25);?>
+
+</a>
+						</td>
+					</tr>
+				<?php elseif(sizeof($collType) == 1) : ?>
+					<tr>
+						<td>
+							<?php echo $this->controller->fRelationship->text->notFamily;?>
+						</td>
+					</tr>
+				<?php endif; ?>			
+			<?php endforeach;?>
+		<?php endforeach;?>
+		</table>
+	<center>		
+		<form action="<?php echo $this->baseUrl;?><?php echo FAMILYRELATIONSHIP_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>" method="post">
+			<input type="hidden" name="<?php if($this->form)echo $this->form->personId();?>" value="<?php if($this->form)echo $this->form->getPersonId();?>">	
+			<input class="small" type="submit" value="<?php echo $this->labels->button->showDetail;?>"/>
+		</form>
+	</center>	
+<?php else : ?>
+	<table class="icontainer" width="98%">
+		<tr>
+			<td>
+				<?php echo $this->controller->fRelationship->text->notAssociated;?>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input class="small" type="submit" onclick="parent.document.location='<?php echo $this->baseUrl;?><?php echo FAMILYRELATIONSHIP_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php if($this->form)echo $this->form->personId();?>/<?php if($this->form)echo $this->form->getPersonId();?>'" value="<?php echo $this->labels->button->showDetail;?>"/>
+			</td>
+		</tr>
+	</table>
+<?php endif; ?>

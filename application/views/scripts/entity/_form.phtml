@@ -1,0 +1,20 @@
+<!-- ==================================================== -->
+<!-- formulário que visualiza as informações para edição =-->
+<!-- este formulário é visualizado a partir do view.phtml -->					
+<!-- ==================================================== -->
+<form action="<?php echo $this->baseUrl;?><?php echo ENTITY_CONTROLLER;?>/<?php echo DEFAULT_EDIT_ACTION;?>" method="post">
+	
+	<!-- =========================================-============ -->
+	<!-- Conforme validação de usuário carregar includes abaixo -->
+	<!-- ====================================================== -->
+	<?php echo $this->render('entity/_entity_form.phtml');?>
+	
+	<?php echo $this->render('entity/_coordinator_form.phtml');?>
+	
+	<tr>
+		<td colspan="2" align="center">
+			<input type="submit" value="<?php echo $this->labels->button->save;?>"/>
+			<input type="button" value="<?php echo $this->labels->button->back;?>" onClick="document.location='<?php echo $this->baseUrl;?><?php echo ENTITY_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>'">
+		</td>
+	</tr>
+</form>

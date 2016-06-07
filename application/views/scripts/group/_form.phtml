@@ -1,0 +1,122 @@
+<table width="100%" class="withoutEdge">
+		<tr>
+			<td class="bold">
+				<table class="borderBlack" width="100%">
+					<!-- =================================================================================================================== -->
+					<!-- ============== FORM utilizado para persistir um grupo:  salvar e editar um grupo ================================== -->
+					<!-- =================================================================================================================== -->
+					<form action="<?php echo $this->baseUrl;?><?php echo GROUP_CONTROLLER;?>/<?php echo DEFAULT_ADD_ACTION;?>" method="post">
+						<tr>
+							<td colspan="4">
+								<h1><?php echo $this->controller->permission->title->registerGroup;?></h1>
+							</td>
+						</tr>
+						<tr>
+							<td width="20%" class="bold">
+								<b><?php echo $this->controller->permission->text->groupName;?>:</b><br>
+							</td>
+							<td width="50%" colspan="2">
+								<input type="text" size="55" value="<?php echo $this->form->getGroupName();?>" name="<?php echo $this->form->groupName();?>">
+								<input type="hidden" value="<?php echo $this->escape($this->form->getId());?>" name="<?php echo $this->form->id();?>">
+							</td>
+							<td width="30%">
+								<select name="<?php echo $this->form->status();?>">
+									<option value="<?php echo Constants::ENABLE;?>"><?php echo $this->labels->text->enable;?></option>
+									<option value="<?php echo Constants::DISABLE;?>" <?php if($this->form->getStatus() == Constants::DISABLE) echo "selected";?>><?php echo $this->labels->text->disable;?></option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td width="20%">&nbsp;</td>
+							<td ><?php printErrorsByField($this->form->groupName(), $this->errorMessages);?></td>
+							<td colspan="2"><?php printErrorsByField($this->form->status(), $this->errorMessages);?></td>
+						</tr>
+						<tr>
+							<td width="20%" class="bold">
+								<?php echo $this->controller->permission->text->listUserType;?>:
+							</td>
+							<td width="80%" colspan="3">
+								<?php $roleId = $this->form->getRoleId();?>
+								<select name="<?php echo $this->form->roleId();?>" >
+									<option value=""><?php echo $this->controller->permission->text->listUserType;?></option>
+									<?php foreach($this->roles as $role): ?>
+										<option value="<?php echo $role->{AUTH_ID_ROLE}?>" <?php if($roleId == $role->{AUTH_ID_ROLE})echo 'selected';?> ><?php echo $role->{AUTH_ROLE}?></option>
+									<?php endforeach; ?>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td width="20%">&nbsp;</td>
+							<td colspan="2"><?php printErrorsByField($this->form->roleId(), $this->errorMessages);?></td>
+						</tr>
+						<tr>
+							<td width="20%">&nbsp;</td>
+							<td width="30%">
+								<input type="submit" value="<?php echo $this->labels->button->save;?>">
+							</td>
+						</tr>
+					</form>
+					<!-- ================================================================================================================== -->
+					<!-- ======================================================== fim do FORM ============================================= -->
+					<!-- ================================================================================================================== -->
+				</table><br><br>
+			</td>	
+		</tr>
+		
+		<tr>
+			<td class="bold">
+				<!-- =================================================================================================================== -->
+				<!-- ============== FORM utilizado para carregar um ou mais grupos para ser editado ou excluído ======================== -->
+				<!-- =================================================================================================================== -->
+				<table class="borderBlack" width="100%">
+					<form id="groupFrm" action="" method="post">
+						<tr>
+							<td width="100%" colspan="3">
+								<h1><?php echo $this->controller->permission->title->editGroup;?></h1>
+							</td>
+						</tr>
+						<tr>							
+							<td width="20%" class="bold">
+								<?php echo $this->controller->permission->text->listGroup;?>:
+							</td>
+							<td width="80%" colspan="2">
+								<select id="selectDefault" size="10" name="<?php echo $this->form->id();?>[]" multiple>
+									<?php foreach($this->groups as $group): ?>
+										<?php 
+											$groupResource = $group->findDependentRowset(CLS_AUTH_GROUP_RESOURCE)->current();
+											$type = new Role();
+											if($groupResource)
+												$role = $type->find($groupResource->{AGR_ROLE_ID})->current();
+										?>
+										<option value="<?php echo $group->{AGP_ID_GROUP}?>" title="<?php echo $group->{AGP_GROUP};?> <?php if($role)echo '('.$role->{AUTH_ROLE}.')';?>">
+											<?php echo $group->{AGP_GROUP};?>
+											&nbsp;<?php if($role)echo '('.$role->{AUTH_ROLE}.')';?>
+											<?php if($group->{AUTH_STATUS} == Constants::DISABLE):?>
+												&nbsp;*&nbsp;<?php echo $this->labels->text->disable;?>&nbsp;*
+											<?php endif;?>
+										</option>
+									<?php endforeach; ?>
+								</select>
+								<br/><?php printErrorsByField($this->form->id(), $this->errorMessages);?>
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td align="left" colspan="2">					
+								<input type="submit" value="<?php echo $this->labels->button->edit;?>" 
+									onClick="javascript: return reportMultipleSelected('<?php echo $this->baseUrl;?><?php echo GROUP_CONTROLLER;?>/<?php echo DEFAULT_EDIT_ACTION;?>',this.form, 'selectDefault');">
+								<input type="submit" value="<?php echo $this->labels->button->disable;?>" 
+									onClick="javascript: return actionName('<?php echo $this->baseUrl;?><?php echo GROUP_CONTROLLER;?>/<?php echo DEFAULT_CONFIRM_ACTION?>', this.form);">
+								<input type="submit" value="<?php echo $this->controller->permission->edit;?>" 
+									onClick="javascript: return actionName('<?php echo $this->baseUrl;?><?php echo GROUP_CONTROLLER;?>/<?php echo DEFAULT_GROUP_PERMISSION_ACTION;?>', this.form);">
+
+							</td>
+						</tr>
+					</form>
+				</table>
+				<!-- =================================================================================================================== -->
+				<!-- ======================================================== fim do FORM ============================================== -->
+				<!-- =================================================================================================================== -->
+			</td>
+		</tr>
+</table>

@@ -1,0 +1,64 @@
+<?php 
+	//variável utilizada para setar background do submenu
+	$stringUri = $_SERVER["REQUEST_URI"];
+	
+	$controllerAssociate = ASSOCIATE_ENTITY_CONTROLLER;
+?>
+
+<?php if(UserLogged::isLogged()):?>
+	<?php if(UserLogged::isAdministrator()):?>
+	<table class="withoutEdge" width="99%" cellpadding="0">
+		<tr>
+			<td>
+				<div>
+					<ul class="menuRoot">
+					  <?php if(ResourcePermission::isAllowResource(ENTITY_CONTROLLER)){?>
+					  <li <?php 
+					  		$stringmatch = ENTITY_CONTROLLER; 
+					  		if (  preg_match("%($controllerAssociate)|($stringmatch)%", "$stringUri") && !preg_match("%(".USER_CONTROLLER.ENTITY_CONTROLLER.")%", "$stringUri"))
+					  		{
+					  			echo "class='current'";
+					  		}
+					  	  ?>><a href="<?php echo  $this->baseUrl;?><?php echo  ENTITY_CONTROLLER;?>/<?php echo  DEFAULT_INDEX_ACTION;?>"><b><?php echo  $this->labels->title->entities;?></b></a></li>
+					  <?php }?>
+					
+					  <?php if(ResourcePermission::isAllowResource(USER_CONTROLLER)){?>
+					  <li <?php $stringmatch = USER_CONTROLLER; if (preg_match("%($stringmatch)%", "$stringUri")){echo "class='current'";}?> ><a href="<?php echo  $this->baseUrl;?><?php echo  USER_CONTROLLER;?>/<?php echo  DEFAULT_INDEX_ACTION;?>"><b><?php echo  $this->labels->title->users;?></b></a></li>
+					  <?php }?>
+						  
+					  <?php if(ResourcePermission::isAllowResource(AREA_CONTROLLER)){?>
+					  <li <?php 
+					  			$stringmatch = AREA_CONTROLLER; 
+					  			$stringmatchClassification = CLASSIFICATION_CONTROLLER; 
+					  			$stringmatchProgram = PROGRAM_CONTROLLER; 
+					  			$stringmatchActivity = ACTIVITY_CONTROLLER; 
+					  			
+					  			if (preg_match("%($stringmatch)|($stringmatchClassification)|($stringmatchProgram)|($stringmatchActivity)%", "$stringUri"))
+					  			{
+					  				echo "class='current'";
+					  			}
+					  		?> ><a href="<?php echo  $this->baseUrl;?><?php echo  AREA_CONTROLLER;?>/<?php echo  DEFAULT_INDEX_ACTION;?>"><b><?php echo  $this->labels->title->activities;?></b></a></li>
+					  <?php }?> 
+					
+					  <?php if(ResourcePermission::isAllowResource(REGION_CONTROLLER)){?>
+					  <li <?php 
+					  			$stringmatch = REGION_CONTROLLER; 
+					  			$stringmatchProfile = PROFILE_CONTROLLER; 
+					  			$stringmatchAddInf = ADDITIONALINFORMATION_CONTROLLER; 
+					  			$stringmatchImport = IMPORT_CONTROLLER;
+					  			$stringmatchGroup = GROUP_CONTROLLER;
+					  			
+					  			if (preg_match("%($stringmatch)|($stringmatchProfile)|($stringmatchAddInf)|($stringmatchImport)|($stringmatchGroup)%", "$stringUri") && !preg_match("%($controllerAssociate)%", "$stringUri") )
+					  			{
+					  				echo "class='current'";
+					  			}
+					  		?>><a href="<?php echo  $this->baseUrl;?><?php echo  REGION_CONTROLLER;?>/<?php echo  DEFAULT_INDEX_ACTION;?>"><b><?php echo  $this->labels->title->setup;?></b></a></li>
+					  <?php }?>
+					</ul>
+					<font class="fontMenu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>
+				</div>
+			</td>
+		</tr>
+	</table>
+	<?php endif;?>
+<?php endif;?>

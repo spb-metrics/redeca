@@ -1,0 +1,56 @@
+<?php
+/*
+ * Created on 19/03/2008
+ * Author: Jefferson
+ */
+?>
+	<!-- FORMULARIO DE IMPORTACAO DE CAD UNICO -->
+	<form id="importSchoolFrm" method="post" enctype="multipart/form-data">
+	<div id="importSchoolDiv" style="<?php if($this->form->getRadioButton()== 'school')echo 'display:inline'; else echo 'display:none'; ?>">
+		<input type="hidden" name="<?php echo $this->form->radioButton()?>" value="<?php echo ImportForm::SCHOOL_DIV_KEY;?>"/>
+		<table width="100%" >
+			<tr>
+				<td colspan="2">
+					<h1><?php echo $this->escape($this->controller->import->title->school);?></h1>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2"><ul><li><?php echo $this->helpcontroller->school3;?></li></ul></td>
+			</tr>
+			<tr>
+				<td colspan="2"><ul><li><?php echo $this->helpcontroller->import;?></li></ul></td>
+			</tr>
+			<tr>
+				<td colspan="2"><ul><li><?php echo $this->helpcontroller->zip;?></li></ul></td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<?php /* Mensagem de erro ao carregar o arquivo */ 
+						foreach($this->schoolInfos as $info)
+							foreach($info->getMessage() as $msg)
+								printError( $msg );
+					?>
+				</td>
+			</tr>			
+				<td colspan="2">
+					<b><?php echo $this->controller->import->text->searchFile;?>:</b><br>
+					<?php printErrorsByField(ImportForm::addressFile(), $this->errorSchoolMessages);?><br>
+					<?php printErrorsByField(ImportForm::addressFile(), $this->errorSchoolEmptyMessages);?><br>
+					<?php printErrorsByField(ImportForm::folder(), $this->errorSchoolMessages);?><br>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<input type="hidden" name="<?php echo ImportForm::folder();?>" value="<?php if($this->schoolUpload) echo $this->schoolUpload;?>">
+					<input type="file" name="<?php echo ImportForm::addressFile();?>" value="">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="submit" value="<?php echo $this->controller->button->import;?>" 
+					onClick="javascript: actionName('<?php echo $this->baseUrl;?><?php echo IMPORT_CONTROLLER;?>/<?php echo DEFAULT_SCHOOL_ACTION;?>',this.form);">
+				</td>
+			</tr>
+		</table>
+	</div>
+	</form>

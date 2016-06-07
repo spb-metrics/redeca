@@ -1,0 +1,27 @@
+<?php echo $this->render('header/header.phtml');?>								 		  						
+				  
+<!-- ===================================== -->
+<!-- inicio : específico com cada template -->					
+<!-- ===================================== -->						  
+<div>
+	<?php echo $this->render('submenu/submenuEntity.phtml');?>
+	
+	<table class="activity" width="98%" >
+		<?php
+			if(!$this->errorMessages)
+			{
+				echo $this->render('class/edit_form.phtml');
+			}
+			else
+			{
+				echo $this->render('class/invalidParam.phtml');
+			}
+		?>
+	</table>
+	
+</div>																  
+<!-- ================================== -->
+<!-- fim : específico com cada template -->					
+<!-- ================================== -->		
+
+<?php echo $this->render('footer/footer.phtml');?>

@@ -1,0 +1,14 @@
+<table class="withoutEdge" width="100%">
+	<tr class="write">
+		<td align="right">
+			<?php if(ResourcePermission::isAllowResource(ENTITYINITIAL_CONTROLLER)){?>																									
+			|&nbsp;&nbsp;<a href="<?php echo $this->baseUrl;?><?php echo ENTITYINITIAL_CONTROLLER;?>/<?php echo DEFAULT_INITIAL_NEW_ACTION;?>"><?php echo $this->labels->button->preregistration;?></a>&nbsp;
+			<?php }?>
+			<?php if(ResourcePermission::isAllowResource(ASSOCIATE_ENTITY_CONTROLLER)){?>
+			|&nbsp;&nbsp;<a href="<?php echo $this->baseUrl;?><?php echo ASSOCIATE_ENTITY_CONTROLLER;?>/<?php echo DEFAULT_VIEW_ACTION;?>"><?php echo $this->labels->button->associate;?></a>&nbsp;
+			<?php }?>
+		</td>
+	<tr>
+</table>
+
+

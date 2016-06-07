@@ -1,0 +1,278 @@
+<?php 
+/**
+ * Função que retorna o texto configurado no arquivo de resource.
+ * @param Zend_View $view
+ * @param String $value
+ */
+function getResourceText($view, $value, $regexToSplit=null)
+{
+	if(!empty($value))
+	{
+		if(!empty($regexToSplit))
+			$var = split($regexToSplit,$value,2);
+		else
+			$var = split('\.',$value,2);
+
+		if(count($var) == 1)
+		{
+			$var1 = $var[0];
+			if(!empty($view->controller->report->text->$var1))
+				return $view->controller->report->text->$var1;
+		}
+		elseif(count($var) == 2)
+		{
+			$var1 = $var[0];
+			$var2 = $var[1];
+			if(!empty($view->controller->report->text->$var1->$var2))
+				return $view->controller->report->text->$var1->$var2;
+		}
+		return $value;
+	}
+}
+?>
+
+<div>
+<table width="100%">
+	<form id="reportFrm" action="" method="post" target="_self">
+		<tr>
+			<td colspan="4">
+				<h1><?php echo $this->controller->report->title;?></h1>
+				<input type="hidden" name="<?php echo $this->form->checked();?>" id="<?php echo $this->form->checked();?>" value="<?php echo $this->form->getChecked();?>" />
+			</td>
+		</tr>
+		<tr>
+			<td align="right" colspan="4">
+				<?php echo $this->helpcontroller->text2;?>
+			</td>
+		</tr>
+		<tr>
+			<td align="right" colspan="4">
+				<?php echo $this->helpcontroller->text3;?>
+			</td>
+		</tr>
+		<tr>
+			<td align="right" colspan="4">
+				<input type="submit" value="<?php echo $this->controller->report->button->arff;?>" 
+					onClick="javascript: actionName('<?php echo $this->baseUrl;?><?php echo EXPORT_CONTROLLER;?>/<?php echo DEFAULT_ARFF_ACTION;?>',this.form); this.form.submit();">
+			</td>
+		</tr>
+		<tr>
+			<td align="right" colspan="4">
+				<hr width="100%" size="2">
+			</td>
+		</tr>
+		<tr>
+			<td colspan="4">
+				<?php echo $this->helpcontroller->text1;?>
+			</td>
+		</tr>
+		<tr>
+			<td width="25%" align="left">
+				<b><?php echo $this->controller->report->level1;?></b>
+			</td>
+			<td width="25%" align="left"> 
+				<b><?php echo $this->controller->report->level2;?></b>
+			</td>
+			<td width="25%" align="left">
+				<b><?php echo $this->controller->report->level3;?></b>
+			</td>
+			<td width="25%" align="left">
+				<b><?php echo $this->controller->report->level4;?></b>
+			</td>
+		</tr>
+		<tr>
+			<td align="left">
+				<select name="<?php echo $this->form->module1();?>" size="15" onchange="<?php $this->form->setChecked("1");?> checkSelect('1', '<?php echo $this->form->checked();?>'); actionName('<?php echo $this->baseUrl . REPORT_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>',this.form); this.form.target='_self'; this.form.submit();">
+					<?php foreach($this->module1 as $module):?>
+						<option value="<?php echo $module;?>" <?php if($module == $this->form->getModule1())echo 'selected';?> title="<?php echo getResourceText($this,$module);?>"><?php echo getResourceText($this,$module);?></option>
+					<?php endforeach;?>
+				</select>				
+				<?php printErrorsByField($this->form->module1(), $this->errorMessages);?>
+			</td>
+			<td align="left">				
+				<?php if(count($this->module2) > 0): ?>
+				<select name="<?php echo $this->form->module2();?>[]" size="15" multiple="true" onchange="<?php $this->form->setChecked("2");?> checkSelect('2', '<?php echo $this->form->checked();?>'); actionName('<?php echo $this->baseUrl . REPORT_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>',this.form); this.form.target='_self'; this.form.submit();" >
+					<?php foreach($this->module2 as $module):?>
+						<option value="<?php echo $module;?>" <?php if(in_array($module,$this->form->getModule2()))echo 'selected';?> title="<?php echo getResourceText($this,$module);?>"><?php echo getResourceText($this,$module);?></option>
+					<?php endforeach;?>					
+				</select>
+				<?php else:?>
+				<select name="<?php echo $this->form->module2();?>[]" size="15" multiple="true" >
+					<option value=""></option>					
+				</select>
+				<?php endif;?>
+				<?php printErrorsByField($this->form->module2(), $this->errorMessages);?>
+			</td>
+			<td align="left">
+				<?php if(count($this->module3) > 0): ?>
+				<select name="<?php echo $this->form->module3();?>[]" size="15" multiple="true" onchange="<?php $this->form->setChecked("3");?> checkSelect('3', '<?php echo $this->form->checked();?>'); actionName('<?php echo $this->baseUrl . REPORT_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>',this.form); this.form.target='_self'; this.form.submit();" >>
+					<?php foreach($this->module3 as $module):?>
+						<option value="<?php echo $module;?>" <?php if(in_array($module,$this->form->getModule3()))echo 'selected';?> title="<?php echo getResourceText($this,$module);?>"><?php echo getResourceText($this,$module);?></option>
+					<?php endforeach;?>					
+				</select>
+				<?php else:?>
+				<select name="<?php echo $this->form->module3();?>[]" size="15" multiple="true" >
+					<option value=""></option>					
+				</select>
+				<?php endif;?>
+				<?php printErrorsByField($this->form->module3(), $this->errorMessages);?>
+			</td>
+			<td align="left">
+				<?php if(count($this->module4) > 0): ?>
+				<select name="<?php echo $this->form->module4();?>[]" size="15" multiple="true" onchange="<?php $this->form->setChecked("4");?> checkSelect('4', '<?php echo $this->form->checked();?>'); actionName('<?php echo $this->baseUrl . REPORT_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>',this.form); this.form.target='_self'; this.form.submit();" >>
+					<?php foreach($this->module4 as $module):?>
+						<option value="<?php echo $module;?>" <?php if(in_array($module,$this->form->getModule4()))echo 'selected';?> title="<?php echo getResourceText($this,$module);?>"><?php echo getResourceText($this,$module);?></option>
+					<?php endforeach;?>					
+				</select>
+				<?php else:?>
+				<select name="<?php echo $this->form->module4();?>[]" size="15" multiple="true" >
+					<option value=""></option>					
+				</select>
+				<?php endif;?>
+				<?php printErrorsByField($this->form->module4(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td align="left">
+				<select name="<?php echo $this->form->filter1();?>[]">
+					<option value="">--</option>
+					<?php foreach($this->fields1 as $field):?>
+						<option value="<?php echo $field;?>" <?php if(in_array($field, $this->form->getFilter1()))echo 'selected';?> ><?php echo getResourceText($this,$field);?></option>
+					<?php endforeach;?>
+				</select>
+				<?php printErrorsByField($this->form->filter1(), $this->errorMessages);?>
+			</td>
+			<td align="left">
+				<select name="<?php echo $this->form->filter2();?>[]">
+					<option value="">--</option>
+					<?php foreach($this->fields2 as $field):?>
+						<option value="<?php echo $field;?>" <?php if(in_array($field, $this->form->getFilter2()))echo 'selected';?> ><?php echo getResourceText($this,$field);?></option>
+					<?php endforeach;?>
+				</select>
+				<?php printErrorsByField($this->form->filter2(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td align="left">				
+				<?php $operator = $this->form->getOperator1();?>
+				<select name="<?php echo $this->form->operator1();?>[]">
+					<option value="<?php echo Constants::EQUAL_KEY;?>" <?php if($operator[0] == Constants::EQUAL_KEY) echo "selected";?>> <?php echo $this->controller->report->operator->equal;?> </option>
+					<option value="<?php echo Constants::DIFFERENT_KEY;?>" <?php if($operator[0] == Constants::DIFFERENT_KEY) echo "selected";?>> <?php echo $this->controller->report->operator->different;?> </option>
+					<option value="<?php echo Constants::GREATER_THAN_KEY;?>" <?php if($operator[0] == Constants::GREATER_THAN_KEY) echo "selected";?>> <?php echo $this->controller->report->operator->greaterThan;?> </option>
+					<option value="<?php echo Constants::GREATER_EQUAL_THAN_KEY;?>" <?php if($operator[0] == Constants::GREATER_EQUAL_THAN_KEY) echo "selected";?>> <?php echo $this->controller->report->operator->greaterEqualThan;?> </option>
+					<option value="<?php echo Constants::LESS_THAN_KEY;?>" <?php if($operator[0] == Constants::LESS_THAN_KEY) echo "selected";?>> <?php echo $this->controller->report->operator->lessThan;?> </option>
+					<option value="<?php echo Constants::LESS_EQUAL_THAN_KEY;?>" <?php if($operator[0] == Constants::LESS_EQUAL_THAN_KEY) echo "selected";?>> <?php echo $this->controller->report->operator->lessEqualThan;?> </option>
+				</select>
+				<?php printErrorsByField($this->form->operator1(), $this->errorMessages);?>
+				<p>
+					<input width="16" type="text" name="<?php echo $this->form->filterValue1();?>" value="<?php echo $this->form->getFilterValue1();?>"/>
+					<?php printErrorsByField($this->form->filterValue1(), $this->errorMessages);?>
+				</p>
+			</td>
+			<td align="left">
+				<?php $operator2 = $this->form->getOperator2();?>
+				<select name="<?php echo $this->form->operator2();?>[]">
+					<option value="<?php echo Constants::EQUAL_KEY;?>" <?php if($operator2[0] == Constants::EQUAL_KEY) echo "selected";?>> <?php echo $this->controller->report->operator->equal;?> </option>
+					<option value="<?php echo Constants::DIFFERENT_KEY;?>" <?php if($operator2[0] == Constants::DIFFERENT_KEY) echo "selected";?>> <?php echo $this->controller->report->operator->different;?> </option>
+					<option value="<?php echo Constants::GREATER_THAN_KEY;?>" <?php if($operator2[0] == Constants::GREATER_THAN_KEY) echo "selected";?>> <?php echo $this->controller->report->operator->greaterThan;?> </option>
+					<option value="<?php echo Constants::GREATER_EQUAL_THAN_KEY;?>" <?php if($operator2[0] == Constants::GREATER_EQUAL_THAN_KEY) echo "selected";?>> <?php echo $this->controller->report->operator->greaterEqualThan;?> </option>
+					<option value="<?php echo Constants::LESS_THAN_KEY;?>" <?php if($operator2[0] == Constants::LESS_THAN_KEY) echo "selected";?>> <?php echo $this->controller->report->operator->lessThan;?> </option>
+					<option value="<?php echo Constants::LESS_EQUAL_THAN_KEY;?>" <?php if($operator2[0] == Constants::LESS_EQUAL_THAN_KEY) echo "selected";?>> <?php echo $this->controller->report->operator->lessEqualThan;?> </option>
+				</select>
+				<?php printErrorsByField($this->form->operator2(), $this->errorMessages);?>
+				<p>
+					<input width="16" type="text" name="<?php echo $this->form->filterValue2();?>" value="<?php echo $this->form->getFilterValue2();?>"/>
+					<?php printErrorsByField($this->form->filterValue2(), $this->errorMessages);?>
+				</p>
+			</td>
+		</tr>
+		<tr>
+			<td align="left">
+				<b><?php echo $this->controller->report->orderBy;?></b>
+			</td>
+		</tr>
+		<tr>
+			<td align="left">
+				<?php $fields = array_merge((array)$this->fields1,(array)$this->fields2,(array)$this->fields3,(array)$this->fields4);?>
+				<select name="<?php echo $this->form->order1();?>[]" multiple size="5">
+					<option value="">--</option>
+					<?php foreach($fields as $field):?>
+						<option value="<?php echo $field;?>" <?php if($field == $this->form->getOrder1())echo 'selected';?> title="<?php echo getResourceText($this,$field);?>"><?php echo getResourceText($this,$field);?></option>
+					<?php endforeach;?>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td align="left">
+				<b><?php echo $this->controller->report->export;?></b>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="3" align="left">
+				<input type="submit" value="<?php echo $this->controller->report->button->html;?>" 
+					onClick="javascript: actionName('<?php echo $this->baseUrl;?><?php echo REPORT_CONTROLLER;?>/<?php echo REPORT_ACTION;?>',this.form); this.form.target='_self'; this.form.submit();">
+				<input type="submit" value="<?php echo $this->controller->report->button->xls;?>"
+					onClick="javascript: this.disabled='true'; actionName('<?php echo $this->baseUrl;?><?php echo EXPORT_CONTROLLER;?>/<?php echo DEFAULT_XLS_ACTION;?>',this.form); this.form.target='_blank'; this.form.submit();">
+				<input type="submit" value="<?php echo $this->controller->report->button->csv;?>" 
+					onClick="javascript: this.disabled='true'; actionName('<?php echo $this->baseUrl;?><?php echo EXPORT_CONTROLLER;?>/<?php echo DEFAULT_CSV_ACTION;?>',this.form); this.form.target='_blank'; this.form.submit();">
+				<input type="submit" value="<?php echo $this->controller->report->button->pdf;?>" 
+					onClick="javascript: this.disabled='true'; actionName('<?php echo $this->baseUrl;?><?php echo EXPORT_CONTROLLER;?>/<?php echo DEFAULT_PDF_ACTION;?>',this.form); this.form.target='_blank'; this.form.submit();">
+			</td>
+			<td align="right">
+				<input type="submit" value="<?php echo $this->controller->report->button->clear;?>" 
+					onClick="javascript: actionName('<?php echo $this->baseUrl;?><?php echo REPORT_CONTROLLER;?>/<?php echo DEFAULT_CLEAR_ACTION;?>',this.form); this.form.target='_self'; this.form.submit();">
+			</td>
+		</tr>
+	</form>
+</table>
+<!-- Resultado do relatorio -->
+<?php if(!empty($this->report)):?>
+<b><?php echo $this->controller->report->infohtml1.$this->limit.$this->controller->report->infohtml2;?></b>
+<table><tr><td align="left">
+<div class="divStyle">
+	<table width="100%" align="left">
+	<?php $i = 0; while($rows = $this->report->fetch()): ?>
+		<?php if($i==0): // Primeira iteração exibe o header das colunas e a linha 1?>
+			<tr>
+				<td class="LIN"/>
+			<?php foreach($rows as $header => $content):?>
+				<td class="COL">
+					<?php echo getResourceText($this,$header,'_');?>
+				</td>
+			<?php endforeach;?>
+			<?php $i++; ?>
+			</tr>
+			
+			<tr onclick="if(this.style.backgroundColor != '')this.style.backgroundColor='';else this.style.backgroundColor='#C0B085';">
+				<td class="LIN" ><?php echo $i;?></td>
+			<?php foreach($rows as $header => $content):?>
+				<td class="CEL" nowrap>
+					<?php if(!empty($content))echo $content; else echo '&nbsp';?>
+				</td>
+			<?php endforeach;?>
+			<?php $i++; ?>
+			</tr>
+		<?php else: // Demais iterações exibe somente as linhas?>
+			<tr onclick="if(this.style.backgroundColor != '')this.style.backgroundColor='';else this.style.backgroundColor='#C0B085';">
+				<td class="LIN" ><?php echo $i;?></td>
+			<?php foreach($rows as $header => $content):?>
+				<td class="CEL" nowrap>
+					<?php if(!empty($content))echo $content; else echo '&nbsp';?>
+				</td>
+			<?php endforeach;?>
+			<?php $i++; ?>
+			</tr>
+		<?php endif;?>
+	<?php endwhile;?>
+	<?php if($i==0):?>
+		<tr>
+			<td width="1000px"><?php echo $this->labels->text->noregister?></td>
+		</tr>
+	<?php endif;?>
+	</table>
+</div>
+</td></tr></table>
+<?php else: // No data found ?>
+	<?php echo $this->labels->text->noregister;?>
+<?php endif;?>
+</div>

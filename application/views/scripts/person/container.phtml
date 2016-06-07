@@ -1,0 +1,49 @@
+<?php echo $this->render('header/container.phtml');?>
+<table class="icontainer" width="98%">
+	<tr>
+		<td>
+			<b><?php echo $this->controller->person->text->name;?></b>
+		</td>
+		<td>
+			<?php 
+				if($this->form->getName())
+					echo $this->form->getName();
+				else
+					echo $this->controller->person->text->nodata;
+			?>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<b><?php echo $this->controller->person->text->nick;?></b>
+		</td>
+		<td>
+			<?php 
+				if($this->form->getNickname())
+					echo $this->form->getNickname();
+				else
+					echo $this->controller->person->text->nodata;
+			?>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<b><?php echo $this->controller->person->text->sex;?></b>
+		</td>
+		<td>
+			<?php 
+				if($this->form->getSex() == Constants::MAN)
+					echo $this->controller->person->text->male;
+				else if($this->form->getSex() == Constants::WOMAN)
+					echo $this->controller->person->text->female;
+				else
+					echo $this->controller->person->text->nodata;
+			?>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<input class="small" type="submit" onclick="parent.document.location='<?php echo $this->baseUrl;?><?php echo PERSON_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php if($this->form)echo $this->form->personId();?>/<?php if($this->form)echo $this->form->getPersonId();?>'" value="<?php echo $this->labels->button->showDetail;?>"/>
+		</td>
+	</tr>
+</table>

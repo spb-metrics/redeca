@@ -1,0 +1,27 @@
+<?php
+/*
+ * 
+ * Created on 19/02/2008 
+ * W3S Solutions by Fabricio Meireles Monteiro
+ * 
+ */
+?>
+ 
+<?php echo $this->render('header/header.phtml');?>
+
+<table width="100%" class="withoutEdge">
+	<?php 
+		if(!$this->errorMessages)
+		{
+			echo $this->render('program/previewDrop.phtml');
+		}
+		else
+		{
+			echo $this->render('program/invalidParam.phtml');
+		}
+	?>
+</table>
+
+<?php echo $this->render('footer/footer.phtml');?>
+ 
+

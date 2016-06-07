@@ -1,0 +1,211 @@
+<!-- ===================================== -->
+<!-- inicio : específico com cada template -->					
+<!-- ===================================== -->						  
+<div>
+	<?php echo $this->render('submenu/submenuPerson.phtml');?>
+
+	<!-- ============================================================================================== -->
+	<!-- É necessário informar o nome class da tabela em questão para carregar a cor background correta -->
+	<!-- Opções: 
+				#identification
+				#person
+				#education
+				#health
+				#income
+				#familyRelationship
+				#residence
+				#attendance
+				#activity	-->
+	<!-- ============================================================================================== -->
+	<table class="income" width="98%">
+		<tr>
+			<td align="center">
+				<table width="100%">
+					<tr>
+						<?php foreach($this->person as $person) $income = $person->findDependentRowset(CLS_INCOME);?>
+						<td colspan="4" align="right">
+							<?php if(!$this->history_view):?>
+								<?php if($this->readOnly == FALSE):?>
+								|&nbsp;<a href="<?php echo $this->baseUrl;?><?php echo INCOME_CONTROLLER;?>/<?php echo DEFAULT_VIEW_ACTION;?>/<?php echo $this->form->personId();?>/<?php echo $this->form->getPersonId();?>"><?php echo $this->labels->button->edit;?></a>
+								<?php endif;?>
+							<?php endif; ?>
+							<?php printHistoryLink($this, $this->resource_key, INCOME_CONTROLLER); ?>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4">
+							<?php echo $this->helpcontroller->text1;?>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4">
+							<b><?php echo $this->controller->income->title;?></b>
+						</td>
+					</tr>
+					<?php if(count($income) > 0):?>
+						<?php foreach($income as $inc):?>
+							<?php if($inc->{ICM_STATUS} != Constants::HISTORY):?>
+								<?php if($inc->{ICM_ID_INCOME} != 1):?>
+									<tr>
+										<td width="21%">
+											<?php $incType = $inc->findParentRow(CLS_INCOMETYPE);?>
+											<?php echo $incType->{ICT_INCOME};?>
+										</td>
+										<td colspan="3">
+											<?php echo str_replace('.',',',$inc->{ICM_VALUE});?>
+										</td>
+									</tr>								
+								<?php endif;?>
+							<?php endif;?>
+						<?php endforeach;?>
+					<?php else:?>
+						<tr>
+							<td width="21%">
+								<?php echo $this->labels->text->nodata;?>
+							</td>
+						</tr>
+					<?php endif;?>
+					<tr>
+						<td colspan="4">
+							<hr>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4">
+							<?php echo $this->helpcontroller->text2;?>
+						</td>
+					</tr>
+					<?php foreach($income as $inc):?>					
+						<?php if($inc->{ICM_STATUS} != Constants::HISTORY): ?>
+							<?php $employment = $inc->findDependentRowset(CLS_EMPLOYMENT); ?>					
+									<?php foreach($employment as $emp):?>
+										<?php if($inc->{ICM_STATUS} != Constants::HISTORY):?>										
+											<tr>
+												<td colspan="4">
+													<b><?php echo $this->controller->income->text->situation;?></b>&nbsp;
+													<?php $empStatus = $emp->findParentRow(CLS_EMPLOYMENTSTATUS);?>
+													<?php echo $empStatus->{EMS_EMPLOYMENT_STATUS};?>
+												</td>
+											</tr>
+											<?php if($empStatus->{EMP_ID_EMPLOYMENT_STATUS} != $this->notEmployment):?>
+											<tr>
+												<td width="">
+													<b><?php echo $this->controller->income->text->company;?></b>
+												</td>
+												<td colspan="3">
+													<?php ($emp->{EMP_COMPANY_NAME})?$companyName = $emp->{EMP_COMPANY_NAME}:$companyName=$this->labels->text->nodata; echo $companyName;?>
+												</td>
+											</tr>
+											<tr>
+												<td width="">
+													<b><?php echo $this->controller->income->text->ocupation;?></b>
+												</td>
+												<td colspan="3">
+													<?php ($emp->{EMP_OCCUPATION})?$occupation = $emp->{EMP_OCCUPATION}:$occupation=$this->labels->text->nodata;echo $occupation;?>
+												</td>
+											</tr>		
+											<tr>
+												<td width="">
+													<b><?php echo $this->controller->income->text->startDate;?></b>
+												</td>
+												<td colspan="3">
+													<?php ($emp->{EMP_START_DATE})?$start= IncomeForm::dateFormatForm($emp->{EMP_START_DATE}):$start=$this->labels->text->nodata; echo $start;?>
+												</td>
+											</tr>
+											<tr>
+												<td width="">
+													<b><?php echo $this->controller->income->text->endDate;?></b>
+												</td>
+												<td colspan="3">
+													<?php ($emp->{EMP_END_DATE})?$end = IncomeForm::dateFormatForm($emp->{EMP_END_DATE}):$end = $this->labels->text->nodata;echo $end;?>
+												</td>
+											</tr>									
+											<tr>
+												<td width="">
+													<b><?php echo $this->controller->income->text->wage;?></b>
+												</td>
+												<td colspan="3">
+													<?php if($inc->{ICM_ID_INCOME} == 1):?>
+														<?php echo str_replace('.',',',$inc->{ICM_VALUE});?>													
+													<?php endif;?>
+												</td>
+											</tr>																		
+											<tr>
+												<td width="">
+													<b><?php echo $this->controller->income->text->address;?></b>
+													<?php $address = $emp->findParentRow(CLS_ADDRESS);?>
+													<?php if(count($address) > 0):?>
+														<?php $adrType = $address->findParentRow(CLS_ADDRESSTYPE);?>
+														<?php $neighborhood = $address->findParentRow(CLS_NEIGHBORHOOD);?>
+													<?php endif;?>
+												</td>
+												<td colspan="3">
+													<?php echo $adrType->{ADT_DESCRIPTION}.' '.$address->{ADR_ADDRESS};?>
+												</td>
+											</tr>
+											<tr>
+												<td width="">
+													<b><?php echo $this->controller->income->text->number;?></b>
+												</td>
+												<td width="25%">
+													<?php echo $emp->{EMP_NUMBER};?>
+												</td>
+												<td width="20%">
+													<b><?php echo $this->controller->income->text->complement;?></b>
+												</td>
+												<td width="">
+													<?php echo $emp->{EMP_COMPLEMENT};?>
+												</td>
+											</tr>
+											<tr>
+												<td width="">
+													<b><?php echo $this->controller->income->text->neighborhood;?></b>
+												</td>
+												<td width="">
+													<?php echo $neighborhood->{NHD_NEIGHBORHOOD};?>
+												</td>
+												<td width="">
+													<b><?php echo $this->controller->income->text->reference;?></b>
+												</td>
+												<td width="">
+													<?php echo $emp->{EMP_REFERENCE_POINT};?>
+												</td>
+											</tr>
+											<tr>
+												<td colspan="2">
+													<b><?php echo $this->controller->income->text->phone;?></b>
+													<?php $telephone = $emp->findManyToManyRowset(CLS_TELEPHONENUMBER, CLS_EMPLOYMENTPHONE);?>
+												</td>
+											</tr>
+											<tr>
+												<td width="">
+													<table width="100%" class="noBorder">
+														<?php foreach($telephone as $phone):?>
+															<tr>
+																<td width="7%">
+																	(<?php echo $phone->{TNB_DDD};?>)
+																</td>
+																<td>
+																	<?php echo $phone->{TNB_NUMBER};?>
+																	-
+																	<?php $phoneType = $phone->findParentRow(CLS_TELEPHONETYPE);?>
+																	<?php echo $phoneType->{TTP_TELEPHONE};?>
+																</td>
+															</tr>
+														<?php endforeach;?>
+													</table>
+												</td>
+											</tr>
+											<?php endif;?>
+										<?php endif;?>
+									<?php endforeach;?>
+								<?php endif;?>
+					<?php endforeach; ?>	
+				</table>
+			</td>
+		</tr>
+	</table>
+</div>																  
+<!-- =================================== -->
+<!-- fim : específico para cada template -->					
+<!-- =================================== -->

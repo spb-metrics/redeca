@@ -1,0 +1,225 @@
+<?php 
+// PersonId e AssistanceId devem sempre existir no contexto 
+$personId		= $this->form->getPersonId();
+$assistanceId	= $this->form->getAssistanceId();
+
+?>
+<form action="<?php echo $this->baseUrl . ATTENDANCE_CONTROLLER.'/'.GENERAL_ADD_ACTION;?>" name="" method="post">
+<input type="hidden" name="<?php if($this->form)echo $this->form->personId();?>" value="<?php echo $personId;?>"/>
+<input type="hidden" name="<?php if($this->form)echo $this->form->assistanceId();?>" value="<?php echo $assistanceId;?>"/>
+<?php printErrorsByField($this->form->personId(), $this->errorMessages);?>
+<?php printErrorsByField($this->form->assistanceId(), $this->errorMessages);?>
+<?php printErrorsByField(Constants::NOT_ALLOWED_TO_CLOSE, $this->errorMessages);?>
+<table width="100%">
+	<?php if($this->groupGeneral):?>
+	<tr>
+		<td colspan="5">
+			<h1><?php echo $this->controller->attendance->text->complement;?></h1>
+			<input type="hidden" name="<?php echo Constants::GROUP;?>" value="<?php echo $this->groupGeneral;?>">
+		</td>
+	</tr>
+	<tr class="write">
+		<td align="center" colspan="4">	
+			<a href="<?php echo $this->baseUrl;?><?php echo ATTENDANCE_CONTROLLER;?>/<?php echo GROUP_VIEW_ACTION;?>/<?php echo $this->form->assistanceId();?>/<?php echo $this->form->getAssistanceId();?>">
+				<?php echo $this->controller->attendance->text->group;?>
+			</a>
+			&nbsp;|
+			<a href="<?php echo $this->baseUrl;?><?php echo ATTENDANCE_CONTROLLER;?>/<?php echo GROUP_GENERAL_VIEW_ACTION;?>/<?php echo $this->form->assistanceId();?>/<?php echo $this->form->getAssistanceId();?>">
+				<?php echo $this->controller->attendance->tab->general;?>
+			</a>
+		</td>
+	</tr>
+	<?php elseif($this->specialGeneral):?>
+	<tr>
+		<td colspan="5">
+			<h1><?php echo $this->controller->attendance->text->especial;?></h1>
+			<input type="hidden" name="<?php echo Constants::ESPECIAL;?>" value="<?php echo $this->specialGeneral;?>">
+		</td>
+	</tr>
+	<tr class="write">
+		<td align="center" colspan="4"> 	
+			<a href="<?php echo $this->baseUrl;?><?php echo ATTENDANCE_CONTROLLER;?>/<?php echo ESPECIAL_VIEW_ACTION;?>/<?php echo EspecialAssistanceForm::assistanceId();?>/<?php echo $this->form->getAssistanceId();?>">
+				<?php echo $this->controller->attendance->text->especial;?>
+			</a>
+			&nbsp;|
+			<a href="<?php echo $this->baseUrl;?><?php echo ATTENDANCE_CONTROLLER;?>/<?php echo ESPECIAL_GENERAL_VIEW_ACTION;?>/<?php echo GeneralAssistanceForm::assistanceId();?>/<?php echo $this->form->getAssistanceId();?>">
+				<?php echo $this->controller->attendance->tab->general;?>
+			</a>
+		</td>
+	</tr>
+	<?php else:?>
+	<tr>
+		<td colspan="2">
+			<h1><?php echo $this->controller->attendance->text->general;?></h1>
+		</td>
+	</tr>
+	<?php endif;?>
+	<tr>
+		<td colspan="2">
+			<?php echo $this->helpcontroller->text3?>
+		</td>
+	</tr>
+	<tr>
+		<td width="150px">
+			<b><?php echo $this->controller->attendance->text->activity;?>:</b>
+		</td>
+		<td width="">
+		<?php $benefitType =  $this->form->getBenefitType();?>
+			<select name="<?php echo $this->form->benefitType();?>">
+				<option value=""> <?php echo $this->controller->attendance->text->selectAttendance;?> </option>
+			<?php foreach($this->benefitTypes as $current): ?>
+				<option value="<?php echo $current->{ABT_ID_ASSISTANCE_BENEFIT_TYPE}; ?>" <?php if($benefitType == $current->{ABT_ID_ASSISTANCE_BENEFIT_TYPE})echo 'selected'; ?> > <?php echo $current->{ABT_DESCRIPTION}; ?> </option>
+			<?php endforeach;?>
+			</select>
+			<?php printErrorsByField($this->form->benefitType(), $this->errorMessages);?>
+		</td>
+	</tr>
+	<tr>
+		<td width="150px">
+			<b><?php echo $this->controller->attendance->text->comment;?>:</b>
+		</td>
+		<td width="">
+			<?php $comment = $this->form->getComments();?>
+			<textarea name="<?php echo $this->form->comments();?>" rows="4" cols="50" wrap="off"><?php echo $comment;?></textarea><br>
+			<?php printErrorsByField($this->form->comments(), $this->errorMessages);?>
+		</td>
+	</tr>
+	<?php if($this->allowChangeConfidentiality):?>
+	<tr>
+		<td>
+			<b><?php echo $this->controller->attendance->text->confidentialLevel;?><b>
+		</td>
+		<td>
+			<?php $confidentialityLevel = $this->form->getConfidentialityLevel();?>
+			<input type="radio" name="<?php echo $this->form->confidentialityLevel();?>" 
+				value="<?php echo Constants::VISIBILITY_PUBLIC;?>" checked 
+				onclick="hide(['profile_label','profile_content']);"><?php echo $this->controller->attendance->text->level->public;?>
+			<input type="radio" name="<?php echo $this->form->confidentialityLevel();?>" 
+				value="<?php echo Constants::VISIBILITY_ENTITY;?>" <?php if($confidentialityLevel == Constants::VISIBILITY_ENTITY)echo 'checked'; ?> 
+				onclick="hide(['profile_label','profile_content']);"><?php echo $this->controller->attendance->text->level->entity;?>
+			<input type="radio" name="<?php echo $this->form->confidentialityLevel();?>" 
+				value="<?php echo Constants::VISIBILITY_PROFILE;?>" <?php if($confidentialityLevel == Constants::VISIBILITY_PROFILE)echo 'checked'; ?> 
+				onclick="show(['profile_label','profile_content']);"><?php echo $this->controller->attendance->text->level->profile;?>
+			<?php printErrorsByField($this->form->confidentialityLevel(), $this->errorMessages);?>
+		</td>
+	</tr>
+	<?php endif;?>
+	<tr>
+		<td>
+			<div id="profile_label" style="display:none;">
+				<b><?php echo $this->controller->attendance->text->level->profile;?><b>
+			</div>
+		</td>
+		<td>
+			<div id="profile_content" style="display:none;">
+				<?php $profileId =  $this->form->getProfileId();?>
+				<select name="<?php echo $this->form->profileId();?>">
+					<option value=""> <?php echo $this->controller->attendance->text->selectAttendance;?> </option>
+				<?php foreach($this->profiles as $current): ?>
+					<option value="<?php echo $current->{AUTH_ID_PROFILE}; ?>" <?php if($profileId == $current->{AUTH_ID_PROFILE})echo 'selected'; ?> > <?php echo $current->{AUTH_PROFILE}; ?> </option>
+				<?php endforeach;?>
+				</select>
+				<?php printErrorsByField($this->form->profileId(), $this->errorMessages);?>
+			</div>
+
+			<?php if($confidentialityLevel == Constants::VISIBILITY_PROFILE ||
+					 $this->defaultConfidentiality == Constants::VISIBILITY_PROFILE):?>
+				<script language="JavaScript" type="text/javascript">
+					/* Mantem estado de visualizacao do perfil*/
+					show(['profile_label','profile_content']); 
+				</script>
+			<?php endif;?>
+		</td>
+	</tr>
+	<tr>
+		<td align="right">
+			<input type="submit" value="<?php echo $this->labels->button->save;?>"/>
+		</td>
+		</form>
+		<form action="<?php echo $this->baseUrl;?><?php echo ATTENDANCE_CONTROLLER;?>/<?php echo DEFAULT_CONFIRM_ACTION;?>" method="post">
+		<td >
+			<input type="hidden" name="<?php echo $this->form->assistanceId();?>" value="<?php echo $assistanceId; ?>" >
+			<input type="hidden" name="<?php if($this->form)echo $this->form->personId();?>" value="<?php echo $personId; ?>"/>
+			<?php if(count($this->generalAssistance) > 0):?>
+				</td>
+				</tr>
+				<tr>
+				<td align="right">
+				<p><p><p>
+				<input type="submit" value="<?php echo $this->labels->button->closeAll;?>"/>
+				</td>
+				</tr>
+			<?php else:?>
+				<input type="submit" value="<?php echo $this->labels->button->close;?>"/>
+				</td>
+				</tr>
+			<?php endif;?>
+		
+	
+	</form>
+	<?php if(count($this->generalAssistance) > 0):?>
+	<tr>
+		<td colspan="2">
+			<hr>
+		</td>
+	</tr>
+	<?php if($this->groupGeneral || $this->specialGeneral):?>
+	<tr>
+		<td colspan="2">
+			<h1><?php echo $this->controller->attendance->tab->general; ?></h1>
+		</td>
+	</tr>
+	<?php else:?>
+	<tr>
+		<td colspan="2">
+			<h1><?php echo $this->controller->attendance->last; ?></h1>
+		</td>
+	</tr>
+	<?php endif;?>
+	<form id="navigation" name="" action="" method="post">
+		<tr>
+			<td >
+				<input type="hidden" name="<?php echo $this->form->assistanceId();?>" value="<?php echo $assistanceId; ?>" >
+				<input type="hidden" name="<?php if($this->form)echo $this->form->personId();?>" value="<?php echo $personId; ?>"/>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<table width="100%" cellspacing="0" cellpading="5">
+					<tr>
+						<td width="100px">
+							<b><?php echo $this->controller->attendance->text->date; ?></b>
+						</td>
+						<td>
+							<b><?php echo $this->controller->attendance->text->activity;?></b>
+						</td>
+						<td>
+							<b><?php echo $this->controller->attendance->text->comment;?></b>
+						</td>
+					</tr>
+					<?php $i = 0; foreach($this->generalAssistance as $current):?>
+					<tr <?php if($i++ %2 == 0):?> class="write" <?php endif;?> >
+						<td width="100px">
+							<?php echo BasicForm::dateFormatForm($current->{GAS_REGISTER_DATA});?>
+						</td>
+						<td>
+							<?php $benefit = $current->findManyToManyRowset(CLS_ASSISTANCEBENEFITTYPE, CLS_ASSISTANCEBENEFIT)->current();?>
+							<?php echo $benefit->{ABT_DESCRIPTION}; ?>
+						</td>
+						<td>
+							<?php echo $current->{GAS_ASSISTANCE_COMMENT}?>
+						</td>
+					</tr>
+					<?php endforeach; ?>
+				</table>
+			</td>
+		</tr>
+		
+		<tr>
+			<td align='center' colspan='2'>
+				<?php echo $this->render('/navBar.phtml');?>
+			</td>
+		</tr>
+	</form>
+	<?php endif;?>
+</table>

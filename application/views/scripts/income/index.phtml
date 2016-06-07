@@ -1,0 +1,24 @@
+<?php echo $this->render('header/header.phtml');?>
+<?php if($this->errorMessages):?>
+	<div>
+		<?php echo $this->render('submenu/submenuPerson.phtml');?>
+		<br>
+		<b>
+			<?php echo $this->controller->income->text->paraminvalid;?>
+		</b>
+	</div>
+<?php else:?>						 		  						
+	<?php if(!is_numeric($this->form->getPersonId())):?>
+			<table width="98%">
+				<tr>
+					<td>
+						<?php printErrorsByField($this->form->personId(), $this->errorMessages);?>		
+					</td>
+				</tr>
+			</table>
+	<?php else: ?>
+			<?php echo $this->render('income/income-preview.phtml');?>
+	<?php endif;?>
+<?php endif;?>
+
+<?php echo $this->render('footer/footer.phtml');?>	

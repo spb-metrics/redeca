@@ -1,0 +1,88 @@
+<?php echo $this->render('header/header.phtml');?>	
+									  
+<!-- ===================================== -->
+<!-- inicio : específico com cada template -->					
+<!-- ===================================== -->						  
+<div>
+	<?php echo $this->render('submenu/subMenuRelationship.phtml');?>
+
+	<!-- ============================================================================================== -->
+	<!-- É necessário informar o nome class da tabela em questão para carregar a cor background correta -->
+	<!-- Opções: 
+				#identification
+				#person
+				#education
+				#health
+				#income
+				#familyRelationship
+				#residence
+				#attendance
+				#activity	-->
+	<!-- ============================================================================================== -->
+	<table class="familyRelationship" width="98%">
+		<tr>
+			<td align="center">
+				<table width="100%" class="withOutEdge">
+					<tr>
+						<td align="center" colspan="4">
+							<h1><?php echo $this->controller->fRelationship->search->title;?></h1>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4" height="30">
+							<b><?php echo $this->controller->fRelationship->text->info;?></b>
+						</td>
+					</tr>
+					
+					<tr>
+						<td colspan="4" class="bigWrite" height="30">
+							<b><?php echo $this->controller->fRelationship->search->info;?></b>
+						</td>
+					</tr>
+					
+					<tr>
+						<td height="40">
+							<p class="bigWriteRedBackground"><?php printErrorsByField($this->form->idPerson(), $this->errorMessages);?></p>
+							<p class="bigWriteRedBackground"><?php printErrorsByField($this->form->idPerson(), $this->alertAge);?></p>
+							<p class="bigWriteRedBackground"><?php printErrorsByField($this->form->idPerson(), $this->alertPersonIsRepresentative);?></p>
+							<p class="bigWriteRedBackground"><?php printErrorsByField($this->form->idPerson(), $this->alertHasRepresentative);?></p>
+						</td>
+					</tr>
+					
+					<?php if($this->alertHasRepresentative):?>
+						<tr>
+							<td colspan="4" height="20" class="alignCenter">
+								<?php echo $this->controller->fRelationship->alter->representative;?>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4" class="alignCenter">
+								<form action="<?php echo $this->baseUrl;?><?php echo FAMILYRELATIONSHIP_CONTROLLER;?>/<?php echo DEFAULT_CONFIRM_REPRESENTATIVE_ACTION;?>" method="post">
+									<input type="hidden" name="<?php echo SearchForm::idPerson();?>" value="<?php echo $this->form->getIdPerson();?>"/>
+									<input type="hidden" name="<?php echo SearchForm::idkinship();?>" value="<?php echo $this->form->getIdKinship();?>"/>
+									<input type="submit" value="<?php echo $this->labels->button->yes;?>" />
+									<input type="button" onClick="document.location='<?php echo $this->baseUrl;?><?php echo FAMILYRELATIONSHIP_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php echo SearchForm::idPerson();?>/<?php echo $this->form->getIdPerson();?>'" value="<?php echo $this->labels->button->not;?>" />
+								</form>
+							</td>
+						</tr>
+					<?php endif;?>
+						
+					<?php if($this->errorMessages || $this->alertAge || $this->alertPersonIsRepresentative):?>
+						<tr>
+							<td colspan="4" class="alignCenter">
+								<input type="button" onClick="document.location='<?php echo $this->baseUrl;?><?php echo FAMILYRELATIONSHIP_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php echo SearchForm::idPerson();?>/<?php echo $this->form->getIdPerson();?>'" value="<?php echo $this->labels->button->back;?>" />
+							</td>
+						</tr>
+					<?php endif; ?>
+					
+				</table>
+				<br>
+			</td>
+		</tr>
+	</table>
+</div>																  
+<!-- ================================== -->
+<!-- fim : específico com cada template -->					
+<!-- ================================== -->		
+
+<?php echo $this->render('footer/footer.phtml');?>

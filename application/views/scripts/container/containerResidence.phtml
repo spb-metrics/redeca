@@ -1,0 +1,62 @@
+<?php $show = Zend_Registry::get(CONFIG)->container->residence;?>
+<script type="text/javascript">		
+	$('#imgFakeHideRes').hide();
+	<?php if($show):?>
+		$().ajaxSend(function(){$('#loading6').show();});		
+		$.post('<?php echo $this->baseUrl;?><?php echo RESIDENCE_CONTROLLER;?>/<?php echo DEFAULT_CONTAINER_ACTION;?>/<?php if($this->form)echo $this->form->personId();?>/<?php if($this->form)echo $this->form->getPersonId();?>', function(data){ $('#residence').append(data);$('#loading6').hide();});
+	<?php else:?>
+		function showResidence()
+		{
+			$('#maxResidence').hide();
+			$('#mainResidence').show();
+			$().ajaxSend(function(){$('#loading6').show();$('#imgHideRes').hide();$('#imgFakeHideRes').show();$('#tableHideRes').hide();$('#tableFakeHideRes').show();});		
+			$.post('<?php echo $this->baseUrl;?><?php echo RESIDENCE_CONTROLLER;?>/<?php echo DEFAULT_CONTAINER_ACTION;?>/<?php if($this->form)echo $this->form->personId();?>/<?php if($this->form)echo $this->form->getPersonId();?>', 
+				function(data)
+				{ 
+					if(data.search(/<?php echo $this->labels->login->title;?>/i) != -1)
+					{
+						window.location.reload();
+					}
+					else
+					{
+						$('#residence').append(data);
+						$('#loading6').hide();
+						$('#imgFakeHideRes').hide();						
+						$('#imgHideRes').show();
+						$('#tableFakeHideRes').hide();
+						$('#tableHideRes').show();
+					}
+				}
+			);
+		}
+		
+		function hideResidence()
+		{
+			$('#maxResidence').show();
+			$('#residence').empty();
+			$('#mainResidence').hide();
+		}
+	<?php endif;?>	
+	
+</script>
+
+<?php if(!$show):?>
+<div id="maxResidence" class="residence">
+        <h1  onClick="showResidence()">
+                <img id="imgShow" src="<?php echo $this->baseUrl;?>/public/images/show.png" title="<?php echo $this->labels->title->show;?>"/>
+                <?php echo $this->labels->title->residence;?>
+        </h1>
+</div>
+<?php endif;?>
+
+<div id="mainResidence" <?php if(!$show):?>style="display: none;"<?php endif;?>>
+
+        <h1  onClick="hideResidence()">
+                <img id="imgHide" src="<?php echo $this->baseUrl;?>/public/images/hide.png" title="<?php echo $this->labels->title->hide;?>"/>
+                <?php echo $this->labels->title->residence;?>
+        </h1>
+
+        <div id="loading6"><center><img src="<?php echo $this->baseUrl;?>/public/images/loading.gif"/></center></div>
+        <div id="residence"></div>
+
+</div>

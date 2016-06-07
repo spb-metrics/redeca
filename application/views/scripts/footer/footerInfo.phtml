@@ -1,0 +1,25 @@
+<?php 
+	//variável utilizada para setar background do submenu 
+	$stringUri = $_SERVER["REQUEST_URI"];
+	
+	$controllerReport = REPORT_CONTROLLER;
+	
+	if(preg_match("%($controllerReport)%", "$stringUri"))
+	{
+		$setAdministrator = TRUE;
+	}
+	$config = Zend_Registry::get(CONFIG);
+?>
+<!-- inicio do footerInfo.phtml -->
+<div id=footer>
+	<p>
+	<?php if(!empty($config->link->text)):?>
+		<a target='_blank' href='<?php echo $config->link->text;?>'><?php echo $config->name->text;?></a>
+	<?php else:?>
+		<?php echo $config->name->text;?>
+	<?php endif;?>
+	</p>
+	<p>
+	<?php echo $config->phone->text.': '.$config->phone->number;?>
+	</p>
+</div>	

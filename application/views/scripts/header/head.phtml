@@ -1,0 +1,23 @@
+<?php
+/*
+ * Created on 20/03/2008
+ * Author: Jefferson
+ */
+
+echo $this->render('global.phtml');
+//header("Content-type: text/html; charset=ISO-8859-1");
+header("Content-type: text/html; charset=UTF-8");
+header("Cache-Control: no-store, no-cache, must-revalidate");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+?>
+<html>
+<head>
+	<title><?php echo $this->escape($this->labels->app->title);?></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseUrl;?>/public/styles/site.css" /> 
+	<script type="text/javascript" src="<?php echo $this->baseUrl;?>/public/scripts/lib.js"></script>
+	<script type="text/javascript" src="<?php echo $this->baseUrl;?>/public/scripts/select.js"></script>
+	<script type="text/javascript" src="<?php echo $this->baseUrl;?>/public/jquery/jquery.js"></script>	
+	<script type="text/javascript" src="<?php echo $this->baseUrl;?>/public/jquery/scripts.js"></script>	
+</head>

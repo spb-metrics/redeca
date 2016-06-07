@@ -1,0 +1,75 @@
+<?php
+/*
+ * 
+ * Created on 25/02/2008 
+ * W3S Solutions by Fabricio Meireles Monteiro
+ * 
+ */
+?>
+
+<tr>
+	<td>
+		<table class="borderBlack" width="100%">
+			<tr>
+				<td>
+					<table class="user" width="100%">
+						<tr>
+							<td colspan="4">
+								<h1><?php echo $this->controller->entity->admin->coordinator;?></h1>
+							</td>
+						</tr>
+						<tr>
+							<td class="bold" align="right" width="25%"><?php echo $this->controller->entity->text->name;?>:</td>
+							<td colspan="3" align="left">
+								<input size="80" type="text" name="<?php echo UserForm::name();?>" value="<?php echo $this->escape($this->userForm->getName());?>"/>
+							</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+							<td colspan="3"><?php printErrorsByField($this->userForm->name(), $this->errorMessages);?></td>
+						</tr>
+						<tr>
+							<td class="bold" align="right"><?php echo $this->controller->entity->admin->document;?>:</td>
+							<td colspan="3" align="left">
+								<input size="80" maxlength="11" type="text" name="<?php echo UserForm::cpf();?>" value="<?php echo $this->escape($this->userForm->getCpf());?>"/>
+							</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+							<td colspan="3"><?php printErrorsByField($this->userForm->cpf(), $this->errorMessages);?></td>
+						</tr>
+						
+						<tr>
+							<td class="bold" align="right" width="25%"><?php echo $this->controller->entity->admin->username;?>:</td>
+							<td align="left" width="30%">
+								<input size="30" type="text" name="<?php echo UserForm::login();?>" value="<?php echo $this->escape($this->userForm->getLogin());?>"/>
+							</td>
+							<td class="bold" align="right" width="10%"><?php echo $this->controller->entity->admin->password;?>:</td>
+							<td align="left" width="35%">
+								<input size="35" type="password" name="<?php echo UserForm::password();?>" value="<?php echo $this->escape($this->userForm->getPassword());?>"/>
+							</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+							<td><?php printErrorsByField($this->userForm->login(), $this->errorMessages);?></td>
+							<td>&nbsp;</td>
+							<td><?php printErrorsByField($this->userForm->password(), $this->errorMessages);?></td>
+						</tr>
+						
+						<tr>
+							<td class="bold" align="right"><?php echo $this->controller->entity->text->email;?>:</td>
+							<td colspan="3" align="left">
+								<input size="80" type="text" name="<?php echo UserForm::email();?>" value="<?php echo $this->escape($this->userForm->getEmail());?>"/>
+							</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+							<td colspan="3"><?php printErrorsByField($this->userForm->email(), $this->errorMessages);?></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+		<br><br>
+	</td>
+</tr>

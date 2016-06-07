@@ -1,0 +1,402 @@
+<!-- ===================================== -->
+<!-- inicio : específico com cada template -->					
+<!-- ===================================== -->						  
+<div>
+
+	<?php echo $this->render('submenu/submenuPerson.phtml');?>
+
+	<!-- ============================================================================================== -->
+	<!-- É necessário informar o nome class da tabela em questão para carregar a cor background correta -->
+	<!-- Opções: 
+				#identification
+				#person
+				#education
+				#health
+				#income
+				#familyRelationship
+				#residence
+				#attendance
+				#activity	-->
+	<!-- ============================================================================================== -->
+	<table class="residence" width="98%">		
+		<tr>
+			<td>
+				<h1><?php echo $this->controller->residence->title;?></h1>
+			</td>
+		</tr>
+		<tr>
+			<td align="center">
+				<?php if(array_key_exists($this->form->id(), $this->errorMessages)):?>
+					<table width="100%">
+						<tr>
+							<td>
+								<?php printErrorsByField($this->form->personId(), $this->errorMessages);?>		
+							</td>
+						</tr>
+					</table>
+				<?php else:?>
+					<?php if($this->address === true){?>
+						<table width="100%">
+							<tr>
+								<td>
+									<?php echo $this->escape($this->controller->residence->text->family);?>		
+								</td>
+							</tr>
+						</table>
+					<?php }else{?>
+						<table width="100%">
+							<tr>
+								<td colspan="5" align="right">
+									<?php if(!$this->history_view):?>
+										<?php if($this->readOnly == FALSE):?>
+									 		|&nbsp;<a href="<?php echo $this->baseUrl;?><?php echo RESIDENCE_CONTROLLER;?>/<?php echo DEFAULT_VIEW_ACTION;?>/<?php echo $this->form->personId();?>/<?php echo $this->form->getPersonId();?>"><?php echo $this->labels->button->edit;?></a>
+										<?php endif;?>
+									<?php endif; ?>
+									<?php printHistoryLink($this, $this->resource_key, RESIDENCE_CONTROLLER);?>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="5" >
+									<?php echo $this->helpcontroller->text1;?>
+								</td>
+							</tr>
+							<tr>
+								<td width="18%">
+									<b><?php echo $this->controller->residence->text->address;?></b>
+								</td>
+								<td colspan="3">
+									<?php 
+										if(is_null($this->address)) echo $this->labels->text->nodata;
+										else{
+											$adrType = $this->address->findParentRow(CLS_ADDRESSTYPE);
+											echo $adrType->{ADT_DESCRIPTION}.' '.$this->address->{ADR_ADDRESS};
+										}
+									?>
+								</td>
+							</tr>
+							<tr>
+								<td width="">
+									<b><?php echo $this->controller->residence->text->number;?></b>
+								</td>
+								<td width="25%">
+									<?php 
+										if($this->form->getNumber())	
+											echo $this->form->getNumber();
+										else
+											echo $this->labels->text->nodata;
+									?>
+								</td>
+								<td width="15%">
+									<b><?php echo $this->controller->residence->text->complement;?></b>
+								</td>
+								<td width="">
+									<?php 
+										if($this->form->getComplement())
+											echo $this->form->getComplement();
+										else
+											echo $this->labels->text->nodata;
+									?>
+								</td>
+							</tr>
+							<tr>
+								<td width="">
+									<b><?php echo $this->controller->residence->text->reference;?></b>
+								</td>
+								<td width="">
+									<?php 
+										if($this->form->getReference())
+											echo $this->form->getReference();
+										else
+											echo $this->labels->text->nodata;	
+									?>
+								</td>
+								<td width="">
+									<b><?php echo $this->controller->residence->text->neighborhood;?></b>
+								</td>
+								<td width="">
+									<?php 
+										if(is_null($this->address)) echo $this->labels->text->nodata;
+										else{
+											$nbhName = $this->address->findParentRow(CLS_NEIGHBORHOOD);
+											echo $nbhName->{NHD_NEIGHBORHOOD};
+										}
+									?>
+								</td>
+								<td>
+									<?php 
+										if(!is_null($this->address)){
+											$nbhName = $this->address->findParentRow(CLS_NEIGHBORHOOD);
+											$city = $nbhName->findParentRow(CLS_CITY);
+											$state = $city->findParentRow(CLS_UF);
+											echo $city->{CTY_CITY}.' - '.$state->{UF_ABBREVIATION};
+										}
+									?>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<b><?php echo $this->controller->residence->text->phone;?></b>
+								</td>
+							</tr>		
+							<?php $flag = false;?>					
+							<?php foreach($this->phone as $phone):?>
+								<?php $tel = $phone->findParentRow(CLS_TELEPHONENUMBER);?>
+								<?php if(count($tel) > 0):?>
+									<?php $type = $tel->findParentRow(CLS_TELEPHONETYPE);?>									
+									<tr>
+										<td colspan="2">
+											(<?php echo $tel->{TNB_DDD};?>)&nbsp;<?php echo $tel->{TNB_NUMBER};?>
+											<?php if(count($type) > 0):?>
+												&nbsp;-&nbsp;<?php echo $type->{TTP_TELEPHONE};?>
+											<?php endif;?>
+										</td>
+									</tr>
+									<?php $flag = true;?>
+								<?php endif;?>
+							<?php endforeach;?>
+							<?php if($flag === false):?>
+								<tr>
+									<td colspan="2">
+										&nbsp;-&nbsp;<?php echo $this->labels->text->nodata;?>
+									</td>
+								</tr>
+							<?php endif;?>
+							<?php if(!$this->operator):?>								
+								<tr>
+									<td colspan="5">
+										<hr>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="5" >
+										<?php echo $this->helpcontroller->text2;?>
+									</td>
+								</tr>
+								<?php if(count($this->ubs) > 0):?>
+									<tr>
+										<td colspan="3">
+											<b><?php echo $this->controller->residence->text->ubs;?></b>
+											<?php 
+												if($this->form->getUbs()){	
+													foreach($this->ubs as $ubs)
+														if($this->form->getUbs() == $ubs->{UBS_ID_UBS})
+														{
+															echo $ubs->{UBS_UBS_NAME};
+														}
+												}
+												else
+													echo $this->labels->text->nodata;
+											?>
+										</td>
+									</tr>
+								<?php endif;?>
+								<tr>
+									<td colspan="3">
+										<b><?php echo $this->controller->residence->text->location;?></b>
+										<?php 
+											if($this->form->getLocality())
+											{	
+												$flag = false;
+												foreach($this->locality as $local)
+												{
+													if($this->form->getLocality() == $local->{LTP_ID_LOCALITY})
+													{
+														echo $local->{LTP_PLACE};
+														$flag = true;
+													}
+												}
+												if($flag === false)
+													echo $this->labels->text->nodata;		
+											}
+											else
+												echo $this->labels->text->nodata;
+										?>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="3">
+										<b><?php echo $this->controller->residence->text->housing;?></b>
+										<?php 
+											if($this->form->getMorada()){	
+												$flag = false;
+												foreach($this->morada as $morada)
+												{
+													if($this->form->getMorada() == $morada->{MRT_ID_MORADA})
+													{
+														echo $morada->{MRT_MORADA};
+														$flag = true;
+													}
+												}
+												if($flag === false)
+													echo $this->labels->text->nodata;
+											}									
+											else
+												echo $this->labels->text->nodata;
+										?>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="3">
+										<b><?php echo $this->controller->residence->text->situation;?></b>
+										<?php 
+											if($this->form->getStatus()){
+												$flag = false;
+												foreach($this->status as $status)
+												{
+													if($this->form->getStatus() == $status->{STT_ID_STATUS})
+													{
+														echo $status->{STT_STATUS_TYPE};
+														$flag = true;
+													}
+												}
+												if($flag === false)
+													echo $this->labels->text->nodata;
+											}
+											else
+												echo $this->labels->text->nodata;
+										?>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="3">
+										<b><?php echo $this->controller->residence->text->construction;?></b>
+										<?php 
+											if($this->form->getBuilding()){
+												$flag = false;
+												foreach($this->building as $build)
+												{
+													if($this->form->getBuilding() == $build->{BTP_ID_BUILDING})
+													{
+														echo $build->{BTP_BUILDING};
+														$flag = true;
+													}
+												}
+												if($flag === false)
+													echo $this->labels->text->nodata;
+											}
+											else
+												echo $this->labels->text->nodata;
+										?>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="3">
+										<b><?php echo $this->controller->residence->text->haveWater;?></b>
+										<?php 
+											if($this->form->getWater()){
+												$flag = false;
+												foreach($this->water as $water)
+												{
+													if($this->form->getWater() == $water->{WTP_ID_WATER})
+													{
+														echo $water->{WTP_WATER};
+														$flag = true;
+													}
+												}
+												if($flag === false)
+													echo $this->labels->text->nodata;
+											}
+											else
+												echo $this->labels->text->nodata;
+										?>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="3">
+										<b><?php echo $this->controller->residence->text->fixWater;?></b>
+										<?php
+											if($this->form->getSupply()){
+												$flag = false;
+												foreach($this->supply as $supply)
+												{
+													if($this->form->getSupply() == $supply->{SPT_ID_SUPPLY})
+													{
+														echo $supply->{SPT_SUPPLY};
+														$flag = true;
+													}
+												}
+												if($flag == false)
+													echo $this->labels->text->nodata;
+											}
+											else
+												echo $this->labels->text->nodata;
+										?>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="3">
+										<b><?php echo $this->controller->residence->text->energy;?></b>
+										<?php 
+											if($this->form->getIllumination()){
+												$flag = false;
+												foreach($this->illumination as $illumination)
+												{
+													if($this->form->getIllumination() == $illumination->{ITP_ID_ILLUMINATION})
+													{
+														echo $illumination->{ITP_ILLUMINATION};
+														$flag = true;
+													}													
+												}
+												if($flag === false)
+													echo $this->labels->text->nodata;
+											}
+											else
+												echo $this->labels->text->nodata;
+										?>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="3">
+										<b><?php echo $this->controller->residence->text->sanitation;?></b>
+										<?php 
+											if($this->form->getSanitary()){
+												$flag = false;
+												foreach($this->sanitary as $sanitary)
+												{
+													if($this->form->getSanitary() == $sanitary->{SNT_ID_SANITARY})
+													{
+														echo $sanitary->{SNT_SANITARY};
+														$flag = true;
+													}													
+												}
+												if($flag === false)
+													echo $this->labels->text->nodata;
+											}
+											else
+												echo $this->labels->text->nodata;
+										?>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="3">
+										<b><?php echo $this->controller->residence->text->trash;?></b>
+										<?php 
+											if($this->form->getTrash()){
+												$flag = false;
+												foreach($this->trash as $trash)
+												{
+													if($this->form->getTrash() == $trash->{TST_ID_TRASH})
+													{
+														echo $trash->{TST_TRASH};
+														$flag = true;
+													}
+												}
+												if($flag === false)
+													echo $this->labels->text->nodata;
+											}
+											else
+												echo $this->labels->text->nodata;
+										?>
+									</td>
+								</tr>
+							<?php endif;?>
+						</table>
+					<?php }?>
+				<?php endif;?>
+			</td>
+		</tr>
+	</table>
+</div>																  
+<!-- =================================== -->
+<!-- fim : específico para cada template -->					
+<!-- =================================== -->		

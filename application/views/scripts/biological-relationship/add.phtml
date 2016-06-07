@@ -1,0 +1,19 @@
+<?php echo $this->render('header/header.phtml');?>
+<?php echo $this->render('submenu/subMenuRelationship.phtml');?>
+<br>
+
+<?php if($this->errorMessages):?>
+	<b class="bigWriteRed"><?php echo $this->controller->bioRelation->text->invalidParams;?></b><p>
+	<?php printErrorsByField($this->form->idPerson(), $this->errorMessages);?>
+	<?php printErrorsByField($this->form->idParent(), $this->errorMessages);?>
+	<?php printErrorsByField($this->form->idKinship(), $this->errorMessages);?>
+	<?php 
+		if($this->form->idParent())
+		{
+			echo "<b>".$this->controller->bioRelation->text->notSelected."</b>";	
+		}
+	?>
+<?php endif;?>
+<p>
+<input type="button" onClick="document.location='<?php echo $this->baseUrl;?><?php echo BIOLOGICALRELATIONSHIP_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php echo $this->form->idPerson();?>/<?php echo $this->form->getIdPerson();?>'" value="<?php echo $this->labels->button->back;?>" />
+<?php echo $this->render('footer/footer.phtml');?>

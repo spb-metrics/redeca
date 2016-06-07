@@ -1,0 +1,80 @@
+<table width="100%" class="noBorder">
+	<form action="<?php echo $this->baseUrl;?><?php echo FAMILYRELATIONSHIP_CONTROLLER;?>/<?php echo DEFAULT_EDIT_ACTION;?>" method="post">
+		<?php printErrorsByField($this->form->idPerson(), $this->errorMessages);?>
+		<?php printErrorsByField($this->form->idParent(), $this->errorMessages);?>
+		<?php printErrorsByField($this->form->idFamily(), $this->errorMessages);?>
+		<?php printErrorsByField($this->form->idKinship(), $this->errorMessages);?>
+		<input type="hidden" name="<?php echo SearchForm::idPerson();?>" value="<?php echo $this->form->getIdPerson();?>"/>
+		<input type="hidden" name="<?php echo SearchForm::idFamily();?>" value="<?php echo $this->form->getIdFamily();?>"/>
+		<tr>
+			<td colspan='2'>
+				<h1><?php echo $this->controller->fRelationship->text->result?></h1>
+			</td>
+		</tr>
+		<?php	
+			if($this->escape($this->form->getPrsName()) != null)
+			{
+				echo "<tr class='write'>";
+					echo "<td colspan='2'>";
+						echo "<input type='radio' name='";
+						echo SearchForm::idParent();
+						echo "' value='";
+						echo $this->escape($this->form->getIdParent());
+						echo "'checked />";
+						echo $this->escape($this->form->getPrsName());
+					echo "</td>";
+				echo "</tr>";
+			}
+			else
+			{
+				echo "<input type='hidden' name='";
+				echo SearchForm::idParent();
+				echo "' value='";
+				echo $this->escape($this->form->getIdParent());
+				echo "'/>";
+			}
+		?>
+		<tr class='writeRed'>
+			<td width="55%" height="40" class="middleValign">
+				<?php 
+					if($this->escape($this->form->getPrsName()) != null)
+					{
+						echo $this->controller->fRelationship->result->searchRelation->partOne;
+						echo "<b><u>".$this->controller->fRelationship->text->representative."</u></b>"; 
+						echo $this->controller->fRelationship->result->searchRelation->partTwo;
+					}
+					else
+					{
+						echo $this->controller->fRelationship->representative->role;
+						echo "<b><u>".$this->controller->fRelationship->text->representative.":</u></b>";
+					}
+				?>
+			</td>
+			<td width="45%" height="40" class="middleValign">
+				<select name="<?php echo SearchForm::idkinship();?>">
+					<option value=""><?php echo $this->labels->text->select;?>...</option>
+					<?php 
+						foreach($this->kinship as $kinship)
+						{
+							echo "<option value='";
+							echo $kinship->{KST_ID_KINSHIP};
+							echo "'";
+							if($this->form->getIdkinship() == $kinship->{KST_ID_KINSHIP})
+							{
+								echo "selected";
+							}
+							echo ">";
+							echo $kinship->{KST_KINSHIP};
+							echo "</option>";		
+						}
+					?>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td colspan='2' class="alignCenter">
+				<input type="submit" value="<?php echo $this->labels->button->save;?>"/>
+			</td>
+		</tr>
+	</form>
+</table>

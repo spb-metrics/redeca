@@ -1,0 +1,76 @@
+<script language="JavaScript" type="text/javascript" src="public/jquery/jquery.js"></script>
+<table valign=top align=justify>
+<tr>
+  <td class=destaque colspan=2>Paleta</td>
+</tr>
+<tr>
+  <td colspan=2>
+<script language="JavaScript">
+  var HEXCodes = new Array(256);
+  var k = 0;
+  var HEX = new Array("0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F");
+  for (i = 0; i < 16; i++)
+     for (j = 0; j < 16; j++)
+         HEXCodes[k++] = HEX[i] + HEX[j];
+  
+  var outer, middle, inner=255;
+  var r,g,b;
+
+  document.write('<table cellpadding=0 cellspacing=1 border=0 bgcolor="#000000">');
+
+  for (outer = 255; outer >= 0; outer-=51)
+  {
+    document.write('<tr>');
+    for (middle = 255; middle >= 0; middle-=51)
+    {
+      for (inner = 255; inner >= 0; inner-=51)
+      {
+        tR=HEXCodes[255 - outer];
+        tB=HEXCodes[255 - middle];
+        tG=HEXCodes[255 - inner];
+        r=255 - outer;
+        b=255 - middle;
+        g=255 - inner;
+
+        document.write('<td class=color height=15 width=15 bgcolor="#'+tR+tG+tB+'"></td>');
+      }
+    }
+   if(outer!=0) document.write('</tr><tr>');
+  }
+  document.write('</table>');
+
+</script>
+  </td>
+</tr>
+<tr>
+ <td>
+  <table width=100% style='font-size:10pt;'>
+<tr><td> Links </td><td> <input  id=B1 class=basiccolor  name=BASICCOLOR_LINK value=orange> </td></tr>
+<tr><td> T&iacute;tulos </td><td> <input id=B2  class=basiccolor  name=BASICCOLOR_TITLE value=#FEEDD3></td></tr>
+<tr><td> Fundo das caixas </td><td> <input id=B3  class=basiccolor  name=BASICCOLOR_BACKGROUND value=#F5FFE6 ></td></tr>
+<tr><td> Fundo dos Bot&otilde;es </td><td> <input id=B4  class=basiccolor  name=BASICCOLOR_BUTTONS value=#F9ECCA></td></tr>
+<tr><td> Borda externa do Container </td><td> <input id=B5  class=basiccolor  name=BASICCOLOR_BORDERCONTAINER value=#FFA600></td></tr>
+<tr><td>  e sua borda interna </td><td> <input id=B6  class=basiccolor  name=BASICCOLOR_INNERCONTAINER value=#FFD480></td></tr>
+  </table>
+ </td>
+</tr>
+
+</table>
+
+<script language="javascript" type="text/javascript">
+
+$(document).ready(function(){
+ 
+    $(".color").draggable({helper:'clone'}); 
+    $(".basiccolor").droppable({
+ accept: ".color",
+ drop: function(ev, ui) {
+ 
+   $(this).css("background-color",$(ui.draggable).css("background-color"));
+   $(this).attr("value",$(ui.draggable).css("background-color"));
+ }
+});
+ 
+  });
+
+</script>

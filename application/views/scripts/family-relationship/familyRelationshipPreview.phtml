@@ -1,0 +1,314 @@
+<!-- ======================== -->
+<!-- ===== começo =========== -->
+<!-- ======================== -->
+<div>
+	<table width="98%" class="noBorder">
+		<tr>
+			<td align="center" colspan="4">
+				<h1><?php echo $this->controller->fRelationship->title;?></h1>
+			</td>
+		</tr>
+		
+		<tr>
+			<td colspan="4" height="25">
+				<?php echo $this->helpcontroller->text1;?>
+			</td>
+		</tr>
+		
+		<tr>
+			<td>
+				<?php 
+					$rf = $this->relationshipByPerson;
+					
+					if($rf && sizeof($rf) > 0)
+					{
+						echo "<table width='100%'>";
+							echo "<tr>";
+								echo "<td width='18%'>";
+									echo "<b>";
+										echo $this->controller->fRelationship->text->representative;
+									echo "</b>";
+								echo "</td>";
+								
+								echo "<td width='40%' class='alignCenter'>";
+									echo "<b>";
+										echo $this->controller->fRelationship->text->name;
+									echo "</b>";
+								echo "</td>";
+								
+								echo "<td width='20%' class='alignCenter'>";
+									echo "<b>";
+										echo $this->controller->fRelationship->text->level;
+									echo "</b>";
+								echo "</td>";
+								
+								echo "<td width='18%' class='alignCenter' colspan='2'>";
+									if($this->readOnly == FALSE)
+									{
+										echo "<b>";
+											echo $this->controller->fRelationship->text->action;
+										echo "</b>";
+									}
+								echo "</td>";
+							echo "</tr>";
+						echo "</table>";
+						
+						$countLine = 0;
+						$verify = false;
+						foreach($rf as $kingship)
+						{
+							if($verify == false)
+							{
+								$collRepresentative = $kingship->findDependentRowset(CLS_REPRESENTATIVE);
+								foreach($collRepresentative as $representative)
+								{	
+									$fr = $representative->{REP_ID_PERSON};
+									$nameParent = $representative->findParentRow(CLS_PERSON)->{PRS_NAME};
+								}
+								$verify = true;
+							}
+							
+							$collType = $kingship->findDependentRowset(CLS_FAMILY);
+							
+							foreach($collType as $unique)
+							{	
+								if($fr == $unique->findParentRow(CLS_PERSON)->{PRS_ID_PERSON})
+								{		
+									echo "<table width='100%'>";
+										echo "<tr class='writeRed'>";
+											echo "<td class='middleCenterObject' width='18%'>";
+												echo "<img src='";	
+													echo $this->baseUrl;
+														echo "/public/styles/verify.gif'";
+													echo "/>";
+											echo "</td>";
+											echo "<td class='middleValign' width='40%'>";
+												echo $unique->findParentRow(CLS_PERSON)->{PRS_NAME};
+											echo "</td>";
+											echo "<td class='middleValign' width='20%'>";
+												if($unique->findParentRow(CLS_KINSHIPTYPE)->{KST_STATUS} != Constants::DISABLE)
+													echo $unique->findParentRow(CLS_KINSHIPTYPE)->{KST_KINSHIP};
+												else
+													echo $this->labels->text->disable;
+											echo "</td>";
+											if($this->form->getIdPerson() == $unique->{FAM_ID_PERSON})
+											{
+												echo "<form action='";
+													echo $this->baseUrl;
+													echo FAMILYRELATIONSHIP_CONTROLLER;
+													echo "/";
+													echo DEFAULT_CONFIRM_ACTION;
+													echo "'";
+													echo "method='post'>";
+													echo "<input type='hidden' name='";
+													echo SearchForm::idPerson();
+													echo "' value='";
+													echo $unique->{FAM_ID_PERSON};
+													echo "'/>";
+													echo "<input type='hidden' name='";
+													echo SearchForm::idParent();
+													echo "' value='";
+													echo $fr;
+													echo "'/>";
+													echo "<input type='hidden' name='";
+													echo SearchForm::idFamily();
+													echo "' value='";
+													echo $unique->{FAM_ID_FAMILY};
+													echo "'/>";
+													echo "<input type='hidden' name='";
+													echo SearchForm::prsName();
+													echo "' value='";
+													echo $nameParent;
+													echo "'/>";
+													echo "<td class='middleValign' width='9%'>";	
+														if($this->readOnly == FALSE)
+														{
+															echo "<input type='submit' class='small'";
+															echo " value='";
+															echo $this->labels->button->drop;
+															echo "'/>";
+														}
+													echo "</td>";
+												echo "</form>";
+												echo "<form action='";
+													echo $this->baseUrl;
+													echo FAMILYRELATIONSHIP_CONTROLLER;
+													echo "/";
+													echo DEFAULT_VIEW_ACTION;
+													echo "'";
+													echo "method='post'>";
+													echo "<input type='hidden' name='";
+													echo SearchForm::idParent();
+													echo "' value='";
+													echo $fr;
+													echo "'/>";
+													echo "<input type='hidden' name='";
+													echo SearchForm::idPerson();
+													echo "' value='";
+													echo $unique->{FAM_ID_PERSON};
+													echo "'/>";
+													echo "<input type='hidden' name='";
+													echo SearchForm::idKinship();
+													echo "' value='";
+													echo $unique->{FAM_ID_KINSHIP};
+													echo "'/>";
+													echo "<input type='hidden' name='";
+													echo SearchForm::idFamily();
+													echo "' value='";
+													echo $unique->{FAM_ID_FAMILY};
+													echo "'/>";
+													echo "<input type='hidden' name='";
+													echo SearchForm::prsName();
+													echo "' value=''/>";
+													echo "<td class='middleValign' width='9%'>";	
+														if($this->readOnly == FALSE)
+														{
+															echo "<input type='submit' class='small'";
+															echo " value='";
+															echo $this->labels->button->edit;
+															echo "'/>";
+														}
+													echo "</td>";
+												echo "</form>";
+											}
+											else
+											{
+												echo "<td width='18%' colspan='2'>&nbsp;</td>";
+											}
+										echo "</tr>";
+									echo "</table>";
+								}
+								else
+								{
+									echo "<table width='100%'>";
+										if( ($countLine%2) == 0) echo "<tr class='write'>"; else echo "<tr>";
+											echo "<td width='18%'>&nbsp;</td>";
+											echo "<td class='middleValign' width='40%'>";
+												echo $unique->findParentRow(CLS_PERSON)->{PRS_NAME};
+											echo "</td>";
+											echo "<td class='middleValign' width='20%'>";
+												if($unique->findParentRow(CLS_KINSHIPTYPE)->{KST_STATUS} != Constants::DISABLE)
+													echo $unique->findParentRow(CLS_KINSHIPTYPE)->{KST_KINSHIP};
+												else
+													echo $this->labels->text->nodata;
+											echo "</td>";
+											if($this->form->getIdPerson() == $unique->{FAM_ID_PERSON})
+											{
+												echo "<form action='";
+													echo $this->baseUrl;
+													echo FAMILYRELATIONSHIP_CONTROLLER;
+													echo "/";
+													echo DEFAULT_CONFIRM_ACTION;
+													echo "'";
+													echo "method='post'>";
+													echo "<input type='hidden' name='";
+													echo SearchForm::idPerson();
+													echo "' value='";
+													echo $unique->{FAM_ID_PERSON};
+													echo "'/>";
+													echo "<input type='hidden' name='";
+													echo SearchForm::idParent();
+													echo "' value='";
+													echo $unique->{FAM_ID_PERSON};
+													echo "'/>";
+													echo "<input type='hidden' name='";
+													echo SearchForm::idFamily();
+													echo "' value='";
+													echo $unique->{FAM_ID_FAMILY};
+													echo "'/>";
+													
+													echo "<input type='hidden' name='";
+													echo SearchForm::prsName();
+													echo "' value='";
+													echo $nameParent;
+													echo "'/>";
+													echo "<td class='middleValign' width='9%'>";	
+													if($this->readOnly == FALSE)
+													{
+														echo "<input type='submit' class='small'";
+														echo " value='";
+														echo $this->labels->button->drop;
+														echo "'/>";
+													}
+													echo "</td>";
+												echo "</form>";
+												echo "<form action='";
+													echo $this->baseUrl;
+													echo FAMILYRELATIONSHIP_CONTROLLER;
+													echo "/";
+													echo DEFAULT_VIEW_ACTION;
+													echo "'";
+													echo "method='post'>";
+													echo "<input type='hidden' name='";
+													echo SearchForm::idParent();
+													echo "' value='";
+													echo $unique->{FAM_ID_PERSON};
+													echo "'/>";
+													echo "<input type='hidden' name='";
+													echo SearchForm::idPerson();
+													echo "' value='";
+													echo $unique->{FAM_ID_PERSON};
+													echo "'/>";
+													echo "<input type='hidden' name='";
+													echo SearchForm::idKinship();
+													echo "' value='";
+													echo $unique->{FAM_ID_KINSHIP};
+													echo "'/>";
+													echo "<input type='hidden' name='";
+													echo SearchForm::idFamily();
+													echo "' value='";
+													echo $unique->{FAM_ID_FAMILY};
+													echo "'/>";
+													echo "<input type='hidden' name='";
+													echo SearchForm::prsName();
+													echo "' value='";
+													echo $nameParent;
+													echo "'/>";
+													echo "<td class='alignCenter' width='9%'>";
+														if($this->readOnly == FALSE)
+														{
+															echo "<input type='submit' class='small'";
+															echo " value='";
+															echo $this->labels->button->edit;
+															echo "'/>";
+														}
+													echo "</td>";
+												echo "</form>";
+											}
+											else
+											{
+												echo "<td width='18%' colspan='2'>&nbsp;</td>";
+											}
+										echo "</tr>";
+									echo "</table>";
+								}
+								$countLine ++;			
+							}
+						}		
+					}
+					else
+					{
+						echo $this->controller->fRelationship->text->notHave;
+					}	
+				?>
+			</td>
+		</tr>
+		<?php if(!$this->readOnly):?>
+		<tr>
+			<td>
+				<br>
+				<table class="noBorder">
+					<tr>
+						<td colspan="3">
+							<input type="button" value="<?php echo $this->controller->fRelationship->text->likeCreate;?>" onClick="document.location='<?php echo $this->baseUrl;?><?php echo FAMILYRELATIONSHIP_CONTROLLER;?>/<?php echo DEFAULT_SEARCH_ACTION;?>/<?php echo SearchForm::idPerson();?>/<?php echo $this->form->getIdPerson();?>'"/>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<?php endif;?>
+	</table>
+</div>
+<!-- ======================= -->
+<!-- ===== final =========== -->
+<!-- ======================= -->

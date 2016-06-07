@@ -1,0 +1,19 @@
+<?php echo $this->render('header/header.phtml');?>								 		  						
+				  
+<!-- ===================================== -->
+<!-- inicio : específico com cada template -->					
+<!-- ===================================== -->						  
+<div>
+	<?php echo $this->render('success/_success.phtml');?>
+	<p>
+	<a href="<?php echo $this->baseUrl;?><?php echo CLASS_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>">
+		<?php echo $this->labels->button->back; ?>
+	</a>
+</div>																  
+<!-- ================================== -->
+<!-- fim : específico com cada template -->					
+<!-- ================================== -->		
+
+<?php echo $this->render('footer/footer.phtml');?>
+
+

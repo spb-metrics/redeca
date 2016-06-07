@@ -1,0 +1,113 @@
+<?php $show = Zend_Registry::get(CONFIG)->container->personlog;?>
+<script type="text/javascript">
+	$('#imgFakeHideLog').hide();
+	<?php if($show):?>
+		$().ajaxSend(function(){$('#loading4').show();});		
+		$.post('<?php echo $this->baseUrl;?><?php echo PERSON_LOG_CONTROLLER;?>/<?php echo DEFAULT_CONTAINER_ACTION;?>', function(data){ $('#person_log').append(data);$('#loading4').hide();});
+	<?php else:?>
+		function showPersonLog()
+		{
+			$('#maxPersonLog').hide();
+			$('#mainPersonLog').show();
+			$().ajaxSend(function(){$('#loading4').show();$('#imgHideLog').hide();$('#imgFakeHideLog').show();$('#tableHideLog').hide();$('#tableFakeHideLog').show();});		
+			$.post('<?php echo $this->baseUrl;?><?php echo PERSON_LOG_CONTROLLER;?>/<?php echo DEFAULT_CONTAINER_ACTION;?>', 
+				function(data)
+				{ 
+					if(data.search(/<?php echo $this->labels->login->title;?>/i) != -1)
+					{
+						window.location.reload();
+					}
+					else
+					{
+						$('#person_log').append(data);
+						$('#loading4').hide();
+						$('#imgFakeHideLog').hide();
+						$('#imgHideLog').show();
+						$('#tableFakeHideLog').hide();
+						$('#tableHideLog').show();
+					}
+				}
+			);
+		}
+		
+		function hidePersonLog()
+		{
+			$('#maxPersonLog').show();
+			$('#person_log').empty();
+			$('#mainPersonLog').hide();
+		}
+	<?php endif;?>
+	
+</script>
+
+<?php if(!$show):?>
+<div id="maxPersonLog" class="health">
+	<table class="income" width="100%">
+		<tr>
+			<td>
+				
+				<table width="100%" class="tableContainer" onClick="showPersonLog()">
+					<tr>
+						<td width="10%" class="fontContainer">
+							<img src="<?php echo $this->baseUrl;?>/public/images/show.png" title="<?php echo $this->labels->title->show;?>"/>
+						</td>				
+						<td width="90%" class="fontContainer">
+							<b><?php echo $this->labels->title->personsLog;?></b>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+</div>
+<?php endif;?>
+
+<div id="mainPersonLog" <?php if(!$show):?>style="display: none;"<?php endif;?>>
+	<table class="income" width="100%">
+		<tr>
+			<td class="container">
+				
+				<?php if(!$show):?>
+					<table width="100%" class="tableContainer" id="tableHideLog" onClick="hidePersonLog()">
+						<tr>
+							<td width="10%" class="fontContainer">
+								<img id="imgHideLog" src="<?php echo $this->baseUrl;?>/public/images/hide.png" title="<?php echo $this->labels->title->hide;?>"/>
+								<img id="imgFakeHideLog" src="<?php echo $this->baseUrl;?>/public/images/hide.png" title="<?php echo $this->labels->title->hide;?>"/>
+							</td>				
+							<td width="90%" class="fontContainer">
+								<b><?php echo $this->labels->title->personsLog;?></b>
+							</td>
+						</tr>
+					</table>
+					<table width="100%" class="tableContainer" id="tableFakeHideLog">
+						<tr>
+							<td width="10%" class="fontContainer">
+								<img id="imgHideLog" src="<?php echo $this->baseUrl;?>/public/images/hide.png" title="<?php echo $this->labels->title->hide;?>"/>								
+							</td>				
+							<td width="90%" class="fontContainer">
+								<b><?php echo $this->labels->title->personsLog;?></b>
+							</td>
+						</tr>
+					</table>
+				<?php else:?>
+					<table width="100%" class="tableContainer">
+						<tr>
+							<td width="10%" class="fontContainer">								
+							</td>				
+							<td width="90%" class="fontContainer">
+								<b><?php echo $this->labels->title->personsLog;?></b>
+							</td>
+						</tr>
+					</table>
+				<?php endif;?>
+				<p>									
+				<div id="loading4">
+					<center><img src="<?php echo $this->baseUrl;?>/public/images/loading.gif"/></center>
+				</div>
+				
+				<div id="person_log"></div>	
+													
+			</td>
+		</tr>
+	</table>
+</div>

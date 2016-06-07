@@ -1,0 +1,5 @@
+* 1.0.09
+- corrigido bug da senha obrigatório do usuário na edição dos dados da entidade
+
+* 1.0.08
+- XAMPP 1.7.2 usa PHP 5.3.0, que causas problemas de parsing em arquivo Helper.php, que possui uma função chamada "goto()". Readaptada até que a próxima versão do framework esteja corrigida.

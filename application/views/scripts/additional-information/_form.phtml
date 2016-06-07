@@ -1,0 +1,30 @@
+<table width="100%">
+	<form action="<?php echo $this->baseUrl;?><?php echo ADDITIONALINFORMATION_CONTROLLER;?>/<?php echo DEFAULT_SEARCH_ACTION;?>" method="post">
+		<tr>
+			<td colspan="2"><?php echo $this->helpcontroller->text1;?><p></td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<b><?php echo $this->controller->additional->title;?>:</b>
+			</td>
+		</tr>
+		<tr>
+			<td width='30%'>
+				<select name="<?php echo $this->form->tableName();?>">
+					<?php foreach($this->tableName as $key=>$value):?>		
+							<option	<?php if($key == $this->form->getTableName()) echo "selected";?>
+							 value='<?php echo $key;?>'><?php echo $value;?></option>
+					<?php endforeach;?>
+				</select>
+			</td>
+			<td>
+				<input type="submit" value="<?php echo $this->labels->button->filter;?>">
+			</td>
+		</tr>
+		<tr>
+			<td colspan='3'>
+				<?php printErrorsByField($this->form->tableName(), $this->errorMessages);?>
+			</td>
+		</tr>
+	</form>					
+</table>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<help>
+	<items>
+		<text1>Para criar uma turma é preciso associar um ou mais programas a essa Entidade.</text1>
+		<text2>Não há turma cadastrada.</text2>
+		<text3>Não há programas associados a essa Entidade.</text3>
+		<text4>Obrigado.</text4>
+		<text5>Não há atividades associadas para os programas cadastrados.</text5>
+	</items>
+</help>

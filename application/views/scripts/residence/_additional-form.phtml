@@ -1,0 +1,170 @@
+
+<table class="noBorder" width="100%">				
+	<tr>
+		<td colspan="3">
+			<hr>
+		</td>
+	</tr>
+	<?php if(count($this->ubs) > 0):?>
+		<tr>
+			<td width="25%">
+				<b><?php echo $this->controller->residence->text->ubs;?></b>
+			</td>
+			<td width="25%">
+				<select name="<?php echo $this->form->ubs();?>">
+					<option value=""><?php echo $this->controller->residence->text->select;?>...</option>
+					<?php foreach($this->ubs as $ubs):?>
+						<option value="<?php echo $ubs->{UBS_ID_UBS};?>" 
+							<?php if($this->form->getUbs() == $ubs->{UBS_ID_UBS}) echo "selected";?>><?php echo $ubs->{UBS_UBS_NAME};?></option>
+					<?php endforeach;?>
+				</select><br>
+				<?php printErrorsByField($this->form->ubs(), $this->errorMessages);?>
+			</td>
+			<td></td>
+		</tr>
+	<?php endif;?>
+	<tr>
+		<td width="25%">
+			<b><?php echo $this->controller->residence->text->location;?></b>
+		</td>
+		<td width="25%">
+			<select name="<?php echo $this->form->locality();?>">
+				<option value=""><?php echo $this->controller->residence->text->select;?>...</option>
+				<?php foreach($this->locality as $locality):?>
+					<option value="<?php echo $locality->{LTP_ID_LOCALITY};?>" 
+						<?php if($this->form->getLocality() == $locality->{LTP_ID_LOCALITY}) echo "selected";?>><?php echo $locality->{LTP_PLACE};?></option>
+				<?php endforeach;?>
+			</select><br>
+			<?php printErrorsByField($this->form->locality(), $this->errorMessages);?>
+		</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td >
+			<b><?php echo $this->controller->residence->text->housing;?></b>
+		</td>
+		<td >
+			<select name="<?php echo $this->form->morada();?>">
+				<option value=""><?php echo $this->controller->residence->text->select;?>...</option>
+				<?php foreach($this->morada as $morada):?>
+					<option value="<?php echo $morada->{MRT_ID_MORADA};?>"
+						<?php if($this->form->getMorada() == $morada->{MRT_ID_MORADA}) echo "selected";?>><?php echo $morada->{MRT_MORADA};?></option>
+				<?php endforeach;?>
+			</select><br>
+			<?php printErrorsByField($this->form->morada(), $this->errorMessages);?>
+		</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td >
+			<b><?php echo $this->controller->residence->text->situation;?></b>
+		</td>
+		<td >
+			<select name="<?php echo $this->form->status();?>">
+				<option value=""><?php echo $this->controller->residence->text->select;?>...</option>
+				<?php foreach($this->status as $status):?>
+					<option value="<?php echo $status->{STT_ID_STATUS};?>"
+						<?php if($this->form->getStatus() == $status->{STT_ID_STATUS}) echo "selected";?>><?php echo $status->{STT_STATUS_TYPE};?></option>
+				<?php endforeach;?>
+			</select><br>
+			<?php printErrorsByField($this->form->status(), $this->errorMessages);?>
+		</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td >
+			<b><?php echo $this->controller->residence->text->construction;?></b>
+		</td>
+		<td >
+			<select name="<?php echo $this->form->building();?>">
+				<option value=""><?php echo $this->controller->residence->text->select;?>...</option>
+				<?php foreach($this->building as $building):?>
+					<option value="<?php echo $building->{BTP_ID_BUILDING};?>"
+						<?php if($this->form->getBuilding() == $building->{BTP_ID_BUILDING}) echo "selected";?>><?php echo $building->{BTP_BUILDING};?></option>
+				<?php endforeach;?>
+			</select><br>
+			<?php printErrorsByField($this->form->building(), $this->errorMessages);?>
+		</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td >
+			<b><?php echo $this->controller->residence->text->haveWater;?></b>
+		</td>
+		<td >
+			<select name="<?php echo $this->form->supply();?>">
+				<option value=""><?php echo $this->controller->residence->text->select;?>...</option>
+				<?php foreach($this->supply as $supply):?>
+					<option value="<?php echo $supply->{SPT_ID_SUPPLY};?>"
+						<?php if($this->form->getSupply() == $supply->{SPT_ID_SUPPLY}) echo "selected";?>><?php echo $supply->{SPT_SUPPLY};?></option>
+				<?php endforeach;?>
+			</select><br>
+			<?php printErrorsByField($this->form->supply(), $this->errorMessages);?>
+		</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td >
+			<b><?php echo $this->controller->residence->text->fixWater;?></b>
+		</td>
+		<td >
+			<select name="<?php echo $this->form->water();?>">
+				<option value=""><?php echo $this->controller->residence->text->select;?>...</option>
+				<?php foreach($this->water as $water):?>
+					<option value="<?php echo $water->{WTP_ID_WATER};?>"
+						<?php if($this->form->getWater() == $water->{WTP_ID_WATER}) echo "selected";?>><?php echo $water->{WTP_WATER};?></option>
+				<?php endforeach;?>
+			</select><br>
+			<?php printErrorsByField($this->form->water(), $this->errorMessages);?>
+		</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td >
+			<b><?php echo $this->controller->residence->text->energy;?></b>
+		</td>
+		<td >
+			<select name="<?php echo $this->form->illumination();?>">
+				<option value=""><?php echo $this->controller->residence->text->select;?>...</option>
+				<?php foreach($this->illumination as $illumination):?>
+					<option value="<?php echo $illumination->{ITP_ID_ILLUMINATION};?>"
+						<?php if($this->form->getIllumination() == $illumination->{ITP_ID_ILLUMINATION}) echo "selected";?>><?php echo $illumination->{ITP_ILLUMINATION};?></option>
+				<?php endforeach;?>
+			</select><br>
+			<?php printErrorsByField($this->form->illumination(), $this->errorMessages);?>
+		</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td >
+			<b><?php echo $this->controller->residence->text->sanitation;?></b>
+		</td>
+		<td >
+			<select name="<?php echo $this->form->sanitary();?>">
+				<option value=""><?php echo $this->controller->residence->text->select;?>...</option>
+				<?php foreach($this->sanitary as $sanitary):?>
+					<option value="<?php echo $sanitary->{SNT_ID_SANITARY};?>"
+						<?php if($this->form->getSanitary() == $sanitary->{SNT_ID_SANITARY}) echo "selected";?>><?php echo $sanitary->{SNT_SANITARY};?></option>
+				<?php endforeach;?>
+			</select><br>
+			<?php printErrorsByField($this->form->sanitary(), $this->errorMessages);?>
+		</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td >
+			<b><?php echo $this->controller->residence->text->trash;?></b>
+		</td>
+		<td >
+			<select name="<?php echo $this->form->trash();?>">
+				<option value=""><?php echo $this->controller->residence->text->select;?>...</option>
+				<?php foreach($this->trash as $trash):?>
+					<option value="<?php echo $trash->{TST_ID_TRASH};?>"
+						<?php if($this->form->getTrash() == $trash->{TST_ID_TRASH}) echo "selected";?>><?php echo $trash->{TST_TRASH};?></option>
+				<?php endforeach;?>
+			</select><br>
+			<?php printErrorsByField($this->form->trash(), $this->errorMessages);?>
+		</td>
+		<td></td>
+	</tr>
+</table>

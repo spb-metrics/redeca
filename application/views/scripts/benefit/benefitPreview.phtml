@@ -1,0 +1,182 @@
+<?php echo $this->render('submenu/submenuPerson.phtml');?>
+						  
+<div>
+	<!-- ============================================================================================== -->
+	<!-- É necessário informar o nome class da tabela em questão para carregar a cor background correta -->
+	<!-- Opções: 
+				#identification
+				#person
+				#education
+				#health
+				#income
+				#familyRelationship
+				#residence
+				#attendance
+				#activity	-->
+	<!-- ============================================================================================== -->
+	<table class="benefit" width="98%">
+	<?php $levelInstruction = $this->levelInstruction;?>
+	
+	<?php if($this->errorMessages) {echo $this->form->idPerson()." : &nbsp;"; printErrorsByField($this->form->idPerson(), $this->errorMessages);};?>
+		<tr>
+			<td align="center">
+				<table width="100%" class="withOutEdge">
+					<form action="<?php echo $this->baseUrl;?><?php echo BENEFIT_CONTROLLER;?>/<?php echo DEFAULT_ADD_ACTION;?>" method="post">
+						<input type="hidden" name="<?php echo $this->form->idPerson();?>" value="<?php echo $this->form->getIdPerson();?>"/>
+						<?php printErrorsByField($this->form->idPerson(), $this->errorMessages);?>
+						<tr>
+							<td>
+								<h1><?php echo $this->controller->benefit->text->registered;?></h1><br>
+								<?php echo $this->helpcontroller->text1;?>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4" align="right" height="30">
+								<?php if(!$this->history_view):?>
+									<?php if($this->readOnly == FALSE):?>
+										|&nbsp;<a href="<?php echo $this->baseUrl;?><?php echo BENEFIT_CONTROLLER;?>/<?php echo DEFAULT_NEW_ACTION;?>/<?php echo BenefitForm::idPerson();?>/<?php echo $this->form->getIdPerson();?>"><?php echo $this->controller->benefit->button->newbenefit;?></a>
+									    <?php /* Disponivel somente quando a visualizacao nao for historica */ 
+											if(sizeof($this->programsByPerson) > 0 )
+											{
+												$flag = false;
+												if($this->programsByPerson instanceof Zend_Db_Table_Row)
+												{
+													$dateBenefit = $this->programsByPerson;
+													if($dateBenefit->findParentRow(CLS_SOCIALPROGRAMTYPE)->{SCP_STATUS} != Constants::DISABLE)
+													{								
+														$flag = true;
+													}								
+												}
+												else
+												{	
+													foreach($this->programsByPerson as $dateBenefit)
+													{
+														if($dateBenefit->findParentRow(CLS_SOCIALPROGRAMTYPE)->{SCP_STATUS} != Constants::DISABLE)
+														{
+															$flag = true;
+														}
+													}
+												}
+												if($flag === true)
+												{
+													echo "|&nbsp;<a href='";
+													echo $this->baseUrl;
+													echo BENEFIT_CONTROLLER;
+													echo "/";
+													echo DEFAULT_VIEW_ACTION;
+													echo "/";
+													echo BenefitForm::idPerson();
+													echo "/";
+													echo $this->form->getIdPerson();
+													echo "'>";
+													echo $this->controller->benefit->button->editbenefit;
+													echo "</a>";
+												}	
+											}
+										?>
+									<?php endif;?>			
+								<?php endif;?>
+								<?php printHistoryLink($this, $this->resource_key, BENEFIT_CONTROLLER); ?>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<table class="withOutEdge" width="100%">
+									<?php 
+										if(sizeof($this->programsByPerson) > 0)
+										{
+											$flag = false;
+											if($this->programsByPerson instanceof Zend_Db_Table_Row)
+											{
+												$dateBenefit = $this->programsByPerson;
+												if($dateBenefit->findParentRow(CLS_SOCIALPROGRAMTYPE)->{SCP_STATUS} != Constants::DISABLE)
+												{
+													echo "<tr>";
+													echo "<td width='25%'>";
+													echo "&nbsp;&nbsp;";
+													echo "<b>";
+													echo $dateBenefit->findParentRow(CLS_SOCIALPROGRAMTYPE)->{SCP_BENEFIT};
+													echo "</b>";
+													echo "</td>";
+													echo "<td class='small' width='75%'>";
+													echo $this->controller->benefit->text->dateRegistered;
+													echo "&nbsp;:&nbsp;";
+													echo "<b>";
+													if($dateBenefit->{SPG_REGISTER_DATE})
+													{
+														echo BenefitForm::dateFormatForm($dateBenefit->{SPG_REGISTER_DATE});
+													}
+													else
+													{
+														echo $this->labels->text->nodata;
+													}
+													echo "</b>";
+													echo "</td>";
+													echo "</tr>";
+													
+													$flag = true;
+												}								
+											}
+											else
+											{
+												$count = 0;			
+												foreach($this->programsByPerson as $dateBenefit)
+												{
+													if($dateBenefit->findParentRow(CLS_SOCIALPROGRAMTYPE)->{SCP_STATUS} != Constants::DISABLE)
+													{
+														if(($count%2)==0) echo "<tr class='write'>"; else echo "<tr>";
+															echo "<td width='25%'>";
+																echo "&nbsp;&nbsp;";
+																echo "<b>";
+																echo $dateBenefit->findParentRow(CLS_SOCIALPROGRAMTYPE)->{SCP_BENEFIT};
+																echo "</b>";
+															echo "</td>";
+															echo "<td class='small' width='75%'>";
+															echo $this->controller->benefit->text->dateRegistered;
+															echo "&nbsp;:&nbsp;";
+															echo "<b>";
+															if($dateBenefit->{SPG_REGISTER_DATE})
+															{
+																echo BenefitForm::dateFormatForm($dateBenefit->{SPG_REGISTER_DATE});
+															}
+															else
+															{
+																echo $this->labels->text->nodata;
+															}
+															echo "</b>";
+															echo "</td>";
+														echo "</tr>";
+														$count ++;
+														
+														$flag = true;
+													}
+												}
+											}
+											if($flag === false)
+											{
+												echo "<tr>";
+													echo "<td>";
+														echo $this->controller->benefit->text->notBenefit;
+													echo "</td>";
+												echo "</tr>";
+											}
+												
+										}
+										else
+										{
+											echo "<tr>";
+												echo "<td>";
+													echo $this->controller->benefit->text->notBenefit;
+												echo "</td>";
+											echo "</tr>";
+										}	
+									?>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</form>
+			</td>
+		</tr>
+	</table>
+</div>

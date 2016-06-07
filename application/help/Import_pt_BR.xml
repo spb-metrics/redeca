@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<help>
+	<items>
+		<!-- help para cad unico -->
+		<import>Procure e importe o arquivo solicitado em "Importar".</import>
+		<wait>O tempo de processamento pode levar até 2 horas. Aguarde a mensagem de sucesso sem interferir no processamento.</wait>
+		<zip>Somente serão permitidos upload de arquivos compactados do tipo ZIP.</zip>
+		<zipcode3>Caso seja necessário reprocessar a importação de CEP, remova os dados do banco de dados relacionados à importação manualmente e repita a operação de processamento.</zipcode3>
+		<school3>A importação de escolas poderá ocorrer quantas vezes for necessária, diferente das outras importações, não é necessário remover os dados do banco de dados a menos que não sejam mais desejados.</school3>
+	</items>
+</help>

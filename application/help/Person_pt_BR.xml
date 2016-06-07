@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<help>
+	<items>
+		<text1>Estas informações são básicas para que o banco de dados da Rede esteja consistente. Os campos com asteriscos (*) são obrigatórios. Por favor, preencha o máximo de informações possíveis.</text1>
+		<text2>Informe o nome completo da pessoa, sem abreviações.</text2>
+	</items>
+</help>

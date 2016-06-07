@@ -1,0 +1,39 @@
+<?php echo $this->render('header/header.phtml');?>										 		  						
+									  
+<!-- ===================================== -->
+<!-- inicio : específico com cada template -->					
+<!-- ===================================== -->						  
+<div>
+
+	<?php echo $this->render('submenu/submenuPerson.phtml');?>
+
+	<!-- ============================================================================================== -->
+	<!-- É necessário informar o nome class da tabela em questão para carregar a cor background correta -->
+	<!-- Opções: 
+				#identification
+				#person
+				#education
+				#health
+				#income
+				#familyRelationship
+				#residence
+				#attendance
+				#activity	-->
+	<!-- ============================================================================================== -->
+	<table class="benefit" width="98%">
+		<tr>
+			<td align="center">
+				<?php if(!$this->errorMessages):?>
+					<?php echo $this->render('benefit/previewDrop.phtml'); ?>
+				<?php else: ?>
+					<?php echo $this->render('benefit/invalidParam.phtml'); ?>
+				<?php endif; ?>
+			</td>
+		</tr>
+	</table>
+</div>																  
+<!-- =================================== -->
+<!-- fim : específico para cada template -->					
+<!-- =================================== -->		
+
+<?php echo $this->render('footer/footer.phtml');?>

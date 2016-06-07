@@ -1,0 +1,142 @@
+<?php if($this->errorMessages[$this->form->idPerson()]):?>
+	
+	<?php printErrorsByField($this->form->idPerson(), $this->errorMessages);?>
+
+<?php elseif(!$this->errorMessages[$this->form->idPerson()]): ?>
+<table width="100%" class="withOutEdge">
+	<form action="<?php echo $this->baseUrl;?><?php echo BENEFIT_CONTROLLER;?>/<?php echo DEFAULT_ADD_ACTION;?>" method="post">
+		<input type="hidden" name="<?php echo BenefitForm::idPerson();?>" value="<?php echo $this->form->getIdPerson();?>"/>
+		<?php printErrorsByField($this->form->idPerson(), $this->errorMessages);?>		
+		 
+		<?php
+			if(sizeof($this->programsByPerson) == sizeof($this->socialPrograms))
+			{
+				$allBenefitRegistered = TRUE;
+			}
+			else
+			{
+				$allBenefitRegistered = FALSE;
+			}
+			
+			foreach($this->programsByPerson as $sp)
+			{
+				$prg[] = $sp->{SPG_ID_SOCIAL_PROGRAM};
+			}
+			
+			foreach($this->socialPrograms as $prog)
+			{
+				$idProgram = array();
+				$idProgram = $prog->{SPG_ID_SOCIAL_PROGRAM};
+				
+				if(!in_array($idProgram, $prg))
+				{
+					$socialProgram[] = $idProgram;
+				}
+			}
+		?>
+		<tr>
+			<td>
+				<h1><?php echo $this->controller->benefit->register->title;?></h1>
+			</td>
+		</tr>
+		<?php 
+			$count = 0;
+			foreach($this->socialPrograms as $sp)
+			{	
+				if(!(in_array($sp->{SCP_ID_SOCIAL_PROGRAM}, $socialProgram)))
+				{
+					$count++;
+					break;
+				}
+			}
+		?>
+		
+		<?php if($allBenefitRegistered == TRUE): ?>
+			<tr>
+				<td height="40">
+					<?php echo "Todos os benefícios já estão cadastrados para essa pessoa";?>
+				</td>
+			</tr>
+		<?php else: ?>
+			<?php if($count != 0 && $allBenefitRegistered == FALSE || sizeof($socialProgram) >= 0 ):?> 
+			<tr>
+				<td height="30">
+					<?php echo $this->controller->benefit->text->select;?><br>
+					<?php printErrorsByField($this->form->idSocialProgramType(), $this->errorMessages);?>
+				</td>
+			</tr>
+			<tr>
+				<td>				
+					<table class="withOutEdge" width="100%">
+						<?php
+							$it = 0;
+							foreach($this->socialPrograms as $sp)
+							{	
+								if(in_array($sp->{SCP_ID_SOCIAL_PROGRAM}, $socialProgram))
+								{
+									if(($it%2)==0) echo "<tr class='write'>"; else echo "<tr>";
+										echo "<td width='35%'>";
+											echo "<input type='checkbox' name='";
+												echo BenefitForm::idSocialProgramType();
+												echo "[]'";
+												echo " value='";
+												echo $sp->{SCP_ID_SOCIAL_PROGRAM};
+												echo "' ";
+												if(in_array($sp->{SCP_ID_SOCIAL_PROGRAM}, $this->form->getIdSocialProgramType()))
+												{
+													echo "'checked'";
+												}
+											echo "/>";
+											echo "&nbsp;";
+											echo $sp->{SCP_BENEFIT};
+										echo "</td>";
+										echo "<td width='65%'>";
+											echo "<b>";
+											echo $this->controller->benefit->text->dateRegistered;
+											echo "&nbsp;:&nbsp;";
+											echo "</b>";
+											echo "<input maxlength='10' size='15' type='text' name='";
+												echo BenefitForm::dateBenefit();
+												echo "_";
+												echo $sp->{SCP_ID_SOCIAL_PROGRAM};
+												echo "'";
+												echo " value='";
+												$dateCurrent = $this->form->getCollBenefit();
+												echo $dateCurrent[$sp->{SCP_ID_SOCIAL_PROGRAM}][SPG_REGISTER_DATE.$sp->{SCP_ID_SOCIAL_PROGRAM}];
+											echo "'/>";
+										echo "</td>";
+									echo "</tr>";
+									echo "<tr>";
+										echo "<td>";
+											 printErrorsByField($this->form->idSocialProgramType()."_".$sp->{SCP_ID_SOCIAL_PROGRAM}, $this->errorMessages);
+										echo "</td>";
+										echo "<td>";
+											 printErrorsByField($this->form->dateBenefit()."_".$sp->{SCP_ID_SOCIAL_PROGRAM}, $this->errorMessages);
+										echo "</td>";
+									echo "</tr>";
+									$it ++;
+								}
+							}
+						?>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td height="40">
+					<?php if($this->readOnly == FALSE):?>
+						<input type="submit" value="<?php echo $this->labels->button->save;?>"/>
+					<?php endif; ?>
+				</td>
+			</tr>
+			<?php else:?>
+				<tr>
+					<td height="40">
+						<?php echo "Não há mais benefíos para serem cadastrados";?>
+					</td>
+				</tr>
+			<?php endif;?>
+		<?php endif;?>
+	</form>
+	
+</table>
+<?php endif;?>

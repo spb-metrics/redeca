@@ -1,0 +1,462 @@
+	<tr>
+		<td colspan="2" align="center">
+			<?php if($this->form->getId()):?>
+				<h1>
+					<?php echo $this->controller->person->edit->title;?>
+				</h1>
+			<?php else :?>
+				<h1>
+					<?php echo $this->controller->person->add->title;?>
+				</h1>
+			<?php endif; ?>
+		</td>
+	</tr>
+	<?php if(!$this->form->getId()):?>
+		<tr>
+			<td colspan="2"><?php echo $this->helpcontroller->text1?><p></td>
+		</tr>
+	<?php endif; ?>
+	<tr>
+		<td width="23%">
+			<b><?php echo $this->controller->person->text->name;?>*</b>
+		</td>
+		<td>
+			<input type="text" name="<?php echo $this->form->name();?>" value="<?php echo $this->form->getName();?>" size="70">
+			<?php if(!$this->form->getId()){ echo $this->helpcontroller->text2; }?><br>
+			<?php printErrorsByField($this->form->name(), $this->errorMessages);?>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<b><?php echo $this->controller->person->text->nick;?></b>
+		</td>
+		<td>
+			<input type="text" name="<?php echo $this->form->nickname();?>" value="<?php echo $this->form->getNickname();?>" size="30">
+			<br>
+			<?php printErrorsByField($this->form->nickname(), $this->errorMessages);?>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<b><?php echo $this->controller->person->text->sex;?>*</b>
+		</td>
+		<td>
+			<input type="radio" name="<?php echo $this->form->sex();?>" value="<?php echo MAN?>"
+				<?php if($this->form->getSex() == MAN) echo 'checked';?>><?php echo $this->controller->person->text->man;?>
+			<input type="radio" name="<?php echo $this->form->sex();?>" value="<?php echo WOMAN?>"
+				<?php if($this->form->getSex() == WOMAN) echo 'checked';?>><?php echo $this->controller->person->text->woman;?>
+			<br>
+			<?php printErrorsByField($this->form->sex(), $this->errorMessages);?>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<b><?php echo $this->controller->person->text->civilState;?></b>
+		</td>
+		<td>
+			<select name="<?php echo $this->form->maritalStatus();?>">
+				<!--FOREACH DE ESTADO CIVIL-->
+				<?php foreach($this->marital as $marital):?>
+					<option value="<?php echo $marital->{MST_ID_MARITAL_STATUS};?>"
+						<?php if($this->form->getMaritalStatus() == $marital->{MST_ID_MARITAL_STATUS}) echo 'selected';?>>
+							<?php echo $marital->{MST_MARITAL_STATUS};?>
+					</option>
+				<?php endforeach;?>
+			</select>
+			<br>
+			<?php printErrorsByField($this->form->maritalStatus(), $this->errorMessages);?>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<b><?php echo $this->controller->person->text->race;?></b>
+		</td>
+		<td>
+			<select name="<?php echo $this->form->race();?>">
+				<!--FOREACH DE RAÇA-->
+				<?php foreach($this->races as $race):?>
+					<option value="<?php echo $race->{RAC_ID_RACE};?>"
+						<?php if($this->form->getRace() == $race->{RAC_ID_RACE}) echo 'selected';?>>
+							<?php echo $race->{RAC_RACE};?>
+					</option>
+				<?php endforeach;?>
+			</select>
+			<br>
+			<?php printErrorsByField($this->form->race(), $this->errorMessages);?>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<b><?php echo $this->controller->person->text->tattoo;?></b>
+		</td>
+		<td>
+			<textarea name="<?php echo $this->form->tattoo();?>" class="small"><?php echo $this->form->getTattoo();?></textarea>
+			<br>
+			<?php printErrorsByField($this->form->tattoo(), $this->errorMessages);?>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<b><?php echo $this->controller->person->text->birth;?>*</b>
+		</td>
+		<td>
+			<input size="12" type="text" name="<?php echo $this->form->birthDate();?>" value="<?php echo $this->form->getBirthDate();?>">
+			<?php echo $this->controller->person->text->dateFormat;?>
+			<br>
+			<?php printErrorsByField($this->form->birthDate(), $this->errorMessages);?>
+		</td>
+	</tr>
+	<?php if($this->form->getId()):?>
+		<tr>
+			<td>
+				<b><?php echo $this->controller->person->text->death;?></b>
+			</td>
+			<td>
+				<input size="12" type="text" name="<?php echo $this->form->deathDate();?>" value="<?php echo $this->form->getDeathDate();?>">
+				<?php echo $this->controller->person->text->dateFormat;?>
+				<br>
+				<?php printErrorsByField($this->form->deathDate(), $this->errorMessages);?>
+			</td>
+		</tr>
+	<?php endif; ?>
+	<tr>
+		<td>
+			<b><?php echo $this->controller->person->text->nacionality;?></b>
+		</td>
+		<td >
+			<select name="<?php echo $this->form->nationality();?>">
+				<!--FOREACH DE NACIONALIDADE-->
+				<?php foreach($this->nation as $nation):?>
+					<option value="<?php echo $nation->{NTY_ID_NATIONALITY};?>"
+						<?php if($this->form->getNationality() == $nation->{NTY_ID_NATIONALITY}) echo 'selected';?>>
+							<?php echo $nation->{NTY_NATIONALITY};?>
+					</option>
+				<?php endforeach;?>
+			</select>
+			<br>
+			<?php printErrorsByField($this->form->nationality(), $this->errorMessages);?>
+		</td>
+	</tr>
+	<div>
+		<tr>
+			<td>
+				<?php echo $this->controller->person->text->foreign;?>
+			</td>
+			<td >
+				<input size="20" type="text" name="<?php echo $this->form->nativeCountry();?>" value="<?php echo $this->form->getNativeCountry();?>">
+				<br>
+				<?php printErrorsByField($this->form->nativeCountry(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<?php echo $this->controller->person->text->arrival;?>
+			</td>
+			<td>
+				<input size="20" type="text" name="<?php echo $this->form->arrivalDate();?>" value="<?php echo $this->form->getArrivalDate();?>">
+				<?php echo $this->controller->person->text->dateFormat;?>
+				<br>
+				<?php printErrorsByField($this->form->arrivalDate(), $this->errorMessages);?>
+			</td>
+		</tr>
+	</div>
+	<tr>
+		<td >
+			<b><?php echo $this->controller->person->text->disability;?></b>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<!--FOREACH DE TIPOS DE DEFICIENCIA-->
+			<?php if(!$this->form->getId()){?>
+				<?php foreach($this->deficiency as $deficiency){?>
+					<input type="checkbox" name="<?php echo $this->form->deficiency();?>[]" value="<?php echo $deficiency->{DFT_ID_DEFICIENCY};?>"
+						<?php foreach($this->form->getDeficiency() as $def)
+							if($def == $deficiency->{DFT_ID_DEFICIENCY}) 
+								echo 'checked';
+						?>>
+					<?php echo $deficiency->{DFT_NAME};?><br>
+				<?php }?>
+			<?php }else{?>
+				<?php foreach($this->deficiency as $deficiency){?>
+					<input type="checkbox" name="<?php echo $this->form->deficiency();?>[]" value="<?php echo $deficiency->{DFT_ID_DEFICIENCY};?>"
+						<?php 
+							foreach($this->form->getDeficiency() as $def)
+								if($def->{DFY_ID_DEFICIENCY} == $deficiency->{DFT_ID_DEFICIENCY})
+									echo 'checked';									
+						?>>
+					<?php echo $deficiency->{DFT_NAME};?><br>
+				<?php }?>
+			<?php }?>
+			<?php printErrorsByField($this->form->deficiency(), $this->errorMessages);?>
+		</td>
+	</tr>
+</table>
+
+<?php if($this->form->getId()):?>
+	<table width="100%" class="noBorder">
+		<tr>
+			<td colspan="4">
+				<hr>
+			</td>
+		</tr>
+		<tr>
+			<td width="23%">
+				<b><?php echo $this->controller->person->text->cpf;?></b>
+			</td>
+			<td colspan="2">
+				<input size="20" type="text" name="<?php echo $this->form->cpf();?>" value="<?php echo $this->form->getCpf();?>">
+				<br>
+				<?php printErrorsByField($this->form->cpf(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<b><?php echo $this->controller->person->text->rg;?></b>
+			</td>
+			<td colspan="2">
+				<input size="20" type="text" name="<?php echo $this->form->rg();?>" value="<?php echo $this->form->getRg();?>">
+				<br>
+				<?php printErrorsByField($this->form->rg(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td >
+				-&nbsp;<?php echo $this->controller->person->text->rgComplement;?>
+			</td>
+			<td colspan="3">
+				<input size="20" type="text" name="<?php echo $this->form->rgComplement();?>" value="<?php echo $this->form->getRgComplement();?>" >
+				<br>
+				<?php printErrorsByField($this->form->rgComplement(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td >
+				-&nbsp;<?php echo $this->controller->person->text->emission;?>
+			</td>
+			<td colspan="3">
+				<input size="20" type="text" name="<?php echo $this->form->rgEmissionDate();?>" value="<?php echo $this->form->getRgEmissionDate();?>" >
+				<?php echo $this->controller->person->text->dateFormat;?>
+				<br>
+				<?php printErrorsByField($this->form->rgEmissionDate(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="1">
+				-&nbsp;<?php echo $this->controller->person->text->uf;?>
+			</td>
+			<td colspan="3">
+				<select name="<?php echo $this->form->rgState();?>">
+					<!--FOREACH DE UF-->
+					<?php foreach($this->uf as $uf):?>
+						<option value="<?php echo $uf->{UF_ID_UF};?>" <?php if($this->form->getRgState() == $uf->{UF_ID_UF} || $uf->{UF_ABBREVIATION} == Zend_Registry::get(CONFIG)->default->uf) echo 'selected';?>>
+								<?php echo $uf->{UF_ABBREVIATION};?>
+						</option>
+					<?php endforeach;?>
+				</select>
+				<br>
+				<?php printErrorsByField($this->form->rgState(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				-&nbsp;<?php echo $this->controller->person->text->organ;?>
+			</td>
+			<td colspan="2">
+				<input size="20" type="text" name="<?php echo $this->form->rgSender();?>" value="<?php echo $this->form->getRgSender();?>" >
+				<br>
+				<?php printErrorsByField($this->form->rgSender(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td >
+				<b><?php echo $this->controller->person->text->nis;?></b>
+			</td>
+			<td >
+				<input size="20" type="text" name="<?php echo $this->form->nisNumber();?>" value="<?php echo $this->form->getNisNumber();?>">
+				<br>
+				<?php printErrorsByField($this->form->nisNumber(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<b><?php echo $this->controller->person->text->sus;?></b>
+			</td>
+			<td colspan="2">
+				<input size="20" type="text" name="<?php echo $this->form->susNumber();?>" value="<?php echo $this->form->getSusNumber();?>" >
+				<br>
+				<?php printErrorsByField($this->form->susNumber(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<b><?php echo $this->controller->person->text->ra;?></b>
+			</td>
+			<td colspan="2">
+				<input size="20" type="text" name="<?php echo $this->form->ra();?>" value="<?php echo $this->form->getRa();?>" >
+				<br>
+				<?php printErrorsByField($this->form->ra(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td >
+				<b><?php echo $this->controller->person->text->voter;?></b>
+			</td>
+			<td colspan="2">
+				<input size="20" type="text" name="<?php echo $this->form->titleVoter();?>" value="<?php echo $this->form->getTitleVoter();?>">
+				<br>
+				<?php printErrorsByField($this->form->titleVoter(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td >
+				-&nbsp;<?php echo $this->controller->person->text->zone;?>
+			</td>
+			<td colspan="2">
+				<input size="20" type="text" name="<?php echo $this->form->titleZone();?>" value="<?php echo $this->form->getTitleZone();?>">
+				<br>
+				<?php printErrorsByField($this->form->titleZone(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				-&nbsp;<?php echo $this->controller->person->text->session;?>
+			</td>
+			<td colspan="2">
+				<input size="20" type="text" name="<?php echo $this->form->titleSession();?>" value="<?php echo $this->form->getTitleSession();?>">
+				<br>
+				<?php printErrorsByField($this->form->titleSession(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<b><?php echo $this->controller->person->text->ctps;?></b>
+			</td>
+			<td >
+				<input size="20" type="text" name="<?php echo $this->form->ctpsNumber();?>" value="<?php echo $this->form->getCtpsNumber();?>">
+				<br>
+				<?php printErrorsByField($this->form->ctpsNumber(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				-&nbsp;<?php echo $this->controller->person->text->series;?>
+			</td>
+			<td colspan="2">
+				<input size="20" type="text" name="<?php echo $this->form->ctpsSeries();?>" value="<?php echo $this->form->getCtpsSeries();?>">
+				<br>
+				<?php printErrorsByField($this->form->ctpsSeries(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td >
+				-&nbsp;<?php echo $this->controller->person->text->emission;?>
+			</td>
+			<td colspan="3">
+				<input size="20" type="text" name="<?php echo $this->form->ctpsEmissionDate();?>" value="<?php echo $this->form->getCtpsEmissionDate();?>">
+				<?php echo $this->controller->person->text->dateFormat;?>
+				<br>
+				<?php printErrorsByField($this->form->ctpsEmissionDate(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td >
+				-&nbsp;<?php echo $this->controller->person->text->uf;?>
+			</td>
+			<td colspan="2">
+				<select name="<?php echo $this->form->ctpsState();?>">
+					<!--FOREACH DE UF-->
+					<?php foreach($this->uf as $uf):?>
+						<option value="<?php echo $uf->{UF_ID_UF};?>"
+							<?php if($this->form->getCtpsState() == $uf->{UF_ID_UF}||$uf->{UF_ABBREVIATION} == Zend_Registry::get(CONFIG)->default->uf) echo 'selected';?>>
+								<?php echo $uf->{UF_ABBREVIATION};?>
+						</option>
+					<?php endforeach;?>
+				</select>
+				<br>
+				<?php printErrorsByField($this->form->ctpsState(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td >
+				<b><?php echo $this->controller->person->text->certification;?></b>
+			</td>
+			<td colspan="2">
+				<input size="20" type="text" name="<?php echo $this->form->civilCertificateType();?>" value="<?php echo $this->form->getCivilCertificateType();?>">
+				<br>
+				<?php printErrorsByField($this->form->civilCertificateType(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td >
+				-&nbsp;<?php echo $this->controller->person->text->term;?>
+			</td>
+			<td colspan="2">
+				<input size="20" type="text" name="<?php echo $this->form->civilCertificateTerm();?>" value="<?php echo $this->form->getCivilCertificateTerm();?>">
+				<br>
+				<?php printErrorsByField($this->form->civilCertificateTerm(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td >
+				-&nbsp;<?php echo $this->controller->person->text->book;?>
+			</td>
+			<td colspan="2">
+				<input size="20" type="text" name="<?php echo $this->form->civilCertificateBook();?>" value="<?php echo $this->form->getCivilCertificateBook();?>">
+				<br>
+				<?php printErrorsByField($this->form->civilCertificateBook(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td >
+				-&nbsp;<?php echo $this->controller->person->text->leaf;?>
+			</td>
+			<td colspan="2">
+				<input size="20" type="text" name="<?php echo $this->form->civilCertificateLeaf();?>" value="<?php echo $this->form->getCivilCertificateLeaf();?>">
+				<br>
+				<?php printErrorsByField($this->form->civilCertificateLeaf(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				-&nbsp;<?php echo $this->controller->person->text->emission;?>
+			</td>
+			<td colspan="3">
+				<input size="20" type="text" name="<?php echo $this->form->civilCertificateEmissionDate();?>" value="<?php echo $this->form->getCivilCertificateEmissionDate();?>">
+				<?php echo $this->controller->person->text->dateFormat;?>
+				<br>
+				<?php printErrorsByField($this->form->civilCertificateEmissionDate(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td >
+				-&nbsp;<?php echo $this->controller->person->text->uf;?>
+			</td>
+			<td colspan="2">
+				<select name="<?php echo $this->form->civilCertificateState();?>">
+					<!--FOREACH DE UF-->
+					<?php foreach($this->uf as $uf):?>
+						<option value="<?php echo $uf->{UF_ID_UF};?>"
+							<?php if($this->form->getCivilCertificateState() == $uf->{UF_ID_UF}||$uf->{UF_ABBREVIATION} == Zend_Registry::get(CONFIG)->default->uf) echo 'selected';?>>
+								<?php echo $uf->{UF_ABBREVIATION};?>
+						</option>
+					<?php endforeach;?>
+				</select>
+				<br>
+				<?php printErrorsByField($this->form->civilCertificateState(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				-&nbsp;<?php echo $this->controller->person->text->office;?>
+			</td>
+			<td colspan="2">
+				<input size="20" type="text" name="<?php echo $this->form->civilCertificateOfficeName();?>" value="<?php echo $this->form->getCivilCertificateOfficeName();?>">
+				<br>
+				<?php printErrorsByField($this->form->civilCertificateOfficeName(), $this->errorMessages);?>
+			</td>
+		</tr>
+	</table>
+<?php endif; ?>
+
+	

@@ -1,0 +1,52 @@
+<input type="button" name="name" value="<?php echo $this->labels->button->new; ?>" onclick="show('address_add_form')"/>
+<div id="address_add_form" style="<?php if(count($this->addressErrorMessages) < 1) echo 'display:none'; ?>">
+<input type="hidden" name="<?php echo SearchAddressForm::flgAction();?>" value="<?php echo $this->form->getFlgAction(); ?>"/>
+
+<table width="100%" class="borderBlack">
+	<tr>
+		<td width="15%"><b><?php echo $this->controller->postalcode->text->addresstype;?></b></td>
+		<td width="20%" colspan="2">
+			<input class="small" type="text" name="<?php echo $this->form->adr_addressType();?>" value="<?php echo $this->form->getAdrAddressType();?>">
+  			<?php printErrorsByField($this->form->adr_addressType(), $this->addressErrorMessages);?>
+		</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td width="15%"><b><?php echo $this->controller->postalcode->text->address;?>:</b></td>
+		<td colspan="3">
+  			<input class="small" type="text" name="<?php echo $this->form->adr_address();?>" value="<?php echo $this->form->getAdrAddress();?>"/>
+  			<?php printErrorsByField($this->form->adr_address(), $this->addressErrorMessages);?>
+		</td>
+	</tr>
+	<tr>
+		<td width="15%"><b><?php echo $this->controller->postalcode->text->typepostal;?>:</b></td>
+		<td width="20%" colspan="3">
+			<input size="9" maxlength="8" type="text" name="<?php echo $this->form->adr_zipcode();?>" value="<?php echo $this->form->getAdrZipcode();?>">
+			<?php printErrorsByField($this->form->adr_zipcode(), $this->addressErrorMessages);?>
+		</td>
+	</tr>
+	<tr>
+		<td width="15%"><b><?php echo $this->controller->postalcode->text->neighborhood;?>:</b></td>
+		<td width="25%">
+			<input class="small" type="text" name="<?php echo $this->form->adr_neighborhood();?>" value="<?php echo $this->form->getAdrNeighborhood();?>" >
+			<?php printErrorsByField($this->form->adr_neighborhood(), $this->addressErrorMessages);?>
+		</td>
+		<td width="15%">&nbsp;&nbsp;&nbsp;&nbsp;<b><?php echo $this->controller->postalcode->text->city;?>:</b></td>
+		<td width="20%">
+			<input class="small" type="text" name="<?php echo $this->form->adr_city();?>" value="<?php echo $this->form->getAdrCity();?>">
+			<?php printErrorsByField($this->form->adr_city(), $this->addressErrorMessages);?>
+		</td>
+	</tr>
+	<tr>
+		<td width="15%"><b><?php echo $this->controller->postalcode->text->uf;?>:</b></td>
+		<td width="20%" colspan="3">
+			<input type="text" name="<?php echo $this->form->adr_uf();?>" value="<?php echo $this->form->getAdrUf();?>" size="3" maxlength="2" >
+			<?php printErrorsByField($this->form->adr_uf(), $this->addressErrorMessages);?>
+		</td>
+	</tr>
+</table>
+
+<input class="" type="submit" name"button" value="<?php echo $this->labels->button->save;?>" 
+	onclick="return actionName('<?php echo $this->baseUrl . SEARCHADDRESS_CONTROLLER.'/'.DEFAULT_ADD_ACTION; ?>',this.form);"/>
+
+</div>

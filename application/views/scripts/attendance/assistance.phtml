@@ -1,0 +1,34 @@
+<html>
+<?php echo $this->render('header/head.phtml');?>
+<body>
+<div width="150px" class="loadingBox">
+<?php echo $this->controller->attendance->text->loading;?>
+</div>
+	<form name="form_redirect" action="" method="post">
+		<input type="hidden" name="<?php if($this->form)echo $this->form->assistanceId();?>" value="<?php if($this->form)echo $this->form->getAssistanceId();?>" />
+		<input type="hidden" name="<?php if($this->form)echo $this->form->personId();?>" value="<?php if($this->form)echo $this->form->getPersonId();?>" />
+		<input type="hidden" name="<?php if($this->form)echo $this->form->programType();?>" value="<?php if($this->form)echo $this->form->getProgramType();?>" />
+		
+		<script language="JavaScript" type="text/javascript">
+		<?php if($this->assistanceType === Constants::GENERAL):?>
+			actionName('<?php echo $this->baseUrl;?><?php echo ATTENDANCE_CONTROLLER;?>/<?php echo GENERAL_VIEW_ACTION;?>',document.forms[0]);
+			document.forms[0].submit();
+		</script>
+		<?php elseif($this->assistanceType === Constants::GROUP):?>
+			actionName('<?php echo $this->baseUrl;?><?php echo ATTENDANCE_CONTROLLER;?>/<?php echo GROUP_VIEW_ACTION;?>',document.forms[0]);
+			document.forms[0].submit();
+		</script>
+		<?php elseif($this->assistanceType === Constants::ESPECIAL):?>
+			actionName('<?php echo $this->baseUrl;?><?php echo ATTENDANCE_CONTROLLER;?>/<?php echo ESPECIAL_VIEW_ACTION;?>',document.forms[0]);
+			document.forms[0].submit();
+		</script>
+		<?php else:?>
+		</script>
+			<center>
+				<b><?php printError($this->controller->attendance->error->invalid->view);?></b>
+			</center>
+		<?php endif;?>
+	</form>
+</body>
+</html>
+  

@@ -1,0 +1,147 @@
+<?php
+/**
+ * Função obsoleta
+ * 
+ */
+function printErrors($errorMessages)
+{
+	if(sizeof($errorMessages) > 0)
+	{
+		foreach($errorMessages as $k=>$v)
+		{
+			echo "<span style=\"font-size: 10pt; font-weight: bold;\">Campo: $k</span><br />\n";
+			echo "<span style=\"color: red; font-size: 10pt;\">";
+			foreach($v as $err)
+			{
+				echo $err[0]."<br />\n";
+			}
+			echo "</span>\n";
+		}
+		echo "<br />\n";
+	}
+}
+/**
+ * Imprime o erro de validação, caso haja
+ * 
+ */
+function printErrorsByField($strFieldName, $errorMessages)
+{
+	if(sizeof($errorMessages) > 0)
+	{
+		foreach($errorMessages as $k=>$v)
+		{
+			if($k == $strFieldName)
+			{
+				echo "<span style=\"color: red; font-size: 10pt;\">";
+				foreach($v as $err)
+				{
+					echo $err[0]."<br />\n";
+				}
+				echo "</span>\n";
+			}
+		}
+	}
+}
+
+/**
+ * Coloca o link de histórico na interface
+ * @param Zend_View $this - Referencia de Zend_View
+ * @param Integer $resourceId - ID do resource
+ */
+function printHistoryLink(&$viewObject, $resourceId,$resourceName = null)
+{
+	if(!empty($resourceId))
+	{
+		echo "|&nbsp;<a href=\" $viewObject->baseUrl". HISTORY_CONTROLLER.'/'.DEFAULT_INDEX_ACTION.'/'.
+			$viewObject->form->resourceId().'/'.$resourceId .'/'.
+			$viewObject->form->personId().'/'.$viewObject->form->getPersonId().$resourceName.
+			"\">". $viewObject->labels->text->history.
+			"</a>&nbsp;|";
+	}
+}
+
+/**
+ * Imprime um texto na cor vermelha
+ * 
+ */
+function printError($str)
+{
+	if(!empty($str))
+	{
+		echo "<span style=\"color: red; font-size: 10pt;\">";
+		echo $str . "<br />\n";
+		echo "</span>\n";
+	}
+}
+/**
+ * Imprime um texto na cor azul
+ * 
+ */
+function printMessage($str)
+{
+	if(!empty($str))
+	{
+		echo "<span style=\"color: blue; font: bold 9pt; font-family:Arial,Helvetica,sans-serif;\">";
+		echo $str . "<br />\n";
+		echo "</span>\n";
+	}
+}
+/**
+ * Imprime de maneira recursiva qualquer objeto ou array
+ * 
+ */
+function describe(&$var)
+{
+	echo "<pre>\n";
+	print_r($var);
+	echo "</pre>\n";
+}
+/**
+ * Abrevia string para determinado tamnaho que pode ser configuravel
+ * 
+ */
+function abbreviate($str, $maxWidth=15)
+{
+	return Utils::abbreviate($str, $maxWidth);	
+}
+/**
+ * Componente de paginação.
+ * 
+ * Requisitos:
+ * Esta função deve ser chamado dentro de um form com id 'navigation'.
+ * 
+ * Dentro deste form deve constar todos os controles para filtro e ordenação. 
+ */
+function printNavBar($navigation)
+{
+	$page	= $navigation['page'];
+	$tpage	= $navigation['tpage'];
+	$total	= $navigation['total'];
+
+	if($page == 0 || $page == '' || $page == null) $page = 1;
+	($page>1)?$first=true:$first=false;
+	($page>1)?$prior=true:$prior=false;
+	(($total>$tpage)&&(($total/$tpage)>$page))?$next=true:$next=false;
+	(($total/$tpage)>$page)?$last=true:$last=false;
+?>
+<!-- Pag begin -->
+<input type="hidden" name="page" id="page" />
+
+<script language="JavaScript" type="text/javascript">
+<!--
+function pagination(page)
+{
+	frm = document.getElementById('navigation');
+	objPage = document.getElementById('page');
+	objPage.value = page;
+	frm.submit();
+}
+//-->
+</script>
+<input type="submit" value="first" <?php if(!$first):?>disabled="true"<?php else:?> onclick="javascript: pagination('1')"<?php endif;?> />
+<input type="submit" value="prior" <?php if(!$prior):?>disabled="true"<?php else:?> onclick="javascript: pagination('<?php echo ($page-1);?>')"<?php endif;?> />
+<input type="submit" value="next" <?php if(!$next):?>disabled="true"<?php else:?> onclick="javascript: pagination('<?php echo ($page+1);?>')"<?php endif;?> />
+<input type="submit" value="last" <?php if(!$last):?>disabled="true"<?php else:?> onclick="javascript: pagination('<?php echo ceil($total/$tpage);?>')"<?php endif;?> />
+<!-- Pag end -->
+<?php
+}

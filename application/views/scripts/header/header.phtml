@@ -1,0 +1,58 @@
+<?php $random = Zend_Registry::get(CONFIG)->container->random;?>
+<?php if($random):?>
+	<?php echo  $this->render('header/header_random.phtml');?>
+<?php else:?>
+<html>
+<?php echo  $this->render('header/head.phtml');?>
+<body>
+<div id=body>
+
+	<div class=coluna>
+	&nbsp;
+	<?php if(!$this->errorMessages[$this->form->personId()] && !is_null($this->form->getPersonId())):?>
+	<!-- inicio de header/header.phtml,  -->
+	<?php if(ResourcePermission::showContainers($this->request)){
+
+			$arrContainerConfig = array ( 
+				PERSON_CONTROLLER => array('config' => 'identification', 'controllerName' => 'PERSON_CONTROLLER')
+				,EDUCATION_CONTROLLER => array( 'config' => 'education', 'controllerName' => 'EDUCATION_CONTROLLER')
+				,HEALTH_CONTROLLER => array('config' => 'health', 'controllerName' => 'HEALTH_CONTROLLER')
+				,INCOME_CONTROLLER => array('config' => 'income', 'controllerName' => 'INCOME_CONTROLLER')
+				,PERSON_LOG_CONTROLLER => array('config' => 'personlog', 'controllerName' => 'PERSON_LOG_CONTROLLER', 'title' => 'personsLog')
+			);
+
+			foreach( $arrContainerConfig as $k => $v ) {
+
+				if(ResourcePermission::isAllowResource($k)){
+			
+					$show = Zend_Registry::get(CONFIG)->container->{$v['config']};
+					$hideHeader = true;
+					$this->rparam = array();
+					$this->rparam['show'] = (int)$show;
+					$this->rparam['title'] =  (isset($v['title']) ? $this->labels->title->{$v['title']} : $this->labels->title->{$v['config']});
+					$this->rparam['idCSS'] =  $v['config'];
+					$this->rparam['controllerName'] =  $k;
+					echo $this->render('container/containerGeneric.phtml' ); 
+				}
+			}
+		?>
+
+		
+	<?php }?>
+	<?php endif;?>
+	</div> <!-- fim div do 'coluna', em header.phtml -->
+
+	<!-- inicio da coluna principal de conteudo -->
+	<div id="main"> 
+	
+		<div id="topo">
+		<?php echo  $this->render('header/authBar.phtml');?>
+		<?php echo  $this->render('menu/menu.phtml');?>
+		</div>
+
+	
+<?php endif;?>
+<div id=corpo>
+<!-- =========================================================================== -->
+<!-- ============================= fim do header =============================== -->
+<!-- =========================================================================== -->

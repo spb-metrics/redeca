@@ -1,0 +1,192 @@
+<tr>
+	<?php if(!$this->notPersonInClass):?>
+	<td width="100%" align="center">
+		<br>
+		<div id="dropForm" style="display: <?php if(!$this->errorMessages && $this->viewDivMigrate == FALSE) echo 'inline'; else echo 'none';?>">
+			<table class="withOutEdge" width="100%">
+				<tr>
+					<td class="middleCenterObject">
+						<b class="bigWriteRed"><?php echo $this->controller->classtemplate->text->questionMigrate;?></b>
+					</td>
+				</tr>
+			</table>
+			<br>
+			<table class="withOutEdge" width="100%">
+				<tr>
+					<td class="middleCenterObject">
+						<form id="classForm" action="<?php echo $this->baseUrl;?><?php echo CLASS_CONTROLLER;?>/<?php echo DEFAULT_CLOSE_ACTION;?>" method="post">
+							<?php echo "<input type='hidden' name='".$this->form->idClass()."' value='".$this->form->getIdClass()."'/>";?>
+							<?php echo "<input type='hidden' name='".$this->form->idEntity()."' value='".$this->form->getIdEntity()."'/>";?>
+						</form>
+						<form action="<?php echo $this->baseUrl;?><?php echo CLASS_CONTROLLER;?>/<?php echo $this->action;?>" method="post">
+							<?php echo "<input type='hidden' name='".$this->form->idClass()."' value='".$this->form->getIdClass()."'/>";?>
+							<?php echo "<input type='hidden' name='".$this->form->idEntity()."' value='".$this->form->getIdEntity()."'/>";?>
+							<input type="submit" name="<?php echo E_CONFIRM; ?>" value="<?php echo $this->labels->button->not;?>"/>&nbsp;&nbsp;&nbsp;
+							<input type="button" onClick="javascript: submitForm('<?php echo $this->baseUrl;?><?php echo CLASS_CONTROLLER;?>/<?php echo DEFAULT_VALID_ACTION;?>','classForm'); hide('dropForm');" value="<?php echo $this->labels->button->yes;?>"/>
+						</form>
+					</td>
+				</tr>
+				<tr>
+					<td class="centerObject" height="60">
+						<a href="<?php echo $this->baseUrl;?><?php echo CLASS_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>">
+							<?php echo $this->labels->button->no;?>
+						</a>	
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+		<!-- ================================================================================== -->
+		<!-- ======================== FORM utilizado para migrar turma ======================== -->
+		<!-- ================================================================================== -->
+		<div id="migrateForm" style="display: <?php if($this->errorMessages || $this->viewDivMigrate == TRUE) echo 'inline'; else echo 'none';?>">
+			<?php if($this->programs && $this->form->getIdClass()): ?>
+				<?php foreach($this->programs as $pr):?>
+					<?php if(sizeof($pr->findDependentRowset(CLS_CLASSMODEL) > 0 ) ): ?>
+						<?php $cl = $pr->findDependentRowset(CLS_CLASSMODEL);?>
+							<?php foreach($cl as $uniqueCl):?>
+									<?php if(!$uniqueCl->{CLS_END_DATE} && $uniqueCl->{CLS_ID_CLASS} != $this->form->getIdClass()): ?>
+										<?php 
+											$objectClass = array();
+											$objectClass[CLS_ID_CLASS]	= $uniqueCl->{CLS_ID_CLASS};
+											$objectClass[CLS_NAME]		= $uniqueCl->{CLS_NAME};
+											$collClass[] = $objectClass;
+										?>
+									<?php else:?>
+										<?php if(!$uniqueCl->{CLS_END_DATE} && $uniqueCl->{CLS_ID_CLASS} == $this->form->getIdClass()): ?>
+											<?php $nameClass = $uniqueCl->{CLS_NAME};?>
+										<?php endif;?>
+									<?php endif;?>
+							<?php endforeach;?>
+					<?php endif;?>
+				<?php endforeach;?>
+			
+				<?php if(sizeof($collClass) > 0):?>
+				<form action="<?php echo $this->baseUrl;?><?php echo CLASS_CONTROLLER;?>/<?php echo DEFAULT_CLOSE_ACTION;?>" method="post">
+					<?php echo "<input type='hidden' name='".$this->form->flagMigrate()."' value='".Constants::ONE."'/>";?>
+					<?php echo "<input type='hidden' name='".$this->form->idEntity()."' value='".$this->form->getIdEntity()."'/>";?>
+					<?php echo "<input type='hidden' name='".$this->form->idClass(); echo "' value='";echo $this->form->getIdClass();echo"'/>";?>
+					<?php printErrorsByField($this->form->idClass(), $this->errorMessages);?>
+					
+					<table class="withOutEdge" width="100%">
+						<!-- ============================================================================= -->
+						<!-- =================== turma que receberá a migração =========================== -->
+						<!-- ============================================================================= -->
+						<tr>
+							<td class="alignRight" height="35">
+								<?php echo "<b>".$this->controller->classtemplate->text->nameClassMigrate;echo "</b>";?>
+							</td>
+							<td>
+								<b class="bigWriteRed"><?php echo $nameClass;?></b></br>
+							</td>
+						</tr>
+						<tr>
+							<td class="alignRight">
+								<?php echo "<b>".$this->controller->classtemplate->text->migrateTo;echo "</b>"; ?>
+							</td>
+							<td>	
+								<select name="<?php echo ClassForm::idNewClass();?>">
+									<option value="">Selecione a Turma</option>
+									<?php
+										foreach($collClass as $obj)
+										{	
+											echo "<option value='";echo $obj[CLS_ID_CLASS]."'";
+											if($obj[CLS_ID_CLASS] == $this->escape($this->form->getIdNewClass()))
+											{
+												echo "selected";
+											}
+											echo ">"; 	
+											echo $obj[CLS_NAME];
+											echo "</option>";
+										}
+									?>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+							<td>	
+								<?php printErrorsByField($this->form->idNewClass(), $this->errorMessages);?>
+							</td>
+						</tr>
+						
+						<!-- ============================================================================== -->
+						<!-- ============= data prevista para encerrar essa atividade ===================== -->
+						<!-- ============================================================================== -->
+						<tr>
+							<td class="alignRight" width="35%">
+								<b><?php echo $this->controller->classtemplate->text->previsionEndDate;?><b>
+							</td>
+							<td width="65%">
+								<input size="20" type="text" maxlength="10" name="<?php echo $this->form->endDate();?>" value="<?php if($this->form)echo $this->form->getEndDate();?>">
+							</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+							<td>	
+								<?php printErrorsByField($this->form->endDate(), $this->errorMessages);?>
+							</td>
+						</tr>
+						
+						
+						<!-- ============================================================================== -->
+						<!-- =================== confidencialidade da atividade =========================== -->
+						<!-- ============================================================================== -->
+						<tr>
+							<td class="alignRight">
+								<b><?php echo $this->controller->classtemplate->text->confidential;?><b>
+							</td>
+							<td>
+								<input type="radio" name="<?php echo $this->form->confidentiality();?>" value="<?php echo Constants::CONFIDENTIALITY_ENTITY;?>"  <?php if($this->form->getConfidentiality() != Constants::CONFIDENTIALITY_PUBLIC) echo "checked";?> ><?php echo $this->labels->button->yes;?>
+								&nbsp;&nbsp;<input type="radio" name="<?php echo $this->form->confidentiality();?>" value="<?php echo Constants::CONFIDENTIALITY_PUBLIC;?>" <?php if(!$this->form->getConfidentiality() || $this->form->getConfidentiality()== Constants::CONFIDENTIALITY_PUBLIC) echo "checked";?>><?php echo $this->labels->button->not;?>
+							</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+							<td>	
+								<?php printErrorsByField($this->form->confidentiality(), $this->errorMessages);?>
+							</td>
+						</tr>
+						
+						<!-- ============================================================================= -->
+						<!-- =================================== botão =================================== -->
+						<!-- ============================================================================= -->
+						<tr>
+							<td colspan="2" class="centerObject" height="40">
+								<input type="button" onclick="document.location='<?php echo $this->baseUrl;?><?php echo CLASS_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>'"  value="<?php echo $this->labels->button->no;?>">&nbsp;&nbsp;&nbsp;
+								<input type="submit" value="<?php echo $this->controller->classtemplate->button->migrateAndClose;?>">
+							</td>
+						</tr>
+					</table>
+				<?php else:?>
+					<?php echo "<b>".$this->controller->classtemplate->text->notExistClass;echo "</b>"?>
+					<p><p>
+					<input type="submit" onclick="document.location='<?php echo $this->baseUrl;?><?php echo CLASS_CONTROLLER;?>/<?php echo DEFAULT_NEW_ACTION;?>/<?php echo ClassForm::idEntity();?>/<?php echo $this->form->getIdEntity();?>'" value="<?php echo $this->controller->classtemplate->button->newRegister;?>">
+				<?php endif;?>
+			<?php else:?>	
+				<?php echo $this->controller->classtemplate->text->paraminvalid;?>
+			<?php endif;?>
+		</div>
+		<!-- =================================================================================================================== -->
+		<!-- ================================================ fim do FORM ====================================================== -->
+		<!-- =================================================================================================================== -->		
+	</td>
+	<?php else:?>
+		<td>
+			<table width="100%" class="withOutEdge">
+				<tr>
+					<td class="centerObject" height="40">
+						<?php printErrorsByField($this->form->idClass(), $this->notPersonInClass);?>
+					</td>
+				</tr>
+				<tr>
+					<td class="centerObject" height="60">
+						<a href="<?php echo $this->baseUrl;?><?php echo CLASS_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>">
+							<?php echo $this->labels->button->back;?>
+						</a>	
+					</td>
+				</tr>
+			</table>
+		</td>
+	<?php endif; ?>
+</tr>

@@ -1,0 +1,94 @@
+<!-- ======================== -->
+<!-- ===== começo =========== -->
+<!-- ======================== -->
+<div>
+	<table width="100%">
+		<tr>
+			<td  colspan="4">
+				<h1><?php echo $this->controller->bioRelation->title;?></h1><br>
+				<?php echo $this->helpcontroller->text1;?>
+			</td>
+		</tr>
+		
+		<tr>
+			<td colspan="4" height="25">
+				<?php echo $this->controller->bioRelation->text->info;?>
+			</td>
+		</tr>
+		
+		<tr>
+			<td>
+				<?php $rb = $this->relationshipByPerson; ?>
+				<?php if($rb && sizeof($rb) > 0): ?>
+				<table width="100%">
+					<tr>
+						<td width="46%" class="alignCenter">
+							<b><?php echo $this->controller->bioRelation->text->name;?></b>
+						</td>
+						<td width="40%" class="alignCenter">
+							<b><?php echo $this->controller->bioRelation->text->level;?></b>
+						</td>
+						<td width="14%" class="alignCenter" colspan="2">
+							<b><?php echo $this->controller->bioRelation->text->action;?></b>
+						</td>
+					</tr>
+				</table>
+				<?php $countLine = 0; $verify = false; ?>
+				<?php foreach($rb as $detail):?>
+				<table width="100%" class="withOutEdge">
+					<form id="<?php echo "action_"; echo $countLine;?>" method="post">
+					<input type="hidden" name="<?php echo SearchForm::idParent();?>" value="<?php echo $detail->findParentRow(CLS_PERSON)->{PRS_ID_PERSON};?>"/>
+					<input type="hidden" name="<?php echo SearchForm::idPerson();?>" value="<?php echo $detail->findParentRow(CLS_PERSON, CLS_CONSANGUINE)->{PRS_ID_PERSON};?>"/>
+					<input type="hidden" name="<?php echo SearchForm::idKinship();?>" value="<?php echo $detail->findParentRow(CLS_CONSANGUINETYPE)->{CTP_ID_CONSAGUINE_TYPE};?>"/>
+					<input type="hidden" name="<?php echo SearchForm::prsName();?>" value="<?php echo $detail->findParentRow(CLS_PERSON)->{PRS_NAME};?>"/>
+					<tr class="write">
+						<td class="middleCenterObject" width="46%">
+							<?php echo $detail->findParentRow(CLS_PERSON)->{PRS_NAME};?>
+						</td>
+						<td class="middleCenterObject" width="40%">
+							<?php if($detail->findParentRow(CLS_CONSANGUINETYPE)->{CTP_STATUS} != Constants::DISABLE):?>
+								<?php echo $detail->findParentRow(CLS_CONSANGUINETYPE)->{CTP_DESCRIPTION};?>
+							<?php else:?>
+								<?php echo $this->labels->text->nodata;?>
+							<?php endif;?>
+						</td>
+						<td class="middleCenterObject" width="7%">
+							<?php if($this->readOnly == FALSE):?>
+								<input class="middleCenterObject" type="button" onclick="submitForm('<?php echo $this->baseUrl;?><?php echo BIOLOGICALRELATIONSHIP_CONTROLLER;?>/<?php echo DEFAULT_VIEW_ACTION;?>','<?php echo "action_"; echo $countLine;?>');" value="<?php echo $this->labels->button->edit;?>"/>
+							<?php endif;?>
+						</td>
+						<td class="middleCenterObject" width="7%">
+							<?php if($this->readOnly == FALSE):?>
+								<input class="middleCenterObject" type="button" onclick="submitForm('<?php echo $this->baseUrl;?><?php echo BIOLOGICALRELATIONSHIP_CONTROLLER;?>/<?php echo DEFAULT_CONFIRM_ACTION;?>','<?php echo "action_"; echo $countLine;?>');" value="<?php echo $this->labels->button->drop;?>"/>
+							<?php endif;?>
+						</td>
+					</tr>
+					</form>
+				</table>
+				<?php $countLine ++;?>
+				<?php endforeach;?>
+				<?php else: ?>
+					<?php echo $this->controller->bioRelation->text->notHave;?>
+				<?php endif;?>
+			</td>
+		</tr>
+		<?php if(!$this->readOnly):?>
+		<tr>
+			<td>
+				<br>
+				<table class="withOutEdge">
+					<tr>
+						<td colspan="3">
+							<input type="button" value="<?php echo $this->controller->bioRelation->text->likeCreate;?>" onClick="document.location='<?php echo $this->baseUrl;?><?php echo BIOLOGICALRELATIONSHIP_CONTROLLER;?>/<?php echo DEFAULT_SEARCH_ACTION;?>/<?php echo SearchForm::idPerson();?>/<?php echo $this->form->getIdPerson();?>'"/>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<?php endif;?>
+	</table>
+</div>
+
+<!-- ======================= -->
+<!-- ===== final =========== -->
+<!-- ======================= -->

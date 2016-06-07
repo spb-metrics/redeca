@@ -1,0 +1,53 @@
+<?php
+/**
+ * Created on 20/03/2008
+ * Author: Jefferson
+ * 
+ * Template que deve ser utilizado por todos os casos de uso que inserem um endereço
+ * Este template deve estar compreendido por tags <form>
+ */
+?>
+<input type="hidden" name="<?php echo BasicForm::adr_idAddress();?>" value="<?php if($this->form)echo $this->form->getAdrIdAddress();?>">
+<table width="100%" class="withoutEdge">
+	<tr>
+		<td align="right" width="11%"><b><?php echo $this->labels->postalcode->text->addresstype;?>:</b></td>
+		<td width="20%" colspan="2">
+			<input class="small" type="text" name="<?php echo BasicForm::adr_addressType();?>" value="<?php if($this->form)echo $this->form->getAdrAddressType();?>" readonly>
+  			<?php printErrorsByField(BasicForm::adr_addressType(), $this->addressErrorMessages);?>
+		</td>
+		<td>&nbsp;</td>
+	</tr>
+	<tr>
+		<td align="right" width="11%"><b><?php echo $this->labels->postalcode->text->address;?>:</b></td>
+		<td colspan="3">
+  			<input class="small" type="text" name="<?php echo BasicForm::adr_address();?>" value="<?php if($this->form)echo $this->form->getAdrAddress();?>" readonly/>
+  			<?php printErrorsByField(BasicForm::adr_address(), $this->addressErrorMessages);?>
+		</td>
+	</tr>
+	<tr>
+		<td align="right" width="11%"><b><?php echo $this->labels->postalcode->text->typepostal;?>:</b></td>
+		<td width="20%" colspan="3">
+			<input size="9" maxlength="8" type="text" name="<?php echo BasicForm::adr_zipcode();?>" value="<?php if($this->form)echo $this->form->getAdrZipcode();?>" readonly >
+			<?php printErrorsByField(BasicForm::adr_zipcode(), $this->addressErrorMessages);?>
+		</td>
+	</tr>
+	<tr>
+		<td align="right" width="11%"><b><?php echo $this->labels->postalcode->text->neighborhood;?>:</b></td>
+		<td width="25%">
+			<input class="small" type="text" name="<?php echo BasicForm::adr_neighborhood();?>" value="<?php if($this->form)echo $this->form->getAdrNeighborhood();?>" readonly>
+			<?php printErrorsByField(BasicForm::adr_neighborhood(), $this->addressErrorMessages);?>
+		</td>
+		<td align="right" width="11%"><b><?php echo $this->labels->postalcode->text->city;?>:</b></td>
+		<td width="20%">
+			<input class="small" type="text" name="<?php echo BasicForm::adr_city();?>" value="<?php if($this->form)echo $this->form->getAdrCity();?>" readonly>
+			<?php printErrorsByField(BasicForm::adr_city(), $this->addressErrorMessages);?>
+		</td>
+	</tr>
+	<tr>
+		<td align="right" width="11%"><b><?php echo $this->labels->postalcode->text->uf;?>:</b></td>
+		<td width="20%" colspan="3">
+			<input type="text" name="<?php echo BasicForm::adr_uf();?>" value="<?php if($this->form)echo $this->form->getAdrUf();?>" size="3" maxlength="2" readonly>
+			<?php printErrorsByField(BasicForm::adr_uf(), $this->addressErrorMessages);?>
+		</td>
+	</tr>
+</table>

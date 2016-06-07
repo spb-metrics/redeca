@@ -1,0 +1,194 @@
+<table width="100%" class="noBorder">	
+	<tr>
+		<td colspan="5" >
+			<?php echo $this->helpcontroller->text3;?>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<?php printErrorsByField($this->form->personId(), $this->errorMessages);?>
+			<?php printErrorsByField($this->form->idResidence(), $this->errorMessages);?>
+			<div id="iframeSearch" style="display: none;">
+				<?php echo $this->render(SEARCHADDRESS_CONTROLLER.'/iframe_search.phtml');?>
+			</div>
+			<div id="buttonIframe" style="display: block;">
+				<input type="button" value="Alterar endereço" onClick="javascript: showDiv('iframeSearch','buttonIframe');"/>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<?php echo $this->render(SEARCHADDRESS_CONTROLLER.'/_address.phtml');?>
+			<?php printErrorsByField($this->form->adr_idAddress(), $this->errorMessages);?>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table width="100%" class="noBorder">
+				<tr>
+					<td width="16%" align="right">
+						<b><?php echo $this->controller->residence->text->number;?>:</b>
+					</td>
+					<td>
+						<input size="20" name="<?php echo $this->form->adr_number();?>" value="<?php echo $this->form->getAdrNumber();?>"><br>
+						<?php printErrorsByField($this->form->number(), $this->errorMessages);?>
+					</td>
+				</tr>
+				<tr>
+					<td align="right">
+						<b><?php echo $this->controller->residence->text->complement;?></b>
+					</td>
+					<td>
+						<input size="20" type="text" name="<?php echo $this->form->adr_complement();?>" value="<?php echo $this->form->getAdrComplement();?>"><br>
+						<?php printErrorsByField($this->form->complement(), $this->errorMessages);?>
+					</td>
+				</tr>
+				<tr>
+					<td align="right">
+						<b><?php echo $this->controller->residence->text->reference;?></b>
+					</td>
+					<td>
+						<input size="20" type="text" name="<?php echo $this->form->adr_reference();?>" value="<?php echo $this->form->getAdrReference();?>"><br>
+						<?php printErrorsByField($this->form->reference(), $this->errorMessages);?>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+<table class="noBorder" width="100%">
+	
+	<tr>
+		<td colspan="5">
+			<hr>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="5" >
+			<?php echo $this->helpcontroller->text4;?>
+		</td>
+	</tr>
+	<tr>
+		<td width="7%">
+			<b><?php echo $this->controller->residence->text->ddd;?></b>
+		</td>
+		<td width="15%">
+			<b><?php echo $this->controller->residence->text->phone;?></b>
+		</td>
+		<td width="15%"></td>
+		<td></td>
+		<td></td>			
+	</tr>	
+	<tr>
+		<td>	
+			<?php foreach($this->form->getDdd() as $ddd):?>
+				<input type="text" name="<?php echo $this->form->ddd();?>[]" value="<?php echo $ddd;?>" size="5px"><br><br>
+			<?php endforeach;?>
+		</td>
+		<td>
+			<?php foreach($this->form->getPhone() as $number):?>
+				<input type="text" name="<?php echo $this->form->phone();?>[]" value="<?php echo $number;?>" size="15px"><br><br>
+			<?php endforeach;?>
+		</td>
+		<td>
+			<?php foreach($this->form->getPhoneType() as $type):?>						
+				<select name="<?php echo $this->form->phoneType();?>[]">
+					<option value=""><?php echo $this->labels->text->select;?>...</option>
+					<?php foreach($this->phoneType as $phoneType):?>
+						<option value="<?php echo $phoneType->{TTP_ID_TELEPHONE};?>"
+							<?php if($type == $phoneType->{TTP_ID_TELEPHONE}) echo "selected";?>><?php echo $phoneType->{TTP_TELEPHONE};?></option>
+					<?php endforeach;?>
+				</select><br><br>
+			<?php endforeach;?>
+		</td>
+		<td>
+			<?php foreach($this->form->getIdPhone() as $idPhone):?>
+				<input type="hidden" name="<?php echo $this->form->idPhone();?>[]" value="<?php echo $idPhone;?>">
+			<?php endforeach;?>
+		</td>
+	</tr>	
+		
+	<tr>
+		<td>
+			<?php if(!$this->errorMessages):?>
+				<input type="text" name="<?php echo $this->form->ddd();?>[]" value="" size="5px"><br><br>
+			<?php endif;?>
+		</td>
+		<td>
+			<?php if(!$this->errorMessages):?>
+				<input type="text" name="<?php echo $this->form->phone();?>[]" value="" size="15px"><br><br>
+			<?php endif;?>
+		</td>
+		<td>
+			<?php if(!$this->errorMessages):?>
+				<select name="<?php echo $this->form->phoneType();?>[]">
+					<option value=""><?php echo $this->labels->text->select;?>...</option>
+					<?php foreach($this->phoneType as $phoneType):?>
+						<option value="<?php echo $phoneType->{TTP_ID_TELEPHONE};?>"><?php echo $phoneType->{TTP_TELEPHONE};?></option>
+					<?php endforeach;?>
+				</select><br><br>
+			<?php endif;?>
+		</td>
+		<td>
+			<?php if(!$this->errorMessages):?>
+				<input type="hidden" name="<?php echo $this->form->idPhone();?>[]" value=""/>
+			<?php endif;?>
+		</td>
+	</tr>		
+	<tr>
+		<td>
+			<?php
+			if(count($this->errorMessages[$this->form->ddd()]) > 1)
+			{
+				echo "<span style=\"color: red; font-size: 10pt;\">";
+				echo $this->controller->residence->text->ddd.' ';
+				echo $this->errorMessages[$this->form->ddd()][0][0];
+				echo "</span>\n";
+			}
+			else
+			{
+				if($this->errorMessages[$this->form->ddd()])
+				{
+					echo "<span style=\"color: red; font-size: 10pt;\">";
+					echo $this->controller->residence->text->ddd.' ';
+					echo "</span>\n";
+					printErrorsByField($this->form->ddd(), $this->errorMessages);
+				}
+			}			 
+			?>
+		</td>
+		<td>
+			<?php 
+				if(count($this->errorMessages[$this->form->phone()]) > 1)
+				{
+					echo "<span style=\"color: red; font-size: 10pt;\">";
+					echo $this->controller->residence->text->phone.' ';
+					echo $this->errorMessages[$this->form->phone()][0][0];
+					echo "</span>\n";
+				}
+				else
+				{
+					if($this->errorMessages[$this->form->phone()])
+					{
+						echo "<span style=\"color: red; font-size: 10pt;\">";
+						echo $this->controller->residence->text->phone.' ';
+						echo "</span>\n";
+						printErrorsByField($this->form->phone(), $this->errorMessages);
+					}
+				}			
+			?>
+		</td>
+		<td>
+			<?php printErrorsByField($this->form->phoneType(), $this->errorMessages);?><br>
+		</td>
+		<td>
+			<?php printErrorsByField($this->form->idPhone(), $this->errorMessages);?>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<input type="submit" value="<?php echo $this->controller->residence->text->savePhone;?>" 
+				onClick="javascript: return actionName('<?php echo $this->baseUrl;?><?php echo RESIDENCE_CONTROLLER;?>/<?php echo DEFAULT_TELEPHONE_ACTION;?>', this.form);">
+		</td>
+	</tr>
+</table>

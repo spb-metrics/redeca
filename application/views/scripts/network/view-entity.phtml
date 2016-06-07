@@ -1,0 +1,174 @@
+<?php echo $this->render('header/header.phtml');?>						 		  						
+				  
+<!-- ===================================== -->
+<!-- inicio : específico com cada template -->					
+<!-- ===================================== -->						  
+<div>
+	<?php echo $this->render('submenu/submenuNetwork.phtml');?>
+
+	<!-- ============================================================================================== -->
+	<!-- É necessário informar o nome class da tabela em questão para carregar a cor background correta -->
+	<!-- Opções: 
+				#identification
+				#person
+				#education
+				#health
+				#income
+				#familyRelationship
+				#residence
+				#attendance
+				#activity	-->
+	<!-- ============================================================================================== -->
+	<form action="" id="navigation" method="post">
+		<table class="network" width="98%">
+			<tr>
+				<td align="center">
+					<table width="100%">
+						<tr>
+							<td colspan="2" height="30">
+								<b><?php echo $this->controller->network->title->registerEntity;?></b>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4">
+								<table width="100%" class="noBorder">
+									<tr>
+										<td colspan="4" height="30">
+											<?php echo $this->helpcontroller->text1;?>
+										</td>
+									</tr>
+									<tr>
+										<td width="28%">
+											<?php echo $this->escape($this->controller->network->text->searchEntity);?>:
+										</td>
+										<td width="28%">
+											<input size="30" type="text" name="<?php echo $this->form->entity();?>" value="">
+										</td>
+										<td width="10%">
+											<input type="submit" value="<?php echo $this->labels->button->filter;?>" 
+												onClick="javascript: actionName('<?php echo $this->baseUrl;?><?php echo NETWORK_CONTROLLER;?>/<?php echo DEFAULT_VIEWENTITY_ACTION;?>',this.form);"
+											/>
+										</td>
+										<td><?php printErrorsByField($this->form->entity(), $this->errorMessages);?></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<hr>
+							</td>
+						</tr>
+						<?php foreach($this->entity as $entity):?>
+							<?php 
+								$address = $entity->findParentRow(CLS_ADDRESS);
+								if(count($address) > 0){
+							 		$addressType = $address->findParentRow(CLS_ADDRESSTYPE);
+							 		$neighborhood = $address->findParentRow(CLS_NEIGHBORHOOD);
+							 		if(count($neighborhood))
+							 			$region = $neighborhood->findManyToManyRowset(CLS_REGION, CLS_NEIGHBORHOODREGION);
+								}
+								else 
+									$address = null;
+							 	$telephone = $entity->findManyToManyRowset(CLS_TELEPHONENUMBER, CLS_ENTITYTELEPHONE);
+							 	$users = $entity->findDependentRowset(CLS_AUTH_USER);
+							 ?>							
+								<tr>
+									<td colspan="2">
+										<b><?php echo $entity->{ENT_NAME};?></b>
+									</td>
+								</tr>
+								<tr>
+									<td width="10%">
+										<?php echo $this->escape($this->controller->network->text->address);?>:
+									</td>
+									<td>
+										<?php 
+											if($address && $addressType) echo $addressType->{ADT_DESCRIPTION}.' '.$address->{ADR_ADDRESS}; 
+											else echo$this->labels->text->nodata;
+										?>
+									</td>
+								</tr>
+								<tr>
+									<td width="10%">
+										<?php echo $this->controller->network->text->neighborhood;?>:
+									</td>
+									<td>
+										<?php 
+											if($neighborhood)echo $neighborhood->{NHD_NEIGHBORHOOD};
+											else echo$this->labels->text->nodata;
+										?>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<?php echo $this->controller->network->text->region;?>:
+									</td>
+									<td>
+										<?php 
+											if($region)
+												foreach($region as $rg) echo $rg->{RGN_REGION};
+											else echo$this->labels->text->nodata;
+										?>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<?php echo $this->controller->network->text->phone;?>:
+									</td>
+									<td>
+										<?php 
+											if(count($telephone) > 0)	
+												foreach($telephone as $phone) echo '('.$phone->{TNB_DDD}.') '.$phone->{TNB_NUMBER}.'<br>';
+											else echo$this->labels->text->nodata;
+										?>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<?php echo $this->controller->network->text->email;?>:
+									</td>
+									<td>
+										<?php 
+											if($entity->{ENT_EMAIL})echo $entity->{ENT_EMAIL};
+											else echo$this->labels->text->nodata;
+										?>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<?php echo $this->controller->network->text->coordinator;?>:
+									</td>
+									<td>
+										<?php 
+											if($users){
+												foreach($users as $user) 
+													if($user->{AUTH_ID_ROLE_USER} == $this->coordinator) 
+														echo $user->{AUTH_NAME_USER};
+											}
+											else echo$this->labels->text->nodata;
+										?>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2">
+										<hr>
+									</td>
+								</tr>
+						<?php endforeach;?>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td align='center' colspan='4'>
+					<?php echo $this->render('/navBar.phtml');?>
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>																  
+<!-- ================================== -->
+<!-- fim : específico com cada template -->					
+<!-- ================================== -->		
+
+<?php echo $this->render('footer/footer.phtml');?>

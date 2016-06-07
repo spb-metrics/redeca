@@ -1,0 +1,12 @@
+<?php echo $this->render('header/header.phtml');?>										 		  							
+	<?php
+		if(!$this->errorMessages)
+		{
+			echo $this->render('education/educationPreview.phtml');
+		}
+		else
+		{
+			echo $this->render('education/invalidParam.phtml');
+		}
+	?>
+<?php echo $this->render('footer/footer.phtml');?>	

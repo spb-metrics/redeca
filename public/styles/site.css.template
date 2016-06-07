@@ -1,0 +1,933 @@
+/*--------------------------------------------------*/
+/*Define as configuracoes padroes de fontes         */
+/*--------------------------------------------------*/
+*{
+	font-family: arial, sans-serif;
+	color:#000;
+	font-size:12px;
+	border:0;
+	margin:0;
+	padding:0;
+}
+p {
+	margin-bottom:2px;
+}
+body, #body {
+	min-width:1010px; /* só funciona no FireFox e Opera */
+	width:100%; 
+}
+
+
+/*--------------------------------------------------*/
+/*Define as configuracoes padroes de links          */
+/*--------------------------------------------------*/
+
+a:link, a:visited, a:hover, a:active{
+	/*color:orange; */ color:BASICCOLOR_LINK; 
+}
+
+/*--------------------------------------------------------*/
+/*Este aqui regula lagura do site e a posicao do site     */
+/* no caso ele esta no centro da tela                     */
+/*--------------------------------------------------------*/
+#main{
+	width:65%;/*define o tamanho total do site*/
+	float:left;
+	display:inline;
+	margin:3px;
+}
+
+
+/*--------------------------------------------------------*/
+/* regula os demais divs o posicionamento deles           */
+/*--------------------------------------------------------*/
+#main #topo, #main #topo #logo, #main #topo #menuUser, #corpo, #footer {
+	float:left;
+	width:100%;
+}
+#main #topo{
+	margin-bottom:5px;
+}
+
+#main #topo #menuUser #authBar {
+	display:inline; 
+	width:100%
+}
+#main #topo #menuUser #authBar span {
+	float:left;
+}
+
+
+/*--------------------------------------------------------*/
+/*Regula a distancia entre o topo e corpo,                */ 
+/*entre o corpo eo rodape                                 */
+/*--------------------------------------------------------*/
+#corpo{
+	margin-bottom:10px;
+}
+
+
+/* alteracoes de design*/
+#footer{
+	background-image: url('fundoFooter.jpg');
+	color:#000;
+	padding-top:7px;
+	height:33px;
+	*height:40px;
+	text-align:center;
+	
+}
+#footer a {
+	color:#000;
+	text-decoration:underline;
+} 
+#logo{
+	background-image: url('fundo_laranja.jpg');
+	background-repeat:repeat-x;
+	background-position:bottom;
+	padding:0;
+	margin:0;
+}
+#riscoColorido{
+	width:100%;
+	background-position:top;
+	background-repeat:no-repeat;
+	height:15px;
+	padding:0;
+	margin:0;
+}
+#cantoRedondo{
+	background-image: url('cantoRedondo_esquerda.jpg');
+	background-position:right;
+	background-repeat:no-repeat;
+	float:right;
+	width:16px;
+	height:77px;
+}
+#div_menu{
+	background-image: url('fundo_laranja.jpg');
+	padding-top:22px;
+	height:55px;
+	*height:100%;
+	width:520px;
+}
+
+
+
+/* =================================================================== */
+/* TABELA BASE. TODAS AS OUTRAS TABELAS HERDAM OS ESTILOS DESSA TABELA */
+/* =================================================================== */									 
+table 
+{
+	border:1px solid   #ccc; 
+	margin-bottom:12px;
+	width:100%;
+}
+
+/* =========================== */									 
+/* Estilo de tabela sem bordas */
+/* =========================== */
+table.withoutEdge
+{
+	border:0px;
+        margin-left:auto;
+        margin-right:auto;
+        width:100%; 
+}
+
+table.userLogged
+{
+	border:0px;
+}
+
+/* ================================== */									 
+/* Estilo de tabela com bordas pretas */
+/* ================================== */
+table.borderBlack 
+{
+	border:1px solid #000000; 
+}
+
+/* ====================================================== */  
+/* Estilo aplicado para tag " H1 " - escrito centralizado */
+/* ====================================================== */
+h1
+{						
+	letter-spacing: 2px;
+	font: bold 12px verdana, arial, helvetica, sans-serif;
+	text-align:center;
+	color: #000;
+/*	background: #FEEDD3;*/ background: BASICCOLOR_TITLE;
+	padding:6px;
+}
+
+h2 {
+	font: bold 11px verdana, arial, helvetica, sans-serif;
+	text-align:left;
+	color: #000;
+	padding:6px;
+	/*background: #F2E2C9;*/ background: BASICCOLOR_TITLE;
+	font-style:italic;
+	border:2px solid #A3C453;
+	margin:0;
+	
+}
+
+
+/* ==================================================== */  
+/* Estilo aplicado à imagem dentro de " H1 "            */
+/* ==================================================== */
+.left {
+	float:left;
+}
+
+
+
+/* =============================== */  
+/* Estilo aplicado para tag " TR " */
+/* =============================== */
+tr
+{
+	height: 15px;
+}
+
+/* ====================================================================== */  
+/* Estilo aplicado para tag " TR - utilizado na listagem de informa��es " */
+/* Pode ser usada para intercalar cor de fundo das linhas =============== */
+/* ====================================================================== */
+tr.write
+{
+	background: #ffffff;
+}
+
+td.heightThirty
+{
+	height: 30px;
+}
+
+/* ================================ */  
+/* Estilo aplicado para tag " TD "  */
+/* ================================ */
+td
+{	
+	vertical-align: top;							 
+}
+
+
+
+/* ======================================================= */  
+/* Estilo aplicado para tag " TD " com escrito em vermelho */
+/* ======================================================= */
+td.writeRed
+{
+	font: bold 11px verdana, arial, helvetica, sans-serif;
+	color: #FF0000;
+	background: #C2C2E0;
+}
+							   
+/* ========================================================= */  
+/* Estilo aplicado para tag " TD " dos containers carregados */
+/* ========================================================= */
+/*
+td.container
+{	
+	vertical-align: top;							 
+	font: 10px verdana, arial, helvetica, sans-serif;
+	width: 90%;
+	height: 150px;
+	background-color: transparent;
+	border: 0px solid black;
+}
+*/
+
+div.scroll {
+  width:100%;
+  height:85;
+  background-color:#E2F0D5;
+  scrollbar-arrow-color:#00086E;
+  	scrollbar-3dlight-color:#E2F0D5;
+	scrollbar-highlight-color:#E2F0D5;
+	scrollbar-face-color:#E2F0D5;
+	scrollbar-shadow-color:#E2F0D5;
+	scrollbar-darkshadow-color:#E2F0D5;
+	scrollbar-track-color:transparent;
+  overflow: auto; 
+}
+
+/* =========================== */  
+/* Estilo aplicado no menu PAI */
+/* =========================== */
+table.menuParent
+{
+	border:0px;
+}	
+
+/* ============================= */  
+/* Estilo aplicado no menu FILHO */
+/* ============================= */
+table.menuChild
+{
+	border:0px;
+}
+ 
+/* ==================================== */									 
+/* IDENTIFICA��O : estilos relacionados */
+/* ==================================== */									 
+table.identification, 
+table.person, 
+table.education, 
+table.network, 
+table.health,
+table.income,
+table.familyRelationship,
+table.residence,
+table.attendance,
+table.activity,
+table.entity,
+table.benefit,
+table.history,
+table.report,
+table.user,
+#search table 
+{
+/*	background-color:#F5FFE6; */ background-color:BASICCOLOR_BACKGROUND; 
+}
+
+
+/* ======================================= */   
+/* Estilo para tags " INPUT " e " BUTTON " */
+/* ======================================= */   
+input, button 
+{ 
+	background-color: #F8F8F8; 
+	font: 10px verdana, arial, helvetica, sans-serif;
+	border:1px solid #BFBFBF;
+} 
+
+/* magic!! specific buttons layout */
+input[type="submit"], input[type="button"] {
+	border:2px solid black;
+	/*background-color:#F9ECCA;*/ background-color:BASICCOLOR_BUTTONS;
+	padding:3px;
+	font-size:10pt;
+}
+input:focus {
+	border:1px solid red;
+}
+
+/* =================================================== */   
+/* Estilo para tag "INPUT" utilizado pelos containers  */
+/* =================================================== */
+input.small 
+{ 	
+	width: 100%;
+}
+
+/* ============================================ */   
+/* Estilo para tag "INPUT" com tamanho reduzido */
+/* ============================================ */
+input.age 
+{ 	
+	width: 15%;
+}
+
+/* ============================ */   
+/* Estilo para tag " TEXTAREA " */
+/* ============================ */   
+textarea { 
+	background-color: #F8F8F8; 
+	font: 10px verdana, arial, helvetica, sans-serif;
+	border:1px solid #BFBFBF;
+} 
+
+/* ============================================= */   
+/* Estilo para tag " TEXTAREA com tamanho m�ximo */
+/* ============================================= */
+textarea.small 
+{ 	
+	width: 100%;
+}
+
+/* ========================== */   
+/* Estilo para tag " SELECT " */
+/* ========================== */   
+select { 
+	background-color: #F8F8F8;
+	font:10px verdana, arial, helvetica, sans-serif;
+	color:#000000;
+	width: 100%;
+}
+
+/* =============================================================================== */
+/* Estilos utilizados no id "menuParent" que � referenciado dentro de "menu/menu.phtml" */
+/* =============================================================================== */
+.menuRoot { 
+	margin:0;
+	list-style:none; 
+	height:40px;
+	background-color:none;
+	float:left;
+}
+.menuRoot li {float:left;}
+.menuRoot li a {
+	display:block; 
+	float:left; 
+	height:35px; 
+	line-height:33px; 
+	color:#000; 
+	text-decoration:none; 
+	font-family:arial, verdana, sans-serif; 
+	text-align:center; 
+	padding:0 0 0 9px; 
+	cursor:pointer; 
+	font-size:11px;
+}
+.menuRoot li a b {float:left; display:block; padding:0 17px 0 9px;}
+.menuRoot li.current a {color:#000; background:url(backgroundActive.gif);}
+.menuRoot li.current a b {background:url(backgroundActive.gif) no-repeat right top;}
+.menuRoot li a:hover {color:#fff; background: url(backgroundHover.gif);}
+.menuRoot li a:hover b {background:url(backgroundHover.gif) no-repeat right top;}
+.menuRoot li.current a:hover {color:#000; background: url(backgroundActive.gif); cursor:default;}
+.menuRoot li.current a:hover b {background:url(backgroundActive.gif) no-repeat right top;}
+
+/* =============================================================================== */
+/* Imagem utilizada no  "menuParent" que � referenciado dentro de "menu/menu.phtml" */
+/* =============================================================================== */
+#logo #logoImage
+{
+	
+	/*background-image: url('logo.gif');*/
+	/*background-image: url('rede.gif');*/
+	background-image: url('logo_recriad.jpg');
+	background-repeat: no-repeat;
+	width:234px;
+	height:77px;
+	float:left;
+}
+
+#logoImageBig
+{	
+	background-image: url('redeBig.gif');
+	background-repeat: no-repeat
+}
+
+/* Posição forçada na mão */
+#logo #logoMenu {
+	text-align:center;
+	margin-left:10%;
+	float:left;
+	position:relative;
+	top:10px;
+	
+}
+
+/* ================================================ */
+/* ======== Estilo aplicado na tag <a href> ======= */
+/* ================================================ */
+a
+{
+	font: bold 9px verdana, arial, helvetica, sans-serif;
+	color: #000000;
+}
+
+a.blue
+{
+	font: bold 9px verdana, arial, helvetica, sans-serif;
+	color: blue;
+}
+
+/* ================================================================================================== */
+/* Estilos utilizados nas linhas e colunas do relat�rio exibido em html - template export/index.phtml */
+/* ================================================================================================== */
+
+.COL, .LIN {
+	background:#CCCCCC none repeat scroll 0%;
+	border-color:#FFFFFF rgb(0, 0, 0) rgb(0, 0, 0) rgb(255, 255, 255);
+	border-style:solid;
+	border-width:1px;
+	color:#000000;
+	font-size:80%;
+	font-weight:bold;
+	padding:2px;
+	text-align:center;
+	font: bold 9px verdana, arial, helvetica, sans-serif;
+}
+
+.CEL {
+	border-bottom:1px dotted #CCCCCC;
+	border-right:1px dotted #CCCCCC;
+	font-size:90%;
+	padding:2px;
+}
+.divStyle
+{
+	border: 1px solid #000000; 
+	background: #FFFFFF;
+	overflow: scroll; 
+	height: 300px;
+	width: 100%;
+}
+.inputText
+{
+	width:400px;
+	text-align:center;
+}
+
+/* ======================================================================= */
+/* Estilos utilizados nas bordas das tabelas de informa��es complementares */
+/* ======================================================================= */
+
+.noBorder
+{
+	border:none;
+}
+.alert
+{	
+	background:#C0FF3E;
+}
+/* ======================================================================= */
+/* Estilos utilizados especificamente no caso de uso Gerenciar Atividades  */
+/* ======================================================================= */
+
+/* ========================== */   
+/* Estilo para tag " SELECT " no template de Gerenciar Atividades*/
+/* ========================== */   
+select.activity { 
+	width: 200px;
+	display: none;
+}
+
+#label_macroactivity{
+	display: none;
+}
+
+.middleValign.labelHeight{
+	height:20px;
+}
+
+input.small.activity 
+{ 	
+	width: 40%;
+}
+/* ========================================================= */
+/*        estilo de font para identifica��o de menu          */
+/* ========================================================= */
+.fontMenu
+{
+	font: bold 13px verdana, arial, helvetica, sans-serif;
+	color: #D0F500;
+}
+
+/* =================================================== */
+/*        estilos utilizados em "Gerenciar Turma"      */
+/* =================================================== */
+select.schedule 
+{ 
+	background-color: #F8F8F8;
+	font:10px verdana, arial, helvetica, sans-serif;
+	color:#000000;
+	width: 7%;
+}
+
+input.nameClass 
+{ 
+	width: 50%;
+}
+
+input.buttonFinish 
+{ 
+	width: 100%;
+}
+
+input.time 
+{ 
+	width: 50%;
+}
+
+input.vacancy 
+{ 
+	width: 10%;
+}
+
+input.dateFinish 
+{ 
+	width: 15%;
+}
+
+select.period 
+{ 
+	width: 15%;
+}
+
+/* =================================================== */
+/*        estilos utilizados em "Gerenciar Educa��o"   */
+/* =================================================== */
+input.education 
+{ 	
+	width: 5%;
+}
+
+/* ================================================ */
+/*        estilos utilizados em "Gerenciar Sa�de"   */
+/* ================================================ */
+input.health 
+{ 	
+	width: 15%;
+}
+
+input.beginPregnancy 
+{ 	
+	width: 10%;
+}
+
+/* ================================================== */
+/*        estilos utilizados em "Gerenciar Benef�cio" */
+/* ================================================== */
+input.dateBenefit 
+{ 	
+	width: 20%;
+}
+
+input.valueBenefit
+{
+	width: 30%;
+}
+
+input.phoneNumber
+{
+	width: 70%;
+}
+
+input.codePhone
+{
+	width: 100%;
+}
+
+.selectLength
+{
+	width: 40%;
+}
+
+/* ================================================ */
+/*		  Estilos da Importa��o de arquivos			*/
+/* ================================================ */
+.step{
+	font: bold 14px verdana, arial, helvetica, sans-serif;
+	text-align:left;
+	color:blue;
+	float:left;
+}
+
+.stepTitle{
+	font: bold 14px verdana, arial, helvetica, sans-serif;
+	text-align:left;
+	color:#000;
+	float:left;
+	width:100px;
+}
+.importStep{
+	letter-spacing: 2px;
+	font: italic 14px verdana, arial, helvetica, sans-serif;
+	text-align:center;
+	color:#000;
+	background: #FFF;
+	float:left;
+	width:25px;
+}
+.importStep.in{
+	color:#D0F500;
+	background: #00086E;
+	float:left;
+}
+.importStep.out{
+	font: bold 14px verdana, arial, helvetica, sans-serif;
+	color:#000;
+	background: #FFF;
+	float:left;
+}
+
+.writeRed
+{	
+	color:red;
+	background: #C0FF3E;
+}
+
+.bigWriteRed
+{	
+	font: bold 10px verdana, arial, helvetica, sans-serif;
+	color:red;
+}
+
+.bigWriteRedBackground
+{	
+	font: bold 10px verdana, arial, helvetica, sans-serif;
+	color:red;
+	background: #C0FF3E;
+}
+
+.bigWrite
+{	
+	font: bold 10px verdana, arial, helvetica, sans-serif;
+}
+
+.bigWriteBackground
+{	
+	font: bold 10px verdana, arial, helvetica, sans-serif;
+	background: #C0FF3E;
+}
+
+input.isRepresentative 
+{ 	
+	width: 100%;
+	background-color: #FF6600; 
+	font: bold 10px verdana, arial, helvetica, sans-serif;
+	border:1px solid #CC3333;
+}
+
+td.middleCenterObject
+{
+	vertical-align: middle;	
+	text-align:center;
+}
+
+input.middleCenterObject
+{
+	vertical-align: middle;	
+	text-align:center;
+}
+
+.loadingBox
+{	
+	font: bold 14px verdana, arial, helvetica, sans-serif;
+	color:#FFFFFF;
+	width: 150px;
+	background: RED;
+	border:1px solid RED; 
+}
+
+.centerObject
+{
+	vertical-align: middle;	
+	text-align:center;
+}
+
+.icontainer
+{
+	border:0px solid BLACK;
+}
+body{
+	background-color: transparent;	
+}
+
+select.slctRegion
+{
+	height: 90%;	
+	width: 100%;
+}
+
+/* ================================================ */
+/*		  Estilos de Endere�o Tempor�rio			*/
+/* ================================================ */
+input.liveSince 
+{ 	
+	width: 13%;
+}
+
+input.numberAddress 
+{ 	
+	width: 13%;
+}
+
+/* =============================== */
+/*		  Tela de Autentica�ao	   */
+/* =============================== */
+.ctr 
+{
+	text-align:center;
+}
+
+.login
+{
+	background:#F1F3F5 none repeat scroll 0%;
+	border:1px solid #CCCCCC;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:6em;
+	padding:10px;
+	width:600px;
+	font-family:Arial,Helvetica,sans-serif;
+	font-size:11px;
+	text-align:left;
+}
+
+.login-form 
+{	
+	color:#333333;
+	font-family:Arial,Helvetica,sans-serif;
+	font-size:11px;
+	margin:0px;
+	padding:0px;
+	
+	float:right;
+	text-align:left;
+	width:40%;
+}
+
+.form-block 
+{
+	vertical-align: middle;
+	background: none repeat scroll 0%;
+	border:1px solid #CCCCCC;
+	padding:15px 10px 10px;
+}
+
+.inputlabel 
+{
+	font-weight:bold;
+	text-align:left;
+}
+
+.inputbox 
+{
+	border:1px solid #CCCCCC;
+	margin:0pt 0pt 1em;
+	width:150px;
+}
+
+.inputlabel 
+{
+	font-weight:bold;
+	text-align:left;
+}
+
+.button 
+{
+	background:#E9ECEF none repeat scroll 0%;
+	border:1px solid #CCCCCC;
+	color:#666666;
+	font-size:9px;
+	font-weight:bold;
+	padding:2px;
+}
+
+.clr 
+{
+	clear:both;
+}
+
+.userBackground
+{
+	background-image: url('user.gif');
+	background-repeat: no-repeat;
+}
+
+.auth
+{
+	text-align: left;
+	font: 10px verdana, arial, helvetica, sans-serif;
+	vertical-align: middle;
+}
+
+/* ----------------------------------------------------------- */
+/* ------------ Habilita | Desabilita usuario ---------------- */
+/* ------------ Ativa | Desativa entidade -------------------- */
+/* ----------------------------------------------------------- */
+.styleRedWrite
+{
+	vertical-align: middle;	
+	text-align:center;
+	color:red;
+	text-decoration:none;
+}
+
+.styleGreenWrite
+{
+	vertical-align: middle;	
+	text-align:center;
+	color:green;
+	text-decoration:none;
+}
+
+.greenWrite
+{		
+	color:green;
+}
+
+/* ----------------------------------------------------------- */
+/* ------------ Altera��o de Senha do usu�rio ---------------- */
+/* ----------------------------------------------------------- */
+input.changePassword 
+{ 	
+	width: 45%;
+}
+
+.alignDivCenter
+{
+  margin-left:auto;
+  margin-right:auto;
+  text-align:center;
+}
+
+.tableContainer
+{						
+	letter-spacing: 2px;
+	font: bold 11px verdana, arial, helvetica, sans-serif;
+	text-align:center;	
+	color:#D0F500;
+	background: #00086E;
+	border: none;
+}
+
+.fontContainer
+{
+	font: bold 11px verdana, arial, helvetica, sans-serif;
+	vertical-align:middle;	
+}
+
+.help {
+	font-size:9pt;
+	font-style:italic;
+}
+.borderless {
+	border:0;
+}
+
+
+
+/*
+ * Container 
+ * - Usado na tela depois da busca com as características da pessoa
+ */
+/* 'Coluna' é o DIV q agrega vários containers */
+.coluna {
+	width:16%;
+	border:0px solid green;
+	float:left;
+	display:inline;
+	margin-top:4cm;
+}
+.container {
+	margin-bottom:3px;
+	/*border:1px solid #FFA600;*/ border:1px solid BASICCOLOR_BORDERCONTAINER;
+	padding:3px;
+	/*background-color:#FFEFD6;*/ background-color:BASICCOLOR_TITLE;
+}
+.container div {
+/*	border:1px solid #FFD480;*/ border:1px solid BASICCOLOR_INNERCONTAINER;
+	padding:3px;
+	background-color:white;
+	.width:100%;
+}
+
+/* B O X 
+ * setups a box design 
+ * firstly used on search-by-name.phtml
+ */
+.hardbox {
+	border:2px solid #ccc;
+	margin-bottom:20px;
+	padding:8px;
+}
+.hardbox p {
+	margin-bottom:12px;
+}

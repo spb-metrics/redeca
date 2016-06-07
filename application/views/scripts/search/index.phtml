@@ -1,0 +1,19 @@
+<?php echo $this->render('header/header.phtml');?>								 		  						
+				  
+<!-- ===================================== -->
+<!-- inicio : específico com cada template -->					
+<!-- ===================================== -->						  
+<div id=search>
+<h1><?php echo $this->controller->search->title;?></h1>
+
+<p class=help><?php echo $this->controller->search->text->description ?></p>
+<p>&nbsp;</p>
+<?php echo $this->render('search/_byname_form.phtml');?>
+<?php echo $this->render('search/_document_form.phtml');?>
+	
+</div>																  
+<!-- ================================== -->
+<!-- fim : específico com cada template -->					
+<!-- ================================== -->		
+
+<?php echo $this->render('footer/footer.phtml');?>

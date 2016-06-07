@@ -1,0 +1,49 @@
+<html>
+<?php echo $this->render('header/head.phtml');?>
+<body>
+
+	<div class="alignDivCenter"> 
+	
+	<table class="withoutEdge" width="980">
+		<tr>
+			<td>
+	
+	<?php echo $this->render('header/authBar.phtml');?>
+	
+	<?php echo $this->render('menu/menu.phtml');?>
+	
+	<table width="100%" class="withoutEdge">
+		<tr>			
+			<td width="17%">
+			<?php if(!$this->errorMessages[$this->form->personId()] && !is_null($this->form->getPersonId())):?>
+			<?php if(ResourcePermission::showContainers($this->request)){?>
+				
+				<?php if(ResourcePermission::isAllowResource(PERSON_CONTROLLER)){?>
+					<?php echo $this->render('container/containerIdentification.phtml');?><br>
+				<?php }?>
+				
+				<?php if(ResourcePermission::isAllowResource(EDUCATION_CONTROLLER)){?>
+					<?php echo $this->render('container/containerEducation.phtml');?><br>
+				<?php }?>
+				
+				<?php if(ResourcePermission::isAllowResource(HEALTH_CONTROLLER)){?>
+					<?php echo $this->render('container/containerHealth.phtml');?><br>
+				<?php }?>
+				
+				<?php if(ResourcePermission::isAllowResource(INCOME_CONTROLLER)){?>
+					<?php echo $this->render('container/containerIncome.phtml');?><br>	
+				<?php }?>
+				
+				<?php if(ResourcePermission::isAllowResource(PERSON_LOG_CONTROLLER)){?>
+					<?php echo $this->render('container/containerPersonLog.phtml');?><br>	
+				<?php }?>	
+				
+			<?php }?>
+			<?php endif;?>
+			</td>
+			
+			<td width="54%" align="center">
+
+<!-- =========================================================================== -->
+<!-- ============================= fim do header =============================== -->
+<!-- =========================================================================== -->

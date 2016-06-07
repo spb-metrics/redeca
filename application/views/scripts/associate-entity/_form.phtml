@@ -1,0 +1,57 @@
+<?php  
+foreach($this->entitiesGroup as $current)
+	$arrayEG[$current->{ENG_ID_ENTITY_GROUP}] = $current->{ENG_ID_ENTITY_GROUP};
+
+?>
+<!-- ==================================================== -->
+<!-- formulário que visualiza as informações para edição =-->
+<!-- este formulário é visualizado a partir do view.phtml -->					
+<!-- ==================================================== -->
+<form action="<?php echo $this->baseUrl;?><?php echo ASSOCIATE_ENTITY_CONTROLLER;?>/<?php echo DEFAULT_GROUP_ACTION;?>" method="post">
+	<tr>
+		<td>
+			<h1>
+				<?php echo $this->labels->button->associate;?>
+				<?php echo $this->controller->associateentity->text->entity;?>
+			</h1>
+		</td>
+	<tr>
+	<tr>
+		<td align="right" height="30">
+			<?php echo $this->render('navigation/navigationNetworkEntity.phtml');?>
+		</td>
+	</tr>
+	<tr>
+		<td><?php echo $this->controller->associateentity->text->entitymain;?></td>
+	</tr>
+	<tr>
+		<td>
+			<select name="<?php echo EntityGroupForm::entityId(); ?>" onchange="actionName('<?php echo $this->baseUrl . ASSOCIATE_ENTITY_CONTROLLER;?>/<?php echo DEFAULT_VIEW_ACTION;?>',this.form );this.form.submit();">
+				<option value="">Selecione</option>
+				<?php foreach($this->entities as $entity):?>
+					<option value="<?php echo $entity->{ENT_ID_ENTITY};?>" <?php if($this->form && $this->form->getEntityId() == $entity->{ENT_ID_ENTITY})echo 'selected'; ?> >
+						<?php echo $entity->{ENT_NAME};?>
+					</option>
+				<?php endforeach; ?>
+			</select>
+			<?php printErrorsByField(EntityGroupForm::entityId(), $this->errorMessages);?>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<select name="<?php echo EntityGroupForm::entityTypeId();?>[]" size="12" multiple="multiple">
+				<?php foreach($this->entityTypes as $entityType):?>
+					<option value="<?php echo $entityType->{EGT_ID_ENTITY_GROUP};?>" <?php if(in_array($entityType->{EGT_ID_ENTITY_GROUP},$arrayEG)) echo 'selected';?> title="<?php echo $entityType->{EGT_ENTITY_GROUP};?>">
+						<?php echo $entityType->{EGT_ENTITY_GROUP};?>
+					</option>
+				<?php endforeach; ?>
+			</select>
+			<?php printErrorsByField(EntityGroupForm::entityTypeId(), $this->errorMessages);?>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<input class="small" type="submit" value="<?php echo $this->labels->button->associate;?>" />
+		</td>
+	</tr>
+</form>

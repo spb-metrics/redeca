@@ -1,0 +1,41 @@
+<?php $case = false;?>
+<?php $show = Zend_Registry::get(CONFIG)->container->personlog;?>
+<?php if(!$show):?>
+	<?php echo $this->render('header/head.phtml');?>
+<?php endif;?>
+<?php $random = Zend_Registry::get(CONFIG)->container->random;?>
+<?php if($random && $case == false):?>
+	<?php echo $this->render('header/head.phtml');?>
+<?php endif;?>
+<table class="icontainer" width="98%">
+	<?php
+	$persons = $this->personsInserted;
+	if(sizeof($persons) > 0)
+	{
+		foreach($persons as $person)
+		{
+		?>
+			<tr>
+				<td>
+				<a href='<?php echo $this->baseUrl;?><?php echo PERSON_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php if($this->form)echo $this->form->personId();?>/<?php echo $person[PIU_ID_PERSON];?>'>
+				<?php echo abbreviate($person[PRS_NAME], 22);?>
+				</a>
+				</td>
+			</tr>
+		<?php
+		}
+	}
+	else
+	{
+	?>
+		<tr>
+			<td>
+				<?php echo $this->controller->personlog->noresult;?>
+			</td>
+		</tr>
+	<?php	
+	}
+	?>
+</table>
+<br />
+<i><?php echo $this->controller->personlog->hint;?></i>

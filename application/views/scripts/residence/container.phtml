@@ -1,0 +1,77 @@
+<?php echo $this->render('header/container.phtml');?>
+<table class="icontainer" width="98%">	
+	<?php if($this->address === true):?>
+		<tr>
+			<td >
+				<?php echo $this->controller->residence->text->family;?>
+			</td>
+		</tr>
+	<?php else:?>
+		<tr>
+			<td >
+				<b><?php echo $this->controller->residence->text->address;?></b>
+			</td>
+			<td >
+				<?php 
+					if(is_null($this->address)) echo $this->labels->text->nodata;
+					else{
+						$adrType = $this->address->findParentRow(CLS_ADDRESSTYPE);
+						echo abbreviate($adrType->{ADT_DESCRIPTION}.' '.$this->address->{ADR_ADDRESS}, 20);
+					}
+				?>
+			</td>
+		</tr>
+		<tr>
+			<td width="">
+				<b><?php echo $this->controller->residence->text->number;?></b>
+			</td>
+			<td >
+				<?php
+					if($this->form instanceof ResidenceForm)
+					{
+						if($this->form->getNumber())	
+							echo $this->form->getNumber();					
+						else
+							echo $this->labels->text->nodata;
+					}else{
+						if($this->numberResidence)	
+							echo $this->numberResidence;					
+						else
+							echo $this->labels->text->nodata;					
+					}
+				?>
+			</td>
+		</tr>
+		<tr>		
+			<td width="">
+				<b><?php echo $this->controller->residence->text->neighborhood;?></b>
+			</td>
+			<td width="">
+				<?php 
+					if(is_null($this->address)) echo $this->labels->text->nodata;
+					else{
+						$nbhName = $this->address->findParentRow(CLS_NEIGHBORHOOD);
+						echo abbreviate($nbhName->{NHD_NEIGHBORHOOD}, 21);
+					}
+				?>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<?php 
+					if(!is_null($this->address)){
+						$nbhName = $this->address->findParentRow(CLS_NEIGHBORHOOD);
+						$city = $nbhName->findParentRow(CLS_CITY);
+						$state = $city->findParentRow(CLS_UF);
+						echo $city->{CTY_CITY}.' - '.$state->{UF_ABBREVIATION};
+					}
+				?>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<input class="small" type="submit" onclick="parent.document.location='<?php echo $this->baseUrl;?><?php echo RESIDENCE_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php if($this->form)echo $this->form->personId();?>/<?php if($this->form)echo $this->form->getPersonId();?>'" value="<?php echo $this->labels->button->showDetail;?>"/>
+			</td>
+		</tr>
+	<?php endif;?>
+</table>

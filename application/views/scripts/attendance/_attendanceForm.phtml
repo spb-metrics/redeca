@@ -1,0 +1,125 @@
+<form action="<?php echo $this->baseUrl . ATTENDANCE_CONTROLLER.'/'.DEFAULT_VIEW_ACTION;?>" name="" method="post">
+<input type="hidden" name="<?php echo BasicForm::personId();?>" value="<?php echo $this->form->getPersonId();?>"/>
+<?php printErrorsByField($this->form->assistanceId(), $this->errorMessages);?>
+<?php printErrorsByField($this->form->personId(), $this->errorMessages);?>
+<?php printErrorsByField(AssistanceForm::entity(), $this->errorMessages);?>
+
+<?php $msg = $this->errorMessages;
+// Exibe fomulário somente se o usuário estiver associado a uma entidade
+// verificação feita com mensagem de validação 
+if(count($msg[AssistanceForm::entity()]) < 1):
+?>
+<table width="100%">	
+	<tr>
+		<td colspan="2">
+			<h1><?php echo $this->controller->attendance->title;?></h1>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<?php echo $this->helpcontroller->text1?>
+		</td>
+	</tr>
+	<tr>
+		<td width="38%">
+			<?php echo $this->controller->attendance->text->selectAttendanceType;?>:
+		</td>
+		<td width="62%">
+			<select name="<?php echo AssistanceForm::programType();?>">
+				<option value=""> <?php echo $this->controller->attendance->text->selectAttendance;?>...</option>
+				<?php foreach($this->programTypes as $program): ?>
+					<option value="<?php echo $program->{PGT_ID_PROGRAM_TYPE}; ?>" > <?php echo $program->{PGT_PROGRAM_TYPE}; ?> </option>
+				<?php endforeach;?>
+			</select>
+			<?php 
+				if(count($this->errorMessages[AssistanceForm::programType()]) > 1)
+				{
+					echo "<span style=\"color: red; font-size: 10pt;\">";
+					echo $this->errorMessages[$this->form->programType()][0][0];
+					echo "</span>\n";
+				}
+				else
+				{
+					printErrorsByField(AssistanceForm::programType(), $this->errorMessages);
+				}
+			?>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<input type="submit" name="" value="<?php echo $this->labels->button->next;?>"/>
+		</td>
+	</tr>
+</table>
+</form>
+
+<hr>
+<table width="100%" >
+	<tr>
+		<td colspan="2">
+			<h1><?php echo $this->controller->attendance->text->registerAttendanceEntity;?></h1>
+		</td>
+	</tr>
+	<?php if(count($this->assistances) > 0):?>
+		<tr>
+			<th>
+				&nbsp;
+			</th>
+			<th align="left">
+				<?php echo $this->controller->attendance->text->attendance; ?>
+			</th>
+		</tr>
+		<?php $i=1; foreach($this->assistances as $assistance): ?>
+		<form name="form_<?php echo $i; ?>" action="<?php echo $this->baseUrl . ATTENDANCE_CONTROLLER.'/'.ASSISTANCE_ACTION;?>" method="post">
+		<tr>
+			<td>
+				<?php echo $i; ?>
+			</td>
+			<td>
+				<input type="hidden" name="<?php echo $this->form->programType(); ?>" value="<?php echo $assistance[Constants::AST_SUMMARY_PROGRAM_ID]; ?>"/>
+				<input type="hidden" name="<?php echo $this->form->personId(); ?>" value="<?php echo $this->form->getPersonId(); ?>"/>
+				<input type="hidden" name="<?php echo $this->form->assistanceId(); ?>" value="<?php echo $assistance[Constants::AST_SUMMARY_ID]; ?>"/>
+				
+				<?php $description = $assistance[Constants::AST_SUMMARY_DESC];?>				
+				<a href="#" onclick="document.forms['form_<?php echo $i; ?>'].submit();">
+				<?php if($assistance[Constants::AST_SUMMARY_TYPE] == Constants::ESPECIAL): ?>
+					<?php echo $this->controller->attendance->text->especial; ?>
+					-
+					<?php echo $assistance[Constants::AST_USER_NAME];?>	
+				<?php elseif($description): ?>
+					<?php echo $description; ?>
+					-
+					<?php echo $assistance[Constants::AST_USER_NAME];?>						
+				<?php else: ?>
+					<?php if($assistance[Constants::AST_SUMMARY_TYPE] == Constants::GENERAL):?>
+						<?php echo $this->controller->attendance->text->general; ?>
+						-
+						<?php echo $assistance[Constants::AST_USER_NAME];?>
+					<?php elseif($assistance[Constants::AST_SUMMARY_TYPE] == Constants::GROUP):?>
+						<?php echo $this->controller->attendance->text->group; ?>
+						-
+						<?php echo $assistance[Constants::AST_USER_NAME];?>
+					<?php endif;?>	
+				<?php endif; ?>
+				</a>
+			</td>
+		</tr>
+		</form>
+		<?php $i++; ?>
+		<?php endforeach;?>		
+	<?php else:?>
+	<tr>
+		<td colspan="2">
+			<?php echo $this->controller->attendance->text->noresults; ?>
+		</td>
+	</tr>
+	<?php endif;?>
+	<tr>
+		<td align="right" colspan="2">
+			<a href="<?php echo $this->baseUrl . ATTENDANCE_CONTROLLER.'/'.DEFAULT_VIEWATTENDANCE_ACTION.'/'.$this->form->personId().'/'.$this->form->getPersonId();?>"> 
+				<?php echo $this->controller->attendance->all;?>
+			</a>
+		</td>
+	</tr>
+</table>
+<?php endif;?>

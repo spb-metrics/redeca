@@ -1,0 +1,20 @@
+<?php echo $this->render('header/header.phtml');?>								 		  						
+				  
+<!-- ===================================== -->
+<!-- inicio : específico com cada template -->					
+<!-- ===================================== -->						  
+<div>
+	<?php echo $this->render('submenu/submenuAdm.phtml');?>
+
+	<?php echo $this->render('success/_success.phtml'); ?>
+	<p>
+		<a href="<?php echo $this->baseUrl;?><?php echo IMPORT_CONTROLLER.'/'.DEFAULT_INDEX_ACTION;?>">Voltar</a>
+	</p>
+</div>																  
+<!-- ================================== -->
+<!-- fim : específico com cada template -->					
+<!-- ================================== -->		
+
+<?php echo $this->render('footer/footer.phtml');?>
+
+

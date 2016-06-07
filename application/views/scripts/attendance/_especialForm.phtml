@@ -1,0 +1,152 @@
+<?php if(count($this->errorMessages) > 0 && $this->form):?>
+<?php 
+$form = $this->form;
+
+$assistanceId = $form->getAssistanceId();
+$officialLetter = $form->getOfficialLetter();
+$officialLetterNumber = $form->getOfficialLetterNumber();
+$officialLetterYear = $form->getOfficialLetterYear();
+$lawsuit = $form->getLawsuit();
+$lawsuitNumber = $form->getLawsuitNumber();
+$lawsuitYear = $form->getLawsuitYear();
+$lawsuitDetail = $form->getLawsuitDetail();
+$ruling = $form->getRuling();
+?>
+<?php elseif($this->assistance):?>
+<?php 
+$especial = $this->assistance->findParentRow(CLS_ESPECIALASSISTANCE);
+
+$assistanceId = $this->assistance->{AST_ID_ASSISTANCE};
+$officialLetter = $especial->{EAS_ID_OFFICIAL_LETTER_ORIGIN};
+$officialLetterNumber = $especial->{EAS_OFFICIAL_LETTER_NUMBER};
+$officialLetterYear = $especial->{EAS_OFFICIAL_LETTER_YEAR};
+$lawsuit = $especial->{EAS_ID_LAWSUIT_ORIGIN};
+$lawsuitNumber = $especial->{EAS_LAWSUIT_NUMBER};
+$lawsuitYear = $especial->{EAS_LAWSUIT_YEAR};
+$lawsuitDetail = $especial->{EAS_LAWSUIT_DETAIL};
+$ruling = $especial->{EAS_RULING};
+?>
+<?php endif;?>
+
+<table width="100%">
+	<form action="<?php echo $this->baseUrl;?><?php echo ATTENDANCE_CONTROLLER;?>/<?php echo ESPECIAL_ADD_ACTION;?>" method="post">
+		<input type="hidden" name="<?php echo $this->form->assistanceId();?>" value="<?php echo $assistanceId;?>" size="20px">
+		<input type="hidden" name="<?php echo $this->form->personId();?>" value="<?php echo $this->form->getPersonId();?>" size="20px">
+		<?php printErrorsByField($this->form->assistanceId(), $this->errorMessages);?>
+		<?php printErrorsByField($this->form->personId(), $this->errorMessages);?>
+		<?php printErrorsByField(Constants::NOT_ALLOWED_TO_CLOSE, $this->errorMessages);?>
+		<tr>
+			<td colspan="2">
+				<h1><?php echo $this->controller->attendance->text->especial;?></h1>
+			</td>
+		</tr>
+		<tr class="write">
+			<td align="center" colspan="2">	
+				<a href="<?php echo $this->baseUrl;?><?php echo ATTENDANCE_CONTROLLER;?>/<?php echo ESPECIAL_VIEW_ACTION;?>/<?php echo EspecialAssistanceForm::assistanceId();?>/<?php echo $this->form->getAssistanceId();?>">
+					<?php echo $this->controller->attendance->text->especial;?>
+				</a>
+				&nbsp;|
+				<a href="<?php echo $this->baseUrl;?><?php echo ATTENDANCE_CONTROLLER;?>/<?php echo ESPECIAL_GENERAL_VIEW_ACTION;?>/<?php echo GeneralAssistanceForm::assistanceId();?>/<?php echo $this->form->getAssistanceId();?>">
+					<?php echo $this->controller->attendance->tab->general;?>
+				</a>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<?php echo $this->helpcontroller->text4?>
+			</td>
+		</tr>
+		<tr>
+			<td width="18%">
+				<b><?php echo $this->controller->attendance->text->officialLetter;?><b>
+			</td>
+			<td>
+				<input type="text" name="<?php echo $this->form->officialLetterNumber();?>" value="<?php echo $officialLetterNumber;?>" size="20"><br>
+				<?php printErrorsByField($this->form->officialLetterNumber(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<b><?php echo $this->controller->attendance->text->year;?><b>
+			</td>
+			<td>
+				<input type="text" name="<?php echo $this->form->officialLetterYear();?>" value="<?php echo $officialLetterYear;?>" size="20"><br>
+				<?php printErrorsByField($this->form->officialLetterYear(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<b><?php echo $this->controller->attendance->text->officialOrigen;?><b>
+			</td>
+			<td>
+				<select name="<?php echo $this->form->officialLetter();?>">
+					<?php foreach($this->officialLetter as $current):?>
+					<option value="<?php echo $current->{OLO_ID_OFFICIAL_LETTER_ORIGIN}; ?>" <?php if($officialLetter == $current->{OLO_ID_OFFICIAL_LETTER_ORIGIN})echo 'selected'; ?> > <?php echo $current->{OLO_OFFICIAL_LETTER_ORIGIN}; ?> </option>
+					<?php endforeach;?>
+				</select><br>
+				<?php printErrorsByField($this->form->officialLetter(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td width="15%">
+				<b><?php echo $this->controller->attendance->text->processLetter;?><b>
+			</td>
+			<td>
+				<input type="text" name="<?php echo $this->form->lawsuitNumber();?>" value="<?php echo $lawsuitNumber;?>" size="20"><br>
+				<?php printErrorsByField($this->form->lawsuitNumber(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<b><?php echo $this->controller->attendance->text->year;?><b>
+			</td>
+			<td>
+				<input type="text" name="<?php echo $this->form->lawsuitYear();?>" value="<?php echo $lawsuitYear;?>" size="20"><br>
+				<?php printErrorsByField($this->form->lawsuitYear(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<b><?php echo $this->controller->attendance->text->processOrigen;?><b>
+			</td>
+			<td>
+				<select name="<?php echo $this->form->lawsuit();?>">
+					<?php foreach($this->lawsuit as $current): ?>
+						<option value="<?php echo $current->{LWO_ID_LAWSUIT_ORIGIN}; ?>" <?php if($lawsuit == $current->{LWO_ID_LAWSUIT_ORIGIN})echo 'selected'; ?> > <?php echo $current->{LWO_LAWSUIT_ORIGIN}; ?> </option>
+					<?php endforeach;?>
+				</select><br>
+				<?php printErrorsByField($this->form->lawsuit(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<b><?php echo $this->controller->attendance->text->detail;?><b>
+			</td>
+			<td>
+				<textarea name="<?php echo $this->form->lawsuitDetail();?>" rows="5" cols="40" wrap=""><?php echo $lawsuitDetail;?></textarea><br>
+				<?php printErrorsByField($this->form->lawsuitDetail(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<b><?php echo $this->controller->attendance->text->descisionCourt;?><b>
+			</td>
+			<td>
+				<textarea name="<?php echo $this->form->ruling();?>" rows="5" cols="40" wrap="off"><?php echo $ruling;?></textarea><br>
+				<?php printErrorsByField($this->form->ruling(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td align="right">
+				<input type="submit" value="<?php echo $this->labels->button->save;?>"/>
+			</td>
+	</form>
+	<form action="<?php echo $this->baseUrl;?><?php echo ATTENDANCE_CONTROLLER;?>/<?php echo DEFAULT_CONFIRM_ACTION;?>" method="post">
+			<td >
+				<input type="hidden" name="<?php echo $this->form->assistanceId();?>" value="<?php echo $assistanceId;?>" >
+				<input type="hidden" name="<?php if($this->form)echo $this->form->personId();?>" value="<?php if($this->form)echo $this->form->getPersonId(); ?>"/>
+				<input type="submit" value="<?php echo $this->labels->button->close;?>"/>
+			</td>
+		</tr>
+	</form>
+</table>

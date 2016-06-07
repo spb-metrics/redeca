@@ -1,0 +1,82 @@
+<tr>
+	<td>
+		<table width="100%" class="withOutEdge">
+			<!-- ========================================================= -->
+			<!-- ============= form que busca pelo nome ================== -->
+			<!-- ========================================================= -->
+			<form action="<?php echo $this->baseUrl;?><?php echo FAMILYRELATIONSHIP_CONTROLLER;?>/<?php echo DEFAULT_SEARCH_BY_NAME_ACTION;?>" method="post">
+				<input type="hidden" name="<?php echo SearchForm::idPerson();?>" value="<?php echo $this->form->getIdPerson();?>"/>
+				<?php printErrorsByField($this->form->idPerson(), $this->errorMessages);?>
+				<!-- ========================================================= -->
+				<!-- ======================= nome ============================ -->
+				<!-- ========================================================= -->
+				<tr>
+					<td colspan="2">
+						<h1><?php echo $this->controller->fRelationship->search->typeName;?></h1>
+					</td>
+				</tr>
+				<tr>
+					<td width="5%">
+						<?php echo $this->controller->fRelationship->text->name;?>
+					</td>
+					<td>
+						<input size="100" type="text" name="<?php echo $this->form->prsName();?>" value="<?php echo $this->form->getPrsName();?>"/><br>
+						<?php printErrorsByField($this->form->prsName(), $this->errorMessages);?>
+					</td>
+				</tr>
+				
+				<tr>
+					<td colspan="2" height="50" class="middleValign">
+						<?php echo $this->controller->fRelationship->text->option;?>
+						<hr>
+					</td>
+				</tr>
+				
+				<!-- ============================================================= -->
+				<!-- ======================= sexo ================================ -->
+				<!-- ============================================================= -->
+				<tr>
+					<td>
+						<?php echo $this->controller->fRelationship->text->sex;?>
+					</td>
+					<td>
+						<select name="<?php echo $this->form->prsSex();?>">
+							<option value=""><?php echo $this->controller->fRelationship->text->both;?></option>
+							<option value="<?php echo Constants::WOMAN;?>" <?php if($this->form->getPrsSex() == Constants::WOMAN) echo "selected";?>>Feminino</option>
+							<option value="<?php echo Constants::MAN;?>" <?php if($this->form->getPrsSex() == Constants::MAN) echo "selected";?>>Masculino</option>
+						</select><br>
+						<?php printErrorsByField($this->form->prsSex(), $this->errorMessages);?>
+					</td>
+				</tr>
+				
+				<!-- ========================================================== -->
+				<!-- ======================= idade ============================ -->
+				<!-- ========================================================== -->
+				<tr>
+					<td colspan="2" height="50" class="middleValign">
+						<?php echo $this->controller->fRelationship->text->age1;?>
+						<input size="5" type="text" name="<?php echo $this->form->prsFirstAge();?>" value="<?php echo $this->form->getPrsFirstAge();?>"/>
+						<?php echo $this->controller->fRelationship->text->age2;?>
+						<input size="5" type="text" name="<?php echo $this->form->prsSecondAge();?>" value="<?php echo $this->form->getPrsSecondAge();?>"/>
+						<?php echo $this->controller->fRelationship->text->age3;?>
+						<?php printErrorsByField($this->form->prsFirstAge(), $this->errorMessages);?><br>
+						<?php printErrorsByField($this->form->prsSecondAge(), $this->errorMessages);?><br>
+					</td>
+				</tr>
+				
+				<!-- ========================================================= -->
+				<!-- ======================= botoes ========================== -->
+				<!-- ========================================================= -->
+				<tr>
+					<td colspan="2">
+						<input type="submit" value="<?php echo $this->labels->button->filter;?>" />
+						<input type="button" value="<?php echo $this->labels->button->back;?>" onClick="document.location='<?php echo $this->baseUrl;?><?php echo FAMILYRELATIONSHIP_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php echo SearchForm::idPerson();?>/<?php echo $this->form->getIdPerson();?>'"/>
+					</td>
+				</tr>
+			</form>
+			<!-- ======================================================== -->
+			<!-- ============= fim do form que busca pelo nome ========== -->
+			<!-- ======================================================== -->
+		</table>
+	</td>
+</tr>

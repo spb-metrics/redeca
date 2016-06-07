@@ -1,0 +1,30 @@
+<tr>
+	<td width="100%" align="center">
+		<h1>
+			<?php echo ($this->labels->confirm->disable->title);?>
+		</h1>
+		<!-- =================================================================================================================== -->
+		<!-- =================================== FORM utilizado para excluir um ou mais perfil ================================= -->
+		<!-- =================================================================================================================== -->
+		<form action="<?php echo $this->baseUrl;?><?php echo PROFILE_CONTROLLER;?>/<?php echo $this->action;?>" method="post">
+			<p>
+				<?php echo $this->labels->confirm->disable->text;?>&nbsp;?<br>
+				<?php 
+					foreach($this->objectProfiles as $profile)
+					{
+						echo "<br>".$this->controller->profile->text->profileName.":&nbsp;";
+						echo "<input type='hidden' name='".$this->form->id()."[]' value='".$profile->{AUTH_ID_PROFILE}."'/>";
+						echo "<b>". $profile->{AUTH_PROFILE}."</b><br>";
+					}
+				?>
+			</p>
+			<div>
+				<input type="submit" name="<?php echo E_CONFIRM; ?>" value="<?php echo $this->labels->confirm->button->yes;?>" />
+				<input type="button" onClick="document.location='<?php echo $this->baseUrl;?><?php echo PROFILE_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>'" value="<?php echo $this->labels->confirm->button->cancel;?>" />
+			</div>
+		</form>	
+		<!-- =================================================================================================================== -->
+		<!-- ================================================ fim do FORM ====================================================== -->
+		<!-- =================================================================================================================== -->		
+	</td>
+</tr>

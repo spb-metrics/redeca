@@ -1,0 +1,89 @@
+<!-- ===================================== -->
+<!-- inicio : específico com cada template -->					
+<!-- ===================================== -->						  
+<div>
+	<?php echo $this->render('submenu/submenuPerson.phtml');?>
+
+	<!-- ============================================================================================== -->
+	<!-- É necessário informar o nome class da tabela em questão para carregar a cor background correta -->
+	<!-- Opções: 
+				#identification
+				#person
+				#education
+				#health
+				#income
+				#familyRelationship
+				#residence
+				#attendance
+				#activity -->
+	<!-- ============================================================================================== -->
+	<table class="health" width="98%">
+		<tr>
+			<td align="center">
+				<table width="100%" class="withOutEdge">
+					<tr>
+						<td colspan="3" align="right">
+							<?php if(!$this->history_view):?>
+								<?php if($this->readOnly == FALSE):?>
+									|&nbsp;<a href="<?php echo $this->baseUrl . HEALTH_CONTROLLER;?>/<?php echo DEFAULT_VIEW_ACTION;?>/<?php echo $this->form->idPerson();?>/<?php echo $this->form->getIdPerson();?>"><?php echo $this->labels->button->edit;?></a>
+								<?php endif;?>
+							<?php endif; ?>
+							<?php printHistoryLink($this, $this->resource_key, HEALTH_CONTROLLER); ?>
+							<?php if(sizeof($this->pregnancyByPerson) > 0 )
+								{
+									if($this->pregnancyByPerson->findParentRow(CLS_PERSON)->{PRS_SEX} == Constants::WOMAN)
+									{			
+										$showPregnancy = TRUE;
+									}
+								}
+							?>
+							
+						</td>
+					</tr>
+					
+					<tr>
+						<td colspan="3">
+							<?php echo $this->helpcontroller->text1;?><br><br>							
+						</td>
+					</tr>
+					
+					<?php
+						if($showPregnancy == TRUE)
+						{
+							if($this->history_view)
+							{
+								if(sizeof($this->pregnancyByPerson) > 0)
+								{
+									echo $this->render('health/pregnancyView.phtml');	
+								}
+							}
+							else
+							{
+								
+								echo $this->render('health/pregnancyView.phtml');
+							}
+						}
+					?>
+					
+					<?php
+						if($this->history_view)
+						{
+							if(sizeof($this->healthByPerson) > 0)
+							{
+								echo $this->render('health/healthView.phtml');	
+							}
+						}
+						else
+						{
+							echo $this->render('health/healthView.phtml');
+						}
+					?>
+					
+				</table>
+			</td>
+		</tr>
+	</table>
+</div>																  
+<!-- =================================== -->
+<!-- fim : específico para cada template -->					
+<!-- =================================== -->

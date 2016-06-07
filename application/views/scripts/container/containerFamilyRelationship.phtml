@@ -1,0 +1,112 @@
+<?php $show = Zend_Registry::get(CONFIG)->container->family;?>
+<script type="text/javascript">		
+	$('#imgFakeHideFam').hide();
+	<?php if($show):?>
+		$().ajaxSend(function(){$('#loading5').show();});		
+		$.post('<?php echo $this->baseUrl;?><?php echo FAMILYRELATIONSHIP_CONTROLLER;?>/<?php echo DEFAULT_CONTAINER_ACTION;?>/<?php if($this->form)echo $this->form->personId();?>/<?php if($this->form)echo $this->form->getPersonId();?>', function(data){ $('#family').append(data);$('#loading5').hide();});
+	<?php else:?>
+		function showFamily()
+		{
+			$('#maxFamily').hide();
+			$('#mainFamily').show();
+			$().ajaxSend(function(){$('#loading5').show();$('#imgHideFam').hide();$('#imgFakeHideFam').show();$('#tableHideFam').hide();$('#tableFakeHideFam').show();});		
+			$.post('<?php echo $this->baseUrl;?><?php echo FAMILYRELATIONSHIP_CONTROLLER;?>/<?php echo DEFAULT_CONTAINER_ACTION;?>/<?php if($this->form)echo $this->form->personId();?>/<?php if($this->form)echo $this->form->getPersonId();?>', 
+				function(data)
+				{ 
+					if(data.search(/<?php echo $this->labels->login->title;?>/i) != -1)
+					{
+						window.location.reload();
+					}
+					else
+					{
+						$('#family').append(data);
+						$('#loading5').hide();
+						$('#imgFakeHideFam').hide();
+						$('#imgHideFam').show();
+						$('#tableFakeHideFam').hide();
+						$('#tableHideFam').show();
+					}
+				}
+			);
+		}
+		
+		function hideFamily()
+		{
+			$('#maxFamily').show();
+			$('#family').empty();
+			$('#mainFamily').hide();
+		}
+	<?php endif;?>
+	
+</script>
+
+<?php if(!$show):?>
+<div id="maxFamily" class="education">
+	<table class="familyRelationship" width="100%">
+		<tr>
+			<td>				
+				<table width="100%" class="tableContainer" onClick="showFamily()">
+					<tr>
+						<td width="10%" class="fontContainer">
+							<img src="<?php echo $this->baseUrl;?>/public/images/show.png" title="<?php echo $this->labels->title->show;?>"/>
+						</td>				
+						<td width="90%" class="fontContainer">
+							<b><?php echo $this->labels->title->family;?></b>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+</div>
+<?php endif;?>
+
+<div id="mainFamily" <?php if(!$show):?>style="display: none;"<?php endif;?>>
+	<table class="familyRelationship" width="100%">
+		<tr>
+			<td class="container">
+				
+				<?php if(!$show):?>
+					<table width="100%" class="tableContainer" id="tableHideFam" onClick="hideFamily()">
+						<tr>
+							<td width="10%" class="fontContainer">
+								<img id="imgHideFam" src="<?php echo $this->baseUrl;?>/public/images/hide.png" title="<?php echo $this->labels->title->hide;?>"/>
+								<img id="imgFakeHideFam" src="<?php echo $this->baseUrl;?>/public/images/hide.png" title="<?php echo $this->labels->title->hide;?>"/>
+							</td>				
+							<td width="90%" class="fontContainer">
+								<b><?php echo $this->labels->title->family;?></b>
+							</td>
+						</tr>
+					</table>
+					<table width="100%" class="tableContainer" id="tableFakeHideFam">
+						<tr>
+							<td width="10%" class="fontContainer">
+								<img id="imgHideFam" src="<?php echo $this->baseUrl;?>/public/images/hide.png" title="<?php echo $this->labels->title->hide;?>"/>								
+							</td>				
+							<td width="90%" class="fontContainer">
+								<b><?php echo $this->labels->title->family;?></b>
+							</td>
+						</tr>
+					</table>
+				<?php else:?>
+					<table width="100%" class="tableContainer">
+						<tr>
+							<td width="10%" class="fontContainer">								
+							</td>				
+							<td width="90%" class="fontContainer">
+								<b><?php echo $this->labels->title->family;?></b>
+							</td>
+						</tr>
+					</table>
+				<?php endif;?>
+				<p>				
+				<div id="loading5">
+					<center><img src="<?php echo $this->baseUrl;?>/public/images/loading.gif"/></center>
+				</div>
+				
+				<div id="family" style="height: 30"></div>
+												
+			</td>
+		</tr>
+	</table>
+</div>

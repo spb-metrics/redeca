@@ -1,0 +1,268 @@
+<?php function printControllerName(&$controller, &$this_)
+{
+	switch($controller)
+	{
+		case ACTIVITY_CONTROLLER:
+			echo $this_->controller->permission->controller->activity;
+			break;
+		case ATTENDANCE_CONTROLLER:
+			echo $this_->controller->permission->controller->attendance;
+			break;
+		case BENEFIT_CONTROLLER:
+			echo $this_->controller->permission->controller->benefit;
+			break;
+		case BIOLOGICALRELATIONSHIP_CONTROLLER:
+			echo $this_->controller->permission->controller->biologicalrelationship;
+			break;
+		case CLASS_CONTROLLER:
+			echo $this_->controller->permission->controller->class;
+			break;
+		case EDUCATION_CONTROLLER:
+			echo $this_->controller->permission->controller->education;
+			break;
+		case FAMILYEXPENSE_CONTROLLER:
+			echo $this_->controller->permission->controller->familyexpense;
+			break;
+		case FAMILYRELATIONSHIP_CONTROLLER:
+			echo $this_->controller->permission->controller->familyrelationship;
+			break;
+		case HEALTH_CONTROLLER:
+			echo $this_->controller->permission->controller->health;
+			break;
+		case HISTORY_CONTROLLER:
+			echo $this_->controller->permission->controller->history;
+			break;
+		case AUTH_CONTROLLER:
+			echo $this_->controller->permission->controller->auth;
+			break;
+		case INDEX_CONTROLLER:
+			echo $this_->controller->permission->controller->index;
+			break;
+		case PERSON_CONTROLLER:
+			echo $this_->controller->permission->controller->person;
+			break;
+		case SEARCHADDRESS_CONTROLLER:
+			echo $this_->controller->permission->controller->searchaddress;
+			break;
+		case SEARCH_CONTROLLER:
+			echo $this_->controller->permission->controller->search;
+			break;
+		case ACCESSDENIED_CONTROLLER:
+			echo $this_->controller->permission->controller->accessdenied;
+			break;
+		case INCOME_CONTROLLER:
+			echo $this_->controller->permission->controller->income;
+			break;
+		case NETWORK_CONTROLLER:
+			echo $this_->controller->permission->controller->network;
+			break;
+		case RESIDENCE_CONTROLLER:
+			echo $this_->controller->permission->controller->residence;
+			break;
+		case PERSON_LOG_CONTROLLER:
+			echo $this_->controller->permission->controller->personLog;
+			break;
+	}
+}
+?>
+<?php printErrorsByField($this->form->id(), $this->errorMessages);?>
+<table width="100%" class="withoutEdge">
+	<tr>
+		<td class="bold">
+			<table class="borderBlack" width="100%">
+				<tr>
+					<td colspan="3">
+						<h1><?php echo $this->controller->permission->title->groupPermission;?></h1>
+					</td>
+				</tr>
+				<tr>
+					<td width="20%" class="bold">
+						<b><?php echo $this->controller->permission->text->groupName;?>:</b><br>
+					</td>
+					<td width="50%" colspan="2">
+						<span><?php echo $this->form->getGroupName();?></span>
+					</td>
+				</tr>
+				<tr>
+					<td width="20%">&nbsp;</td>
+					<td colspan="2"><?php printErrorsByField($this->form->groupName(), $this->errorMessages);?></td>
+				</tr>
+				<tr>
+					<td width="20%" class="bold">
+						<?php echo $this->controller->permission->text->listUserType;?>:
+					</td>
+					<td width="80%" colspan="2">
+						<?php echo $this->role->{AUTH_ROLE};?>
+					</td>
+				</tr>
+				<tr>
+					<td width="20%">&nbsp;</td>
+					<td colspan="2"><?php printErrorsByField($this->form->roleId(), $this->errorMessages);?></td>
+				</tr>
+			</table>
+		</td>	
+	</tr>
+	<tr>
+		<td>
+
+			<!-----------------BEG Colunas permissionamento do grupo atual---------------------------- -->
+			<table class="borderBlack" width="100%">
+				<tr>
+
+					<!------------Resources não atribuídos--------- -->					
+					<td>
+						
+						<table class="withoutEdge">
+						<h1><?php echo $this->controller->permission->available->groupPermission;?></h1>
+						<?php 
+						foreach($this->resources as $resource){
+							//processamento para não exibir os que já estão atribuídos
+							$next = false;
+							foreach($this->groupResources as $excludedResource){
+								if($resource->{ARR_ID_RESOURCE} == $excludedResource->{AGR_RESOURCE_ID})
+								{
+									$next = true;
+									break;
+								}
+							}
+							if($next !== true)
+							{ 
+								$type 		=  new Resource();
+								$resource 	= $type->find($resource->{ARR_ID_RESOURCE})->current();	
+							?>
+								<form action="<?php echo $this->baseUrl;?><?php echo GROUP_CONTROLLER;?>/<?php echo DEFAULT_GROUP_ADD_PERMISSION_ACTION;?>" method="post">
+
+								<input type="hidden" name="<?php echo GroupForm::resourceId()?>" 	value="<?php echo $resource->{ARR_ID_RESOURCE}?>"/>
+								<?php printErrorsByField($this->form->resourceId().$resource->{ARR_ID_RESOURCE} , $this->errorMessages);?>
+								<input type="hidden" name="<?php echo GroupForm::id()?>" 			value="<?php echo $this->form->getId()?>"/>
+								<?php printErrorsByField($this->form->id().$resource->{ARR_ID_RESOURCE} , $this->errorMessages);?>
+								<input type="hidden" name="<?php echo GroupForm::roleId()?>" 		value="<?php echo $this->role->{AUTH_ID_ROLE};?>"/>
+								<?php printErrorsByField($this->form->roleId().$resource->{ARR_ID_RESOURCE} , $this->errorMessages);?>
+								<tr>
+									<td>
+										<b><?php printControllerName($resource->{ARC_CONTROLLER_NAME}, $this)?></b>
+										<br />
+										<?php echo $resource->{ARC_CONTROLLER_NAME}?>
+										
+										<?php
+										if($resource->{ARC_RESOURCE_TYPE} == RESOURCE_TYPE_ENTITY)
+										{?>
+											<div>
+											<?php if($resource->{ARC_ID_RESOURCE} != $this->attendanceIdResource){?>
+												<?php if($this->notOnlyRead != $resource->{ARC_ID_RESOURCE}):?>
+													<?php echo $this->controller->permission->readonly?>: <input type="checkbox" name="<?php echo GroupForm::readOnly()?>" value="1" /><br />
+													<?php printErrorsByField($this->form->readOnly().$resource->{ARR_ID_RESOURCE} , $this->errorMessages);?>
+												<?php endif;?>
+											<?php } ?>
+											<?php if($resource->{ARC_ID_RESOURCE} == $this->attendanceIdResource){?>
+												<?php echo $this->controller->permission->changeConfidentiality?>: <input type="checkbox" name="<?php echo GroupForm::changeConfidentiality()?>" value="1" />
+												<br/>
+												<?php printErrorsByField($this->form->changeConfidentiality().$resource->{ARR_ID_RESOURCE} , $this->errorMessages);?>
+												<br />
+												<?php echo $this->controller->permission->defaultConfidentiality?>: 
+												<select name="<?php echo GroupForm::defaultConfidentiality()?>" cols="20">
+													<option value="<?php echo Constants::VISIBILITY_PUBLIC;?>"><?php echo $this->controller->permission->confidentiality->visibility->public?></option>
+													<option value="<?php echo Constants::VISIBILITY_ENTITY;?>"><?php echo $this->controller->permission->confidentiality->visibility->entity?></option>
+													<option value="<?php echo Constants::VISIBILITY_PROFILE;?>"><?php echo $this->controller->permission->confidentiality->visibility->profile?></option>
+												</select>
+												<br/>
+												<?php printErrorsByField($this->form->defaultConfidentiality().$resource->{ARR_ID_RESOURCE} , $this->errorMessages);?>
+											<?php } ?>
+											</div>
+										<?php }
+										?>
+										<hr />
+									</td>
+									<td>
+										<input type="submit" value="<?php echo $this->labels->button->save;?>">
+									</td>
+								</tr>
+								</form>
+							<?php }?>
+						<?php }?>	
+						</table>
+
+					</td>
+					
+					<!------------Resources atribuídos--------- -->						
+					<td>
+					
+						<h1><?php echo $this->controller->permission->current->groupPermission;?></h1>
+						<table class="withoutEdge">
+						<?php foreach($this->groupResources as $resource){?>
+							<form action="<?php echo $this->baseUrl;?><?php echo GROUP_CONTROLLER;?>/<?php echo DEFAULT_GROUP_DROP_PERMISSION_ACTION;?>" method="post">
+							<input type="hidden" name="<?php echo GroupForm::resourceId()?>" 	value="<?php echo $resource->{AGR_RESOURCE_ID}?>" />
+							<input type="hidden" name="<?php echo GroupForm::id()?>" 			value="<?php echo $this->form->getId()?>"/>
+							<input type="hidden" name="<?php echo GroupForm::roleId()?>" 		value="<?php echo $this->role->{AUTH_ID_ROLE};?>"/>
+							
+						<?php
+							$type 		= new Resource();
+							$res	 	= $type->find($resource->{AGR_RESOURCE_ID})->current();	
+						?>
+								<tr>
+									<td>
+										<b><?php printControllerName($res->{ARC_CONTROLLER_NAME}, $this)?></b><br />
+										<?php echo $res->{ARC_CONTROLLER_NAME}?><br />
+										<?php printErrorsByField($this->form->roleId().$resource->{AGR_RESOURCE_ID} , $this->errorMessages);?>
+										<?php printErrorsByField($this->form->id().$resource->{AGR_RESOURCE_ID} , $this->errorMessages);?>
+										<?php printErrorsByField($this->form->resourceId().$resource->{AGR_RESOURCE_ID} , $this->errorMessages);?>	
+										<br />
+										<?php
+										if($resource->{AGR_READONLY})
+											echo $this->controller->permission->readonly."<br />";						
+										?>
+										<?php if($resource->{AGR_RESOURCE_ID} == $this->attendanceIdResource){
+											if($resource->{AGR_CHANGE_CONFIDENTIALITY})
+												echo $this->controller->permission->changeConfidentiality."<br />";
+											if($resource->{AGR_DEFAULT_CONFIDENTIALITY})
+											{
+												echo $this->controller->permission->defaultConfidentiality.": ";
+												switch($resource->{AGR_DEFAULT_CONFIDENTIALITY})
+												{
+													case Constants::VISIBILITY_PUBLIC:
+														echo $this->controller->permission->confidentiality->visibility->public;
+														break;
+													case Constants::VISIBILITY_ENTITY:
+														echo $this->controller->permission->confidentiality->visibility->entity;
+														break;
+													case Constants::VISIBILITY_PROFILE:
+														echo $this->controller->permission->confidentiality->visibility->profile;
+														break;
+												}
+												echo "<br />";
+											}
+										
+										}?>
+										<hr />
+									</td>
+									<td>
+										<?php $values = explode(";",$this->resourcesFixed);?>
+										<?php 
+											$flag = false;
+											foreach($values as $value)
+											{
+												if($resource->{AGR_RESOURCE_ID} == $value)
+												{
+													$flag = true;
+													break;
+												}
+											}
+										?>
+										<?php if($flag === false):?>
+											<input type="submit" value="<?php echo $this->labels->button->drop;?>">
+										<?php endif;?>
+									</td>
+								</tr>
+							</form>
+						<?php }?>					
+						</table>
+
+					</td>
+					
+				</tr>
+			</table>
+			<!-----------------END Colunas permissionamento do grupo atual---------------------------- -->
+
+		</td>
+	</tr>		
+</table>

@@ -1,0 +1,21 @@
+<?php echo $this->render('header/header.phtml');?>								 		  						
+				  
+<!-- ===================================== -->
+<!-- inicio : específico com cada template -->					
+<!-- ===================================== -->						  
+<div>
+	
+	<?php echo $this->render('submenu/submenuAdm.phtml');?>
+
+	<?php echo $this->render('submenu/submenuEntity.phtml');?>
+
+	<?php echo $this->render('success/_success.phtml');?>
+	<a href="<?php echo $this->baseUrl;?><?php echo ACTIVITY_CONTROLLER;?>/<?php echo DEFAULT_NEW_ACTION;?>">Voltar</a>
+</div>																  
+<!-- ================================== -->
+<!-- fim : específico com cada template -->					
+<!-- ================================== -->		
+
+<?php echo $this->render('footer/footer.phtml');?>
+
+

@@ -1,0 +1,61 @@
+<?php $show = Zend_Registry::get(CONFIG)->container->education;?>
+<script type="text/javascript">	
+	$('#imgFakeHide').hide();
+	<?php if($show):?>
+		$().ajaxSend(function(){$('#loading1').show();});		
+		$.post('<?php echo $this->baseUrl;?><?php echo EDUCATION_CONTROLLER;?>/<?php echo DEFAULT_CONTAINER_ACTION;?>/<?php if($this->form)echo $this->form->personId();?>/<?php if($this->form)echo $this->form->getPersonId();?>', function(data){ $('#education').append(data);$('#loading1').hide();});
+	<?php else:?>
+		function showEdu()
+		{
+			$('#maxEducation').hide();
+			$('#mainEducation').show();
+			$().ajaxSend(function(){$('#loading1').show(); $('#imgHide').hide();$('#imgFakeHide').show();$('#tableHide').hide();$('#tableFakeHide').show();});		
+			$.post('<?php echo $this->baseUrl;?><?php echo EDUCATION_CONTROLLER;?>/<?php echo DEFAULT_CONTAINER_ACTION;?>/<?php if($this->form)echo $this->form->personId();?>/<?php if($this->form)echo $this->form->getPersonId();?>', 
+				function(data)
+				{ 
+					if(data.search(/<?php echo $this->labels->login->title;?>/i) != -1)
+					{
+						window.location.reload();
+					}
+					else
+					{
+						$('#education').append(data);
+						$('#loading1').hide();
+						$('#imgFakeHide').hide();
+						$('#imgHide').show();
+						$('#tableFakeHide').hide();
+						$('#tableHide').show();
+					}
+				}
+			);
+		}
+		
+		function hideEdu()
+		{
+			$('#education').empty();
+			$('#maxEducation').show();			
+			$('#mainEducation').hide();
+		}
+	<?php endif;?>
+	
+</script>
+
+<?php if(!$show):?>
+<div id="maxEducation" class="education">
+	<h1  onClick="showEdu()">
+		<img id="imgShow" src="<?php echo $this->baseUrl;?>/public/images/show.png" title="<?php echo $this->labels->title->show;?>"/>
+		<?php echo $this->labels->title->education;?>
+	</h1>
+</div>
+<?php endif;?>
+
+<div id="mainEducation" style="display: none;" class=education>
+
+	<h1  onClick="hideEdu()">
+		<img id="imgHide" src="<?php echo $this->baseUrl;?>/public/images/hide.png" title="<?php echo $this->labels->title->hide;?>"/>
+		<?php echo $this->labels->title->education;?>
+	</h1>
+
+	<div id="loading1"><center><img src="<?php echo $this->baseUrl;?>/public/images/loading.gif"/></center></div>
+	<div id="education"></div>							
+</div>

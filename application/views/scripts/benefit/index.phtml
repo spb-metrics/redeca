@@ -1,0 +1,12 @@
+<?php echo $this->render('header/header.phtml');?>
+<?php 
+	if($this->errorMessages)
+	{
+		echo $this->render('benefit/invalidParam.phtml');
+	}
+	else
+	{
+		echo $this->render('benefit/benefitPreview.phtml');		
+	}
+?>				
+<?php echo $this->render('footer/footer.phtml');?>	

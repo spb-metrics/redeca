@@ -1,0 +1,81 @@
+<?php 	$address = $this->entities->findParentRow(CLS_ADDRESS);
+		if($address)
+			$neighborhood = $address->findParentRow(CLS_NEIGHBORHOOD);
+		if($neighborhood)
+			$regions = $neighborhood->findManyToManyRowset(CLS_REGION, CLS_NEIGHBORHOODREGION);
+		$phones 			= $this->entities->findManyToManyRowset(CLS_TELEPHONENUMBER, CLS_ENTITYTELEPHONE);
+		$areas 				= $this->entities->findManyToManyRowset(CLS_ENTITYAREATYPE, CLS_ENTITYAREA);
+		$classifications 	= $this->entities->findManyToManyRowset(CLS_ENTITYCLASSIFICATIONTYPE, CLS_ENTITYCLASSIFICATION);
+		$groups				= $this->entities->findManyToManyRowset(CLS_AUTH_GROUP, CLS_AUTH_GROUP_ENTITY);
+		$programs			= $this->entities->findManyToManyRowset(CLS_PROGRAMTYPE, CLS_PROGRAM);
+?>
+	<form name="enable_disable_entity" id="enable_disable_entity" action="" method="post">
+
+	<input class="small" type="hidden" name="<?php echo EntityForm::id();?>" value="<?php echo $this->entities->{ENT_ID_ENTITY};?>"/>
+	<?php printErrorsByField(EntityForm::id(), $this->errorMessages);?>
+
+	<table class="entity" width="100%">
+		<tr>
+			<td colspan="2">
+				<h1><?php echo $this->controller->entity->text->description;?></h1>
+			</td>
+		</tr>
+		<tr>
+			<td align="right" colspan="2">
+					|&nbsp;&nbsp;<a href="#" onclick="actionName('<?php echo $this->baseUrl . ENTITY_CONTROLLER;?>/<?php echo DEFAULT_VIEW_ACTION;?>',document.forms['enable_disable_entity'] );document.forms['enable_disable_entity'].submit();"><?php echo $this->labels->button->edit;?></a>&nbsp;&nbsp;|
+			</td>
+		</tr>
+		<tr>
+			<td class="bold" align="right" width="15%"><?php echo $this->controller->entity->text->name;?>:</td>
+			<td align="left" width="85%"><?php if($this->entities->{ENT_NAME})echo $this->entities->{ENT_NAME}; else echo $this->controller->entity->text->data;?></td>
+		</tr>
+		<tr>
+			<td class="bold" align="right" width="15%"><?php echo $this->controller->entity->text->address;?>:</td>
+			<td align="left" width="85%"><?php if($address->{ADR_ADDRESS})echo $address->{ADR_ADDRESS}; else echo $this->controller->entity->text->data;?></td>
+		</tr>
+		<tr>
+			<td class="bold" align="right" width="15%"><?php echo $this->controller->entity->text->number;?>:</td>
+			<td align="left" width="85%"><?php if($this->entities->{ENT_NUMBER})echo $this->entities->{ENT_NUMBER}; else echo $this->controller->entity->text->data;?></td>
+		</tr>
+		<tr>
+			<td class="bold" align="right" width="15%"><?php echo $this->controller->entity->text->complement;?>:</td>
+			<td align="left" width="85%"><?php if($this->entities->{ENT_COMPLEMENT})echo $this->entities->{ENT_COMPLEMENT}; else echo $this->controller->entity->text->data;?></td>
+		</tr>
+		<tr>
+			<td class="bold" align="right" width="15%"><?php echo $this->controller->entity->text->neighborhood;?>:</td>
+			<td align="left" width="85%"><?php echo $this->controller->entity->text->data;?></td>
+		</tr>
+		<tr>
+			<td class="bold" align="right" width="15%"><?php echo $this->controller->entity->text->region;?>:</td>
+			<td align="left" width="85%"><?php if(count($regions) > 0) foreach($regions as $region) echo $region->{RGN_REGION}.'<br/>'; else echo $this->controller->entity->text->data;?></td>
+		</tr>
+		<tr>
+			<td class="bold" align="right" width="15%"><?php echo $this->controller->entity->text->telephone;?>:</td>
+			<td align="left" width="85%"><?php if(count($phones) > 0) foreach($phones as $phone) echo $phone->{TNB_NUMBER}.'<br/>'; else echo $this->controller->entity->text->data;?></td>
+		</tr>
+		<tr>
+			<td class="bold" align="right" width="15%"><?php echo $this->controller->entity->text->area;?>:</td>
+			<td align="left" width="85%"><?php if(count($areas) > 0) foreach($areas as $area) echo $area->{EAT_ENTITY_AREA}.'<br/>'; else echo $this->controller->entity->text->data;?></td>
+		</tr>
+		<tr>
+			<td class="bold" align="right" width="15%"><?php echo $this->controller->entity->text->classification;?>:</td>
+			<td align="left" width="85%"><?php if(count($classifications) > 0) foreach($classifications as $classification) echo $classification->{ECT_ENTITY_CLASSIFICATION}.'<br/>'; else echo $this->controller->entity->text->data;?></td>
+		</tr>
+		<tr>
+			<td class="bold" align="right" width="15%"><?php echo $this->controller->entity->text->group;?>:</td>
+			<td align="left" width="85%"><?php if(count($groups) > 0) foreach($groups as $group) echo $group->{AGP_GROUP}.'<br/>'; else echo $this->controller->entity->text->data;?></td>
+		</tr>
+		<tr>
+			<td class="bold" align="right" width="15%"><?php echo $this->controller->entity->text->program;?>:</td>
+			<td align="left" width="85%"><?php if(count($programs) > 0) foreach($programs as $program) echo $program->{PGT_PROGRAM_TYPE}.'<br/>'; else echo $this->controller->entity->text->data;?></td>
+		</tr>
+		<tr>
+			<td class="bold" align="right" width="15%"><?php echo $this->controller->entity->text->email;?>:</td>
+			<td align="left" width="85%"><?php if($this->entities->{ENT_EMAIL})echo $this->entities->{ENT_EMAIL}; else echo $this->controller->entity->text->data;?></td>
+		</tr>
+		<tr>
+			<td class="bold" align="right" width="15%"><?php echo $this->controller->entity->text->homepage;?>:</td>
+			<td align="left" width="85%"><?php if($this->entities->{ENT_HOMEPAGE}) echo $this->entities->{ENT_HOMEPAGE}; else echo $this->controller->entity->text->data;?></td>
+		</tr>
+	</table>
+	</form>

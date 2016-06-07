@@ -1,0 +1,113 @@
+<?php $show = Zend_Registry::get(CONFIG)->container->network;?>
+<script type="text/javascript">		
+	$('#imgFakeHideNet').hide();
+	<?php if($show):?>
+		$().ajaxSend(function(){$('#loading8').show();});		
+		$.post('<?php echo $this->baseUrl;?><?php echo NETWORK_CONTROLLER;?>/<?php echo DEFAULT_CONTAINER_ACTION;?>', function(data){ $('#network').append(data);$('#loading8').hide();});
+	<?php else:?>
+		function showNet()
+		{
+			$('#maxNet').hide();
+			$('#mainNet').show();
+			$().ajaxSend(function(){$('#loading8').show();$('#imgHideNet').hide();$('#imgFakeHideNet').show();$('#tableHideNet').hide();$('#tableFakeHideNet').show();});		
+			$.post('<?php echo $this->baseUrl;?><?php echo NETWORK_CONTROLLER;?>/<?php echo DEFAULT_CONTAINER_ACTION;?>', 
+				function(data)
+				{ 
+					if(data.search(/<?php echo $this->labels->login->title;?>/i) != -1)
+					{
+						window.location.reload();
+					}
+					else
+					{
+						$('#network').append(data);
+						$('#loading8').hide();
+						$('#imgFakeHideNet').hide();
+						$('#imgHideNet').show();
+						$('#tableFakeHideNet').hide();
+						$('#tableHideNet').show();
+					}
+				}	
+			);
+		}
+		
+		function hideNet()
+		{
+			$('#maxNet').show();
+			$('#network').empty();
+			$('#mainNet').hide();
+		}
+	<?php endif;?>	
+	
+</script>
+
+<?php if(!$show):?>
+<div id="maxNet" class="health">
+	<table class="activity" width="100%">
+		<tr>
+			<td>
+				
+				<table width="100%" class="tableContainer" onClick="showNet()">
+					<tr>
+						<td width="10%" class="fontContainer">
+							<img src="<?php echo $this->baseUrl;?>/public/images/show.png" title="<?php echo $this->labels->title->show;?>"/>
+						</td>				
+						<td width="90%" class="fontContainer">
+							<b><?php echo $this->labels->title->netEntity;?></b>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+</div>
+<?php endif;?>
+
+<div id="mainNet" <?php if(!$show):?>style="display: none;"<?php endif;?>>
+	<table class="activity" width="100%">
+		<tr>
+			<td class="container">
+				
+				<?php if(!$show):?>
+					<table width="100%" class="tableContainer" id="tableHideNet" onClick="hideNet()">
+						<tr>
+							<td width="10%" class="fontContainer">
+								<img id="imgHideNet" src="<?php echo $this->baseUrl;?>/public/images/hide.png" title="<?php echo $this->labels->title->hide;?>"/>
+								<img id="imgFakeHideNet" src="<?php echo $this->baseUrl;?>/public/images/hide.png" title="<?php echo $this->labels->title->hide;?>"/>
+							</td>				
+							<td width="90%" class="fontContainer">
+								<b><?php echo $this->labels->title->netEntity;?></b>
+							</td>
+						</tr>
+					</table>
+					<table width="100%" class="tableContainer" id="tableFakeHideNet">
+						<tr>
+							<td width="10%" class="fontContainer">
+								<img id="imgHideNet" src="<?php echo $this->baseUrl;?>/public/images/hide.png" title="<?php echo $this->labels->title->hide;?>"/>								
+							</td>				
+							<td width="90%" class="fontContainer">
+								<b><?php echo $this->labels->title->netEntity;?></b>
+							</td>
+						</tr>
+					</table>
+				<?php else:?>
+					<table width="100%" class="tableContainer">
+						<tr>
+							<td width="10%" class="fontContainer">								
+							</td>				
+							<td width="90%" class="fontContainer">
+								<b><?php echo $this->labels->title->netEntity;?></b>
+							</td>
+						</tr>
+					</table>
+				<?php endif;?>
+				<p>				
+				<div id="loading8">
+					<center><img src="<?php echo $this->baseUrl;?>/public/images/loading.gif"/></center>
+				</div>
+	
+				<div id="network"></div>
+											
+			</td>
+		</tr>
+	</table>
+</div>

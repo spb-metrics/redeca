@@ -1,0 +1,146 @@
+<?php echo $this->render('header/header.phtml');?>										 		  						
+									  
+<!-- ===================================== -->
+<!-- inicio : específico com cada template -->					
+<!-- ===================================== -->						  
+<div>
+	<?php echo $this->render('submenu/subMenuRelationship.phtml');?>	
+
+	<!-- ============================================================================================== -->
+	<!-- É necessário informar o nome class da tabela em questão para carregar a cor background correta -->
+	<!-- Opções: 
+				#identification
+				#person
+				#education
+				#health
+				#income
+				#familyRelationship
+				#residence
+				#attendance
+				#activity	-->
+	<!-- ============================================================================================== -->
+	<table class="familyRelationship" width="98%">
+		<tr>
+			<td align="center">
+				<?php 
+					if($this->errorMessages):?>
+						<table class="familyRelationship" width="98%">
+							<tr>
+								<td align="center">
+									<table width="100%" class="withOutEdge">
+										<tr>
+											<td align="center" colspan="4">
+												<h1><?php echo $this->controller->fRelationship->search->title;?></h1>
+											</td>
+										</tr>
+										
+										<tr>
+											<td colspan="4" height="35">
+												<b><?php echo $this->controller->fRelationship->text->searchPerson;?></b>
+											</td>
+										</tr>
+										
+										<tr>
+											<td colspan="4">
+												<b><?php echo $this->controller->fRelationship->text->info;?></b>
+											</td>
+										</tr>
+										
+										<tr>
+											<td colspan="4" class="bigWrite">
+												<b><?php echo $this->controller->fRelationship->search->info;?></b>
+											</td>
+										</tr>
+										
+										
+										<tr>
+											<td colspan="4">
+												<table width="100%" class="withOutEdge">
+													<tr>
+														<td class="middleValign" width="52%">
+															<b><?php echo $this->controller->fRelationship->text->isRepresentative;?></b>
+														</td>
+														<td width="48%">
+					  										<input class="isRepresentative" type="button" onclick="javascript: show('kinship'); hide('formSearch')" value="<?php echo $this->controller->fRelationship->button->isRepresentative;?>"/>
+														</td>
+													</tr>
+													<tr>
+														<td colspan="2">
+															<?php printErrorsByField($this->form->idPerson(),$this->errorMessages);?>
+														</td>
+													</tr>
+												</table>
+											</td>
+										</tr>
+									</table>
+									
+									<!-- =============================== -->
+									<!-- possíveis graus de parentesco   -->
+									<!-- =============================== -->
+									<div id="kinship" style="display: none;">
+										<form action="<?php echo $this->baseUrl;?><?php echo FAMILYRELATIONSHIP_CONTROLLER;?>/<?php echo DEFAULT_IS_REPRESENTATIVE_ACTION;?>" method="post">
+											<input type="hidden" name="<?php echo SearchForm::idPerson();?>" value="<?php echo $this->form->getIdPerson();?>"/>
+											<table width="100%">
+												<tr class='writeRed'>
+													<td width="15%" height="40" class="middleValign">
+														<?php echo $this->controller->fRelationship->result->relation;?>
+													</td>
+													<td height="40" class="middleValign">
+														<select name="<?php echo SearchForm::idkinship();?>">
+															<option value=""><?php echo $this->labels->text->select;?>...</option>
+															<?php 
+																foreach($this->kinship as $kinship)
+																{
+																	echo "<option value='";
+																	echo $kinship->{KST_ID_KINSHIP};
+																	echo "'>";
+																	echo $kinship->{KST_KINSHIP};
+																	echo "</option>";		
+																}
+															?>
+														</select>
+													</td>
+												</tr>
+											</table>
+											<p>
+											<input type="submit" value="<?php echo $this->labels->button->save;?>" />
+										</form>
+									</div>
+									<!-- =============================== -->
+									<!-- possíveis graus de parentesco   -->
+									<!-- =============================== -->
+									
+									
+									<br><br>
+									<div id="formSearch" style="display: inline;">
+										<table class="withOutEdge" width="100%">
+											<tr>
+												<td>
+													<table width="100%">
+														<?php echo $this->render('family-relationship/_name_form.phtml'); ?>
+													</table>
+													<br><br>
+													<table width="100%">
+														<?php echo $this->render('family-relationship/_document_form.phtml'); ?>
+													</table>
+												</td>
+											</tr>
+										</table>
+									</div>
+									<br>
+								</td>
+							</tr>
+						</table>
+					<?php else:
+						echo $this->render('family-relationship/_form.phtml');
+					endif;
+				?>
+			</td>
+		</tr>
+	</table>
+</div>																  
+<!-- =================================== -->
+<!-- fim : específico para cada template -->					
+<!-- =================================== -->		
+					
+<?php echo $this->render('footer/footer.phtml');?>	

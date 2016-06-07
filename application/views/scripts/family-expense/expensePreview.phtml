@@ -1,0 +1,219 @@
+<!-- ===================================== -->
+<!-- inicio : específico com cada template -->					
+<!-- ===================================== -->						  
+<div>
+	<?php echo $this->render('submenu/subMenuRelationship.phtml');?>
+	<!-- ============================================================================================== -->
+	<!-- É necessário informar o nome class da tabela em questão para carregar a cor background correta -->
+	<!-- Opções: 
+				#identification
+				#person
+				#education
+				#health
+				#income
+				#familyRelationship
+				#residence
+				#attendance
+				#activity	-->
+	<!-- ============================================================================================== -->
+	<table class="familyRelationship" width="98%">
+		<tr>
+			<td align="center">
+				<?php if($this->errorMessages[$this->form->id()]){?>
+					<table width="100%">
+						<tr>
+							<td>
+								<?php printErrorsByField($this->form->id(), $this->errorMessages);?>		
+							</td>
+						</tr>
+					</table>
+				<?php }else{?>
+					<?php if($this->expense instanceof Zend_Db_Table_Row)$value = $this->expense;?>					
+					<?php $flag=false; foreach($this->expense as $expense):?>
+						<?php 
+							$value = $expense->{EXP_ID_EXPENSE_TYPE};
+							if($expense->{EXP_STATUS} != Constants::HISTORY) 
+							{
+								$flag = true;
+							}
+						?>						
+					<?php endforeach;?>	
+					
+					<?php if($flag === false):?>
+						<div>
+							<table width="100%">
+								<tr>
+									<td align="center" colspan="2">
+										<h1><?php echo $this->controller->fexpense->title->index;?></h1>
+									</td>
+								</tr>
+								<!-- LINK DE HISTORICO -->
+								<tr>
+									<td colspan="2" align="right">
+										<?php printHistoryLink($this, $this->resource_key, FAMILYEXPENSE_CONTROLLER); ?>
+									</td>
+								</tr>
+								<!-- FIM LINK DE HISTORICO -->
+								<tr>
+									<td colspan="2">
+										<?php echo $this->helpcontroller->text1;?><br>
+										<b><?php echo $this->controller->fexpense->text->notHave;?></b>
+									</td>
+								</tr>
+					</div>
+								<?php if(!$this->readOnly):?>
+								<form action="" method="post">
+								<tr>
+									<td width="25%">
+										<?php foreach($this->family as $fam):?>
+											<?php $familyId = $fam->{FID_ID_FAMILY};?>
+										<?php endforeach;?>
+
+											<input type="hidden" name="<?php echo $this->form->idFamily();?>" value="<?php echo $familyId;?>">
+											<input type="hidden" name="<?php echo $this->form->id();?>" value="<?php echo $this->form->getId();?>">
+											<input type="submit" value="<?php echo $this->controller->fexpense->button->registerExpense;?>"
+												onClick="javascript: actionName('<?php echo $this->baseUrl;?><?php echo FAMILYEXPENSE_CONTROLLER;?>/<?php echo DEFAULT_NEW_ACTION;?>', this.form);"/>
+										
+									</td>
+									<td>
+										<input type="button" value="<?php echo $this->labels->button->no;?>" onClick="document.location='<?php echo $this->baseUrl;?><?php echo PERSON_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php echo $this->form->id();?>/<?php echo $this->form->getId();?>'"/>
+									</td>
+								</tr>
+								</form>
+								<?php endif;?>
+							</table>
+						</div>
+					<?php endif;?>
+				
+								
+					<?php if($flag === true): ?>
+						<div>
+							<table width="100%">
+								<tr>
+									<td align="center" colspan="4">
+										<h1><?php echo $this->controller->fexpense->title->index;?></h1>
+									</td>
+								</tr>
+								<!-- LINK DE HISTORICO -->
+								<tr>
+									<td colspan="4" align="right">
+										<?php printHistoryLink($this, $this->resource_key, FAMILYEXPENSE_CONTROLLER); ?>
+									</td>
+								</tr>
+								<!-- FIM LINK DE HISTORICO -->
+								<tr>
+									<td colspan="4">
+										<?php echo $this->helpcontroller->text1;?><br>
+									</td>
+								</tr>
+								<tr>
+									<td colspan=2>
+										<b><?php echo $this->controller->fexpense->text->expenseName;?></b>
+									</td>
+									<td>
+										<b><?php echo $this->controller->fexpense->text->value;?></b> 									</td>
+								</tr>
+								<?php 
+								if($this->expense instanceof Zend_Db_Table_Row && $this->history_view): // Verificacao que localiza uma informacao historica
+									$exp = $this->expense; 
+									$type = $exp->findParentRow(CLS_EXPENSETYPE);
+									$idFamily = $exp->{EXP_ID_FAMILY};
+								?>
+									<tr>
+									<td width="82%">
+									<?php if($type->{EXT_STATUS} != Constants::DISABLE):
+										$type->{EXT_EXPENSE};
+									else:
+										echo $this->labels->text->nodata;
+									endif;?>
+									</td>
+									<td width="20%">
+									<?php 
+										echo $exp->{EXP_EXPENSE_VALUE};
+										$count += $exp->{EXP_EXPENSE_VALUE};
+									?>
+									</td>
+									</tr>
+								<?php endif;?>
+					
+								<?php if(!$this->readOnly):?>
+
+
+								<?php $class = 1;?>
+								<?php foreach($this->expense as $exp):?>
+								<?php if($class == 0){$type = 'write';$class= 1;}else{$type='';	$class= 0;}?>
+								<?php if(!$exp->{EXP_STATUS}){?>
+								<tr class="<?php echo $type;?>">					
+									<form action="" name="dropAction" method="post">												
+									<td >
+									<input type="checkbox" name="<?php echo $this->form->idExpenseType();?>[]" value="<?php echo $exp->{EXP_ID_EXPENSE_TYPE};?>">
+									<input type="hidden" name="<?php echo $this->form->idFamily();?>" value="<?php echo $exp->{EXP_ID_FAMILY};?>">
+									<input type="hidden" name="<?php echo $this->form->id();?>" value="<?php echo $this->form->getId();?>"></form>
+									</td>									<?php $class1 = 1;?>
+									<?php //foreach($this->expense as $exp):?>
+									<?php if($class1 == 0){$type1 = 'write';$class1= 1;}else{$type1='';	$class1= 0;}?>
+									<?php $type = $exp->findParentRow(CLS_EXPENSETYPE);?>
+									<?php $idFamily = $exp->{EXP_ID_FAMILY};?>
+
+							
+									<td width="68%">
+									<?php if($type->{EXT_STATUS} != Constants::DISABLE):?>									<?php echo $type->{EXT_EXPENSE};?>
+									<?php else:?>
+									<?php echo $this->labels->text->nodata;?>									<?php endif;?>
+									</td>
+									<td width="24%" >
+									<?php 										echo $exp->{EXP_EXPENSE_VALUE};
+										$count += $exp->{EXP_EXPENSE_VALUE};
+									?>
+									</td>
+									<td>
+									<?php if($this->readOnly == FALSE):?>
+									<form name="<?php echo $this->form->idExpenseType().$exp->{EXP_ID_EXPENSE_TYPE};?>" action="<?php echo $this->baseUrl;?><?php echo FAMILYEXPENSE_CONTROLLER;?>/<?php echo DEFAULT_VIEW_ACTION;?>" method="post">									<input type="hidden" name="<?php echo $this->form->idFamily();?>" value="<?php echo $exp->{EXP_ID_FAMILY};?>">
+									<input type="hidden" name="<?php echo $this->form->expenseValue();?>" value="<?php echo $exp->{EXP_EXPENSE_VALUE};?>">
+									<input type="hidden" name="<?php echo $this->form->idExpenseType();?>" value="<?php echo $exp->{EXP_ID_EXPENSE_TYPE};?>">									<input type="hidden" name="<?php echo $this->form->id();?>" value="<?php echo $this->form->getId();?>">
+									</form>
+									<a href="javascript:document.<?php echo $this->form->idExpenseType().$exp->{EXP_ID_EXPENSE_TYPE};?>.submit();">
+									<?php echo $this->labels->button->edit;?>									</a>
+									<?php endif; ?>																			
+									</td>
+									<?php //endforeach;?>
+
+								</tr><!-- fim tr maligno -->
+								<?php }?>
+
+								<?php endforeach;?>
+								<?php endif;?>
+
+								<?php if($class1 == 0){$type1 = 'write';$class1= 1;}else{$type1='';	$class1= 0;}?>
+								<tr class=<?php echo $type1;?>>									
+									<td colspan=2>
+									<b><?php echo $this->controller->fexpense->text->allExpense;?>:&nbsp;</b>
+									</td>
+									<td>
+									<?php echo $count;?>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="4">
+										<?php if(!$this->readOnly):?>
+										<?php if(!$this->history_view):?>												
+										<button onClick="javascript: document.forms['dropAction'].action='<?php echo $this->baseUrl;?><?php echo FAMILYEXPENSE_CONTROLLER;?>/<?php echo DEFAULT_CONFIRM_ACTION;?>';document.forms['dropAction'].submit(); return false;"><?php echo $this->labels->button->drop;?></button> 
+										<?php endif;?>
+										<form action="" method="post">											
+										<p>													
+											<input type="hidden" name="<?php echo $this->form->idFamily();?>" value="<?php echo $idFamily;?>">
+											<input type="hidden" name="<?php echo $this->form->id();?>" value="<?php echo $this->form->getId();?>">													
+											<input type="submit" value="<?php echo $this->controller->fexpense->button->registerExpense;?>"
+												onClick="javascript: actionName('<?php echo $this->baseUrl;?><?php echo FAMILYEXPENSE_CONTROLLER;?>/<?php echo DEFAULT_NEW_ACTION;?>', this.form);"/>
+										</form>
+										<?php endif;?>
+									</td>
+								</tr>
+							</table>
+						</div>
+					<?php endif;?>
+				<?php }?>
+			</td>
+		</tr>
+	</table>
+</div>																  

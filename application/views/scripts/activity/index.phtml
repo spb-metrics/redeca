@@ -1,0 +1,72 @@
+<?php echo $this->render('header/header.phtml');?>
+
+<!-- ====================================== -->
+<!-- inicio : específico para cada template -->					
+<!-- ====================================== -->						  
+<div>
+
+	<?php echo $this->render('submenu/submenuAdm.phtml');?>
+
+	<?php echo $this->render('submenu/submenuEntity.phtml');?>
+
+	<!-- ============================================================================================== -->
+	<!-- É necessário informar o nome class da tabela em questão para carregar a cor background correta -->
+	<!-- Opções: 
+				#identification
+				#person
+				#education
+				#health
+				#income
+				#familyRelationship
+				#residence
+				#attendance
+				#activity	-->
+	<!-- ============================================================================================== -->
+	<table class="entity">
+		<?php if($this->collActivityDetail && sizeof($this->collActivityDetail) > 0 ):?>
+		<tr>
+			<td align="center">
+				<tr>
+					<td colspan="3">
+						<h1><?php echo $this->controller->activity->text->title;?></h1>
+					</td>
+				</tr>
+				<tr class="write">
+					<td class="bold" align="center" width="40%"><?php echo $this->controller->activity->text->category;?></td>
+					<td class="bold" align="center" width="40%"><?php echo $this->controller->activity->text->activity;?></td>
+					<td width="20%">&nbsp;</td>
+				</tr>
+				<?php
+					$index = 0;
+					foreach($this->collActivityDetail as $ad)
+					{
+						if($index%2==0) echo "<tr>"; else echo "<tr class='write'>";
+						echo "<td align='left' width='40%'>";echo $ad->findParentRow(CLS_CATEGORY)->{CAT_CATEGORY};echo "</td>";
+						echo "<td align='left' width='40%'>";echo $ad->{ACD_ACTIVITY_DETAIL};echo "</td>";		
+						echo "<td align='center' width='20%'>";echo "<a href='";echo $this->baseUrl;echo ACTIVITY_CONTROLLER;echo "/"; echo DEFAULT_CLOSE_ACTION;echo "/";echo ActivityForm::idActivityDetail();echo "/"; echo $ad->{ACD_ID_ACTIVITY_DETAIL};echo "'>";echo $this->controller->activity->text->closeactivity;echo"</a></td>";														
+						echo "</tr>";
+						
+						$index++;
+					}
+				?>
+			</td>
+		</tr>
+		<?php else:?>
+		<tr>
+			<td align="center"> 
+				<?php echo $this->controller->activity->text->notactivity;?>
+			</td>	
+		</tr>
+		<?php endif;?>
+		<tr class="write">
+			<td colspan="3" align="left"><br>
+				<input type="submit" onclick="document.location='<?php echo $this->baseUrl;?><?php echo ACTIVITY_CONTROLLER;?>/<?php echo DEFAULT_NEW_ACTION;?>'" value="<?php echo $this->controller->activity->text->newactivity;?>">
+			</td>
+		</tr>
+	</table>
+</div>																  
+<!-- =================================== -->
+<!-- fim : específico para cada template -->					
+<!-- =================================== -->		
+					
+<?php echo $this->render('footer/footer.phtml');?>

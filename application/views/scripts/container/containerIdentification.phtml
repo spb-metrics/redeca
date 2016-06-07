@@ -1,0 +1,113 @@
+<?php $show = Zend_Registry::get(CONFIG)->container->identification;?>
+<script type="text/javascript">		
+	$('#imgFakeHideId').hide();
+	<?php if($show):?>
+		$().ajaxSend(function(){$('#loading0').show();});		
+		$.post('<?php echo $this->baseUrl;?><?php echo PERSON_CONTROLLER;?>/<?php echo DEFAULT_CONTAINER_ACTION;?>/<?php if($this->form)echo $this->form->personId();?>/<?php if($this->form)echo $this->form->getPersonId();?>', function(data){ $('#person').append(data);$('#loading0').hide();});
+	<?php else:?>
+		function showId()
+		{
+			$('#maxId').hide();
+			$('#mainId').show();
+			$().ajaxSend(function(){$('#loading0').show();$('#imgHideId').hide();$('#imgFakeHideId').show();$('#tableHideId').hide();$('#tableFakeHideId').show();});		
+			$.post('<?php echo $this->baseUrl;?><?php echo PERSON_CONTROLLER;?>/<?php echo DEFAULT_CONTAINER_ACTION;?>/<?php if($this->form)echo $this->form->personId();?>/<?php if($this->form)echo $this->form->getPersonId();?>', 
+				function(data)
+				{ 
+					if(data.search(/<?php echo $this->labels->login->title;?>/i) != -1)
+					{
+						window.location.reload();
+					}
+					else
+					{
+						$('#person').append(data);
+						$('#loading0').hide();
+						$('#imgFakeHideId').hide();
+						$('#imgHideId').show();
+						$('#tableFakeHideId').hide();
+						$('#tableHideId').show();
+					}
+				}
+			);
+		}
+		
+		function hideId()
+		{
+			$('#maxId').show();
+			$('#person').empty();
+			$('#mainId').hide();
+		}
+	<?php endif;?>
+	
+</script>
+
+<?php if(!$show):?>
+<div id="maxId" class="education">
+<!--
+	<table class="identification" width="100%">
+		<tr>
+			<td>
+				<table width="100%" class="tableContainer" onClick="showId()">
+					<tr>
+						<td width="10%" class="fontContainer">
+							<img src="<?php echo $this->baseUrl;?>/public/images/show.png" title="<?php echo $this->labels->title->show;?>"/>
+						</td>				
+						<td width="90%" class="fontContainer">
+							<b><?php echo $this->labels->title->identification;?></b>
+						</td>
+					</tr>
+				</table>
+			<h1 onClick="showId()"><img src="<?php echo $this->baseUrl;?>/public/images/show.png" title="<?php echo $this->labels->title->show;?>"/><?php echo  $this->labels->title->identification;?></h1>
+			</td>
+		</tr>
+	</table>
+-->
+	<h1 onClick="showId()"><img src="<?php echo $this->baseUrl;?>/public/images/show.png" title="<?php echo $this->labels->title->show;?>"/><?php echo  $this->labels->title->identification;?></h1>
+</div>
+<?php endif;?>
+
+<div id="mainId" <?php if(!$show):?> style="display: none;" <?php endif;?>>
+	<table class="identification" width="100%">
+		<tr>
+			<td class="container">
+								
+				<?php if(!$show):?>
+					<table width="100%" class="tableContainer" id="tableHideId" onClick="hideId()">
+						<tr>
+							<td width="10%" class="fontContainer">
+								<img id="imgHideId" src="<?php echo $this->baseUrl;?>/public/images/hide.png" title="<?php echo $this->labels->title->hide;?>"/>
+								<img id="imgFakeHideId" src="<?php echo $this->baseUrl;?>/public/images/hide.png" title="<?php echo $this->labels->title->hide;?>"/>
+							</td>				
+							<td width="90%" class="fontContainer">
+								<b><?php echo $this->labels->title->identification;?></b>
+							</td>
+						</tr>
+					</table>
+					<table width="100%" class="tableContainer" id="tableFakeHideId">
+						<tr>
+							<td width="10%" class="fontContainer">
+								<img id="imgHideId" src="<?php echo $this->baseUrl;?>/public/images/hide.png" title="<?php echo $this->labels->title->hide;?>"/>								
+							</td>				
+							<td width="90%" class="fontContainer">
+								<b><?php echo $this->labels->title->identification;?></b>
+							</td>
+						</tr>
+					</table>
+				<?php else:?>
+					<table width="100%" class="tableContainer">
+						<tr>
+							<td width="10%" class="fontContainer">								
+							</td>				
+							<td width="90%" class="fontContainer">
+								<b><?php echo $this->labels->title->identification;?></b>
+							</td>
+						</tr>
+					</table>
+				<?php endif;?>
+				<p>				
+				<div id="loading0"><center><img src="<?php echo $this->baseUrl;?>/public/images/loading.gif"/></center></div>		
+				
+				<div id="person"></div>								
+			</td>
+		</tr>
+	</table>
+</div>

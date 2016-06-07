@@ -1,0 +1,59 @@
+<tr>
+	<?php if(!$errorMessages && sizeof($errorMessages) <= 0) :?>
+		<?php if($this->notDropRelationWhileIsRepresentative):?>
+			<td width="100%" align="center">
+				<br>
+				<b>
+					<?php echo $this->notDropRelationWhileIsRepresentative;?>
+				</b>
+				<br><br>
+				<input type="button" onClick="document.location='<?php echo $this->baseUrl;?><?php echo FAMILYRELATIONSHIP_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php echo $this->form->idPerson();?>/<?php echo $this->form->getIdPerson();?>'" value="<?php echo $this->labels->button->back;?>" />
+			</td>
+		<?php else :?>
+			<td width="100%" align="center">
+				<h1>
+					<?php echo ($this->labels->confirm->delete->title);?>
+				</h1>
+				<!-- =================================================================================================================== -->
+				<!-- =================================== FORM utilizado para excluir um relacionamento familiar ======================== -->
+				<!-- =================================================================================================================== -->
+				<form action="<?php echo $this->baseUrl;?><?php echo FAMILYRELATIONSHIP_CONTROLLER;?>/<?php echo $this->action;?>" method="post">
+					<p>
+						<?php echo $this->labels->confirm->delete->text;?>&nbsp;?<br>
+						<?php
+							if(!$this->isRepresentative)
+							{
+								echo "<br>".$this->controller->fRelationship->text->relation.":&nbsp;";
+							}
+							else
+							{
+								echo "<br><b>".$this->isRepresentative."</b><br>";
+							}
+							echo "<input type='hidden' name='".$this->form->idParent()."' value='".$this->form->getIdParent()."'/>";
+							echo "<input type='hidden' name='".$this->form->idFamily()."' value='".$this->form->getIdFamily()."'/>";
+							echo "<input type='hidden' name='".$this->form->idPerson()."' value='".$this->form->getIdPerson()."'/>";
+							if(!$this->isRepresentative)
+							{
+								echo "<b>". $this->form->getPrsName()."</b><br>";
+							}
+						?>
+					</p>
+					<div>
+						<input type="submit" name="<?php echo E_CONFIRM; ?>" value="<?php echo $this->labels->confirm->button->yes;?>" />
+						<input type="button" onClick="document.location='<?php echo $this->baseUrl;?><?php echo FAMILYRELATIONSHIP_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php echo $this->form->idPerson();?>/<?php echo $this->form->getIdPerson();?>'" value="<?php echo $this->labels->confirm->button->cancel;?>" />
+					</div>
+				</form>	
+				<!-- =================================================================================================================== -->
+				<!-- ================================================ fim do FORM ====================================================== -->
+				<!-- =================================================================================================================== -->		
+			</td>
+		<?php endif;?>
+	<?php else:?>
+	<td width="100%" align="center">
+		<?php printErrorsByField($this->form->idPerson(), $this->errorMessages);?>
+		<?php printErrorsByField($this->form->idParent(), $this->errorMessages);?>
+		<?php printErrorsByField($this->form->idFamily(), $this->errorMessages);?>
+		<?php printErrorsByField($this->form->prsName(), $this->errorMessages);?>
+	</td>
+	<?php endif; ?>
+</tr>

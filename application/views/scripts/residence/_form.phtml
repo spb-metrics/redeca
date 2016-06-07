@@ -1,0 +1,52 @@
+<?php if($this->errorMessages[$this->form->personId()]):?>
+	<?php printErrorsByField($this->form->personId(), $this->errorMessages);?>
+<?php else:?>
+<table width="100%">
+	<tr><td>	
+		<?php if(!is_numeric($this->form->getId())){?>
+			
+			<table width="100%" class="noBorder">
+				<tr>
+					<td>
+						<?php printErrorsByField($this->form->personId(), $this->errorMessages);?>		
+					</td>
+				</tr>
+			</table>
+			
+		<?php }else{?>
+			
+			<form action="" method="post">
+			
+				<table width="100%" class="noBorder">					
+					<tr>
+						<td>
+							<h1><?php echo $this->controller->residence->edit->title;?></h1>
+							<input type="hidden" name="<?php echo $this->form->personId();?>" value="<?php echo $this->form->getPersonId();?>"/>
+							<input type="hidden" name="<?php echo $this->form->idResidence();?>" value="<?php echo $this->form->getIdResidence();?>"/>
+						</td>
+					</tr>
+				</table>
+				
+				<?php echo $this->render('residence/_pre-form.phtml');?>
+				
+				<?php if(!$this->operator):?>
+					<?php echo $this->render('residence/_additional-form.phtml');?>
+				<?php endif;?>
+				
+				<table class="noBorder" width="100%">
+					<tr>
+						<td colspan="2">
+							<?php if($this->readOnly == FALSE):?>
+								<input type="submit" value="<?php echo $this->labels->button->save;?>" onClick="javascript: return actionName('<?php echo $this->baseUrl;?><?php echo RESIDENCE_CONTROLLER;?>/<?php echo DEFAULT_EDIT_ACTION;?>', this.form);"/>
+							<?php endif; ?>
+							<input type="button" value="<?php echo $this->labels->button->back;?>" onClick="document.location='<?php echo $this->baseUrl;?><?php echo RESIDENCE_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php echo $this->form->id();?>/<?php echo $this->form->getId();?>'">
+						</td>
+					</tr>		
+				</table>
+				
+			</form>
+			
+		<?php }?>
+	</td></tr>
+</table>
+<?php endif;?>

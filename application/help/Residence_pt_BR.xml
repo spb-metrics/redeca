@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<help>
+	<items>
+		<text1>Nesta aba há as informações sobre a moradia da pessoa.</text1>
+		<text2>Aqui você visualiza as características da moradia desta pessoa.</text2>
+		<text3>Você pode buscar o endereço de onde esta pessoa mora clicando em "Alterar endereço".</text3>
+		<text4>Você pode informar um ou mais telefones da moradia desta pessoa.</text4>
+	</items>
+</help>

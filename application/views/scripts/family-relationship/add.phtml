@@ -1,0 +1,51 @@
+<?php echo $this->render('header/header.phtml');?>
+
+<!-- ===================================== -->
+<!-- inicio : específico com cada template -->					
+<!-- ===================================== -->						  
+<div>
+	<?php echo $this->render('submenu/subMenuRelationship.phtml');?>	
+
+	<!-- ============================================================================================== -->
+	<!-- É necessário informar o nome class da tabela em questão para carregar a cor background correta -->
+	<!-- Opções: 
+				#identification
+				#person
+				#education
+				#health
+				#income
+				#familyRelationship
+				#residence
+				#attendance
+				#activity	-->
+	<!-- ============================================================================================== -->
+	<table width="98%" class="noBorder">
+		<br>
+		<tr>
+			<td align="center">
+				<?php if($this->errorMessages):?>
+					<b><?php echo $this->controller->bioRelation->text->paramErrors;?></b><p>
+					<?php printErrorsByField($this->form->idPerson(), $this->errorMessages);?>
+					<?php printErrorsByField($this->form->idParent(), $this->errorMessages);?>
+					<?php printErrorsByField($this->form->idKinship(), $this->errorMessages);?>
+					<?php printErrorsByField($this->form->idFamily(), $this->errorMessages);?>
+				<?php endif;?>
+			</td>
+		</tr>
+		<tr>
+			<td align="center">
+				<br>
+				<a href="<?php echo $this->baseUrl;?><?php echo FAMILYRELATIONSHIP_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php echo $this->form->personId();?>/<?php echo $this->form->getPersonId();?>">
+					<?php echo $this->labels->button->back; ?>
+				</a>
+			</td>
+		</tr>
+	</table>
+</div>																  
+<!-- =================================== -->
+<!-- fim : específico para cada template -->					
+<!-- =================================== -->	
+
+<br>
+
+<?php echo $this->render('footer/footer.phtml');?>

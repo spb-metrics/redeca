@@ -1,0 +1,62 @@
+<?php $show = Zend_Registry::get(CONFIG)->container->health;?>
+<script type="text/javascript">		
+	$('#imgFakeHideHealth').hide();
+	<?php if($show):?>
+		$().ajaxSend(function(){$('#loading2').show();});		
+		$.post('<?php echo $this->baseUrl;?><?php echo HEALTH_CONTROLLER;?>/<?php echo DEFAULT_CONTAINER_ACTION;?>/<?php if($this->form)echo $this->form->personId();?>/<?php if($this->form)echo $this->form->getPersonId();?>', function(data){ $('#health').append(data);$('#loading2').hide();});
+	<?php else:?>
+		function showHealth()
+		{
+			$('#maxHealth').hide();
+			$('#mainHealth').show();
+			$().ajaxSend(function(){$('#loading2').show();$('#imgHideHealth').hide();$('#imgFakeHideHealth').show();$('#tableHideHealth').hide();$('#tableFakeHideHealth').show();});		
+			$.post('<?php echo $this->baseUrl;?><?php echo HEALTH_CONTROLLER;?>/<?php echo DEFAULT_CONTAINER_ACTION;?>/<?php if($this->form)echo $this->form->personId();?>/<?php if($this->form)echo $this->form->getPersonId();?>', 
+				function(data)
+				{  
+					if(data.search(/<?php echo $this->labels->login->title;?>/i) != -1)
+					{
+						window.location.reload();
+					}
+					else
+					{
+						$('#health').append(data);
+						$('#loading2').hide();
+						$('#imgFakeHideHealth').hide();
+						$('#imgHideHealth').show();
+						$('#tableFakeHideHealth').hide();
+						$('#tableHideHealth').show();
+					}
+				}
+			);
+		}
+		
+		function hideHealth()
+		{
+			$('#maxHealth').show();
+			$('#health').empty();
+			$('#mainHealth').hide();
+		}
+	<?php endif;?>
+	
+</script>
+
+<?php if(!$show):?>
+<div id="maxHealth" class="health">
+
+	<h1 onClick="showHealth()">
+	<img src="<?php echo $this->baseUrl;?>/public/images/show.png" title="<?php echo $this->labels->title->show;?>"/>
+	<b><?php echo $this->labels->title->health;?></b>
+	</h1>
+</div>
+<?php endif;?>
+
+<div id="mainHealth" <?php if(!$show):?>style="display: none;"<?php endif;?>>
+        <h1  onClick="hideHealth()">
+                <img id="imgHide" src="<?php echo $this->baseUrl;?>/public/images/hide.png" title="<?php echo $this->labels->title->hide;?>"/>
+                <?php echo $this->labels->title->health ?>
+        </h1>
+
+        <div id="loading2"><center><img src="<?php echo $this->baseUrl ?>/public/images/loading.gif"/></center></div>
+        <div id="health"></div>
+
+</div>

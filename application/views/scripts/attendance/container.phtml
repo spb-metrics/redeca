@@ -1,0 +1,39 @@
+<?php echo $this->render('header/container.phtml'); ?>
+<table class="icontainer" width="98%">
+	<tr>
+		<td>
+			<i><?php echo $this->labels->text->thisentity;?></i>							
+		</td>
+	</tr>
+	<?php if(count($this->assistances) < 1):?>
+		<tr>
+			<td>
+				<?php echo $this->labels->text->noregister;?>							
+			</td>
+		</tr>		
+	<?php endif;?>
+	<?php $i = 0;?>
+	<?php foreach($this->assistances as $assistance): ?>
+		<tr>
+			<td>							
+				<?php if($i < 4):?>
+					<?php $description = $assistance[Constants::AST_SUMMARY_DESC]; ?>
+						<?php if($assistance[Constants::AST_SUMMARY_TYPE] == Constants::ESPECIAL): ?>
+							<?php echo "&loz;&nbsp;".abbreviate($this->controller->attendance->text->especial, 25); ?>	
+						<?php elseif($description): ?>
+							<?php echo "&loz;&nbsp;".abbreviate($description, 25); ?>	
+						<?php else: ?>
+							<?php echo "&loz;&nbsp;".abbreviate($this->controller->attendance->text->attendance, 25); ?>					
+						<?php endif; ?>		
+				<?php else: echo "..."; break;?>
+				<?php endif;?>
+				<?php $i++; ?>
+			</td>
+		</tr>		
+	<?php endforeach;?>
+	<tr>
+		<td>
+			<input class="small" type="submit" onclick="parent.document.location='<?php echo $this->baseUrl;?><?php echo ATTENDANCE_CONTROLLER;?>/<?php echo DEFAULT_ATTENDANCE_ACTION;?>/<?php if($this->form)echo $this->form->personId();?>/<?php if($this->form)echo $this->form->getPersonId();?>'" value="<?php echo $this->labels->button->showDetail;?>"/>
+		</td>
+	</tr>
+</table>

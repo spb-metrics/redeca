@@ -1,0 +1,65 @@
+<?php $ast = $this->assistance;?>
+<tr>
+	<td width="17%">
+		<b><?php echo $this->controller->attendance->text->officialLetter;?></b>
+	</td>
+	<td>
+		<?php ($ast[EAS_OFFICIAL_LETTER_NUMBER])? $number = $ast[EAS_OFFICIAL_LETTER_NUMBER]: $number = $this->labels->text->nodata; echo $number;?>
+	</td>
+</tr>
+<tr>
+	<td >
+		<b><?php echo $this->controller->attendance->text->year;?></b>
+	</td>
+	<td>
+		<?php ($ast[EAS_OFFICIAL_LETTER_YEAR])? $year = $ast[EAS_OFFICIAL_LETTER_YEAR]: $year = $this->labels->text->nodata; echo $year;?>
+	</td>
+</tr>
+<tr>
+	<td >
+		<b><?php echo $this->controller->attendance->text->officialOrigen;?></b>
+	</td>
+	<td>
+		<?php ($ast[EAS_ID_OFFICIAL_LETTER_ORIGIN])? $origin = $ast[EAS_ID_OFFICIAL_LETTER_ORIGIN]: $origin = $this->labels->text->nodata; echo $origin;?>
+	</td>
+</tr>
+<tr>
+	<td >
+		<b><?php echo $this->controller->attendance->text->processLetter;?></b>
+	</td>
+	<td>
+		<?php ($ast[EAS_LAWSUIT_NUMBER])? $number = $ast[EAS_LAWSUIT_NUMBER]: $number = $this->labels->text->nodata; echo $number;?>
+	</td>
+</tr>
+<tr>
+	<td >
+		<b><?php echo $this->controller->attendance->text->year;?></b>
+	</td>
+	<td>
+		<?php ($ast[EAS_LAWSUIT_YEAR])? $year = $ast[EAS_LAWSUIT_YEAR]: $year = $this->labels->text->nodata; echo $year;?>
+	</td>
+</tr>
+<tr>
+	<td >
+		<b><?php echo $this->controller->attendance->text->processOrigen;?></b>
+	</td>
+	<td>
+		<?php ($ast[EAS_ID_LAWSUIT_ORIGIN])? $origin = $ast[EAS_ID_LAWSUIT_ORIGIN]: $origin = $this->labels->text->nodata; echo $origin;?>
+	</td>
+</tr>
+<tr>
+	<td >
+		<b><?php echo $this->controller->attendance->text->description;?></b>
+	</td>
+	<td>
+		<?php ($ast[EAS_LAWSUIT_DETAIL])? $desc = $ast[EAS_LAWSUIT_DETAIL]: $desc = $this->labels->text->nodata; echo $desc;?>
+	</td>
+</tr>
+<tr>
+	<td >
+		<b><?php echo $this->controller->attendance->text->descisionCourt;?></b>
+	</td>
+	<td>
+		<?php ($ast[EAS_RULING])? $ruling = $ast[EAS_RULING]: $ruling = $this->labels->text->nodata; echo $ruling;?>
+	</td>
+</tr>

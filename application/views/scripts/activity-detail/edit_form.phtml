@@ -1,0 +1,137 @@
+<!-- ==================================================== -->
+<!-- formulário que visualiza as informações para edição  -->
+<!-- este formulário é visualizado a partir do view.phtml -->					
+<!-- ==================================================== -->
+<?php 
+	if($this->activityDetail && sizeof($this->activityDetail) > 0)
+	{
+		$idActivityDetail	= $this->activityDetail->{ACD_ID_ACTIVITY_DETAIL}; 
+		$nameDetailActivity = $this->activityDetail->{ACD_ACTIVITY_DETAIL};
+		$workingHour 		= $this->activityDetail->{ACD_HOURLY_LOAD};
+		$idProgram 			= $this->activityDetail->{ACD_ID_PROGRAM};
+		$idCategory 		= $this->activityDetail->{ACD_ID_CATEGORY};
+	}
+	else
+	{
+		$idActivityDetail	= $this->escape($this->form->getIdActivityDetail());
+		$nameDetailActivity = $this->escape($this->form->getNameDetailActivity());
+		$workingHour 		= $this->escape($this->form->getWorkingHour());
+		$idProgram			= $this->escape($this->form->getIdProgram());
+		$idCategory 		= $this->escape($this->form->getIdCategory());
+	}
+?>
+
+<form action="<?php echo $this->baseUrl;?><?php echo ACTIVITY_DETAIL_CONTROLLER;?>/<?php echo DEFAULT_EDIT_ACTION;?>" method="post">
+	<input  type="hidden" name="<?php echo ActivityForm::idActivityDetail();?>" value="<?php echo $idActivityDetail; ?>"/>
+	<tr>
+		<td colspan="2" <?php if($this->alertActivityInUse) echo "class='bigWriteRedBackground'";?>>
+			<?php printErrorsByField($this->form->idActivityDetail(), $this->alertActivityInUse);?>
+			<?php printErrorsByField($this->form->idActivityDetail(), $this->errorMessages);?>
+		</td>
+	</tr>
+	
+	<tr>
+		<td colspan="2">
+			<h1><?php echo $this->controller->activity->text->editactivity;?></h1>
+		</td>
+	</tr>
+	
+	<!-- ========================================================================================================== -->
+	<!-- =========================================== nome da atividade ============================================ -->
+	<!-- ========================================================================================================== -->
+	<tr>
+		<td width="22%" class="bold" align="right"><?php echo $this->controller->activity->text->name;?>:</td>
+		<td width="78%">
+			<input size="88" name="<?php echo ActivityForm::nameDetailActivity();?>" type="text" value="<?php echo $nameDetailActivity;?>"/>
+		</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td><?php printErrorsByField($this->form->nameDetailActivity(), $this->errorMessages);?></td>
+	</tr>
+	
+	<!-- ========================================================================================================== -->
+	<!-- =========================================== carga horária da atividade =================================== -->
+	<!-- ========================================================================================================== -->
+	<tr>
+		<td width="22%" class="bold" align="right"><?php echo $this->controller->activity->text->workinghour;?>:</td>
+		<td width="78%">
+			<input size="10" name="<?php echo ActivityForm::workingHour();?>" type="text" value="<?php echo $workingHour;?>"/>
+		</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td><?php printErrorsByField($this->form->workingHour(), $this->errorMessages);?></td>
+	</tr>
+	
+	<!-- ===================================================================================================== -->
+	<!-- =========================================== programa ================================================ -->
+	<!-- ===================================================================================================== -->
+	<tr>
+		<td width="22%" class="bold" align="right"><?php echo $this->controller->activity->text->selectProgram;?>:</td>
+		<td width="78%">
+			<select name="<?php echo ActivityForm::idProgram();?>">
+				<option value=""><?php echo $this->controller->activity->text->selectProgram;?></option>
+				<?php
+					foreach($this->programs as $program)
+					{	
+						$uniqueActivity = $program->findParentRow(CLS_PROGRAMTYPE);
+						echo "<option value='";echo $program->{PGR_ID_PROGRAM}."'";
+						if($program->{PGR_ID_PROGRAM} == $idProgram) 
+						{
+							echo "selected>"; 	
+						}	
+						else
+						{
+							echo ">";	
+						}
+						echo $uniqueActivity->{PGT_PROGRAM_TYPE}.
+						"</option>";
+					}
+				?>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td><?php printErrorsByField($this->form->idProgram(), $this->errorMessages);?></td>
+	</tr>
+	
+	<!-- ====================================================================================================== -->
+	<!-- =========================================== atividade ================================================ -->
+	<!-- ====================================================================================================== -->
+	<tr>
+		<td width="22%" class="bold" align="right"><?php echo $this->controller->activity->text->selectactivity;?>:</td>
+		<td width="78%">
+			<select name="<?php echo ActivityForm::idCategory();?>">
+				<option value=""><?php echo $this->controller->activity->text->selectactivity;?></option>
+				<?php
+					foreach($this->activities as $act)
+					{	
+						echo "<option value='";echo $act->{CAT_ID_CATEGORY}."'";
+						if($act->{CAT_ID_CATEGORY} == $idCategory)
+						{
+							echo "selected>"; 	
+						}	
+						else
+						{
+							echo ">";	
+						}
+						echo $act->{CAT_CATEGORY}.
+						"</option>";
+					}
+				?>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td>&nbsp;</td>
+		<td><?php printErrorsByField($this->form->idCategory(), $this->errorMessages);?></td>
+	</tr>
+	
+	<tr>
+		<td colspan="2" align="center">
+			<input type="submit" value="<?php echo $this->labels->button->save;?>"/>
+		</td>
+	</tr>
+</form>

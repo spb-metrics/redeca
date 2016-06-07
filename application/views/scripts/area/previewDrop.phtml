@@ -1,0 +1,26 @@
+<tr>
+	<td width="100%" align="center">
+		<h1>
+			<?php echo ($this->labels->confirm->delete->title);?>
+		</h1>
+		<form action="<?php echo $this->baseUrl;?><?php echo AREA_CONTROLLER;?>/<?php echo DEFAULT_DROP_ACTION;?>" method="post">
+			<p>
+				<?php echo $this->labels->confirm->delete->text;?>&nbsp;<?php echo $this->escape($this->form->getId());?>&nbsp;?<br>
+				<?php 
+					foreach($this->result as $result)
+					{
+						echo "<br>".$this->controller->area->text->name.":&nbsp;";
+						echo "<input type='hidden' name='".$this->form->id()."[]' value='".$result->{EAT_ID_ENTITY_AREA}."'/>";
+						echo "<b>". $result->{EAT_ENTITY_AREA}."</b><br>";
+					}
+				?>
+			</p>
+			<div>
+				<?php if(!$this->errorMessages){?>
+				<input type="submit" name="<?php echo E_CONFIRM; ?>" value="<?php echo $this->labels->confirm->button->yes;?>" />
+				<?php }?>
+				<input type="button" onClick="document.location='<?php echo $this->baseUrl;?><?php echo AREA_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>'" value="<?php echo $this->labels->confirm->button->cancel;?>" />
+			</div>
+		</form>			
+	</td>
+</tr>

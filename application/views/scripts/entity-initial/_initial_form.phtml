@@ -1,0 +1,32 @@
+<!-- ==================================================== -->
+<!-- formulário que visualiza as informações para edição =-->
+<!-- este formulário é visualizado a partir do view.phtml -->					
+<!-- ==================================================== -->
+<form action="<?php echo $this->baseUrl;?><?php echo ENTITYINITIAL_CONTROLLER;?>/<?php echo DEFAULT_INITIAL_ADD_ACTION;?>" method="post">
+	<tr>
+		<td align="center">
+			<h1>
+				<?php echo $this->controller->entity->admin->preregister;?>
+			</h1>
+		</td>
+	</tr>
+	<tr>
+		<td align="right" height="30">
+			<?php echo $this->render('navigation/navigationNetworkEntity.phtml');?>
+		</td>
+	</tr>
+	<tr>
+		<td><?php echo $this->helpcontroller->text1?></td>
+	</tr>
+	
+	<?php echo $this->render('entity-initial/_initial_entity_form.phtml');?>
+	
+	<?php echo $this->render('entity-initial/_initial_coordinator_form.phtml');?>
+	
+	<tr>
+		<td align="center">
+			<input type="submit" value="<?php echo $this->labels->button->save;?>"/>
+			<input type="button" value="<?php echo $this->labels->button->back;?>" onClick="document.location='<?php echo $this->baseUrl;?><?php echo ENTITY_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>'">
+		</td>
+	</tr>
+</form>

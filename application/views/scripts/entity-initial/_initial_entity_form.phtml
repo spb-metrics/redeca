@@ -1,0 +1,193 @@
+<?php
+/*
+ * 
+ * Created on 25/02/2008 
+ * W3S Solutions by Fabricio Meireles Monteiro
+ * 
+ */
+?>
+
+<tr>
+	<td><br>
+		<table class="borderBlack" width="100%">
+			<tr>
+				<td colspan="2">
+					<h1>
+						<?php echo $this->controller->entity->admin->entity;?>
+					</h1>
+				</td>
+			</tr>
+			
+			<!-- =============================================================================================================== -->
+			<!-- ============================================ CNPJ da entidade ================================================= -->
+			<!-- =============================================================================================================== -->
+			<tr>
+				<td class="alignRight" align="left" width="25%">
+					<b><?php echo $this->controller->entity->admin->cnpjfieldentity;?>:</b>
+				</td>
+				<td align="left" width="75%">
+					<input size="80" maxlength="14" type="text" name="<?php echo EntityForm::entityCnpj();?>" value="<?php echo $this->escape($this->entityForm->getEntityCnpj());?>"/>
+				</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td><?php printErrorsByField($this->entityForm->entityCnpj(), $this->errorMessages);?></td>
+			</tr>
+			
+			<!-- =============================================================================================================== -->
+			<!-- ============================================ nome da entidade ================================================= -->
+			<!-- =============================================================================================================== -->
+			<tr>
+				<td class="alignRight" align="left" width="25%">
+					<b><?php echo $this->controller->entity->admin->namefieldentity;?>:</b>
+				</td>
+				<td align="left" width="75%">
+					<input size="80" type="text" name="<?php echo EntityForm::entityName();?>" value="<?php echo $this->escape($this->entityForm->getEntityName());?>"/>
+				</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td><?php printErrorsByField($this->entityForm->entityName(), $this->errorMessages);?></td>
+			</tr>
+			
+			<!-- ======================================================================================================================= -->
+			<!-- ============================================ programas dessa entidade ================================================= -->
+			<!-- ======================================================================================================================= -->
+			<tr>
+				<td class="alignRight">
+					<b><?php echo $this->controller->entity->admin->selectTitle;?>:</b>
+				</td>
+				
+				<td>
+					<?php if(sizeof($this->allTypeProgram) > 0):?>
+						<select name="<?php echo EntityForm::programId();?>[]" multiple>
+							<?php
+								foreach($this->allTypeProgram as $program)
+								{	
+									echo "<option value='";echo $program->{PGT_ID_PROGRAM_TYPE}."' title='".$program->{PGT_PROGRAM_TYPE}.": ".$program->findParentRow(CLS_TARGETMARKET)->{TMK_TARGET_MARKET}."' ";
+									if(in_array($program->{PGT_ID_PROGRAM_TYPE},$this->form->getProgramId()))
+									{
+										echo "selected>"; 	
+									}	
+									else
+									{
+										echo ">";	
+									}
+									echo $program->{PGT_PROGRAM_TYPE};echo "&nbsp;:&nbsp;"; echo $program->findParentRow(CLS_TARGETMARKET)->{TMK_TARGET_MARKET};
+									"</option>";
+								}
+							?>
+						</select>
+					<?php else:?>
+						<b class="bigWriteRed"><?php echo $this->controller->entity->admin->noProgram;?></b>
+					<?php endif;?>
+				</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td><?php printErrorsByField($this->entityForm->programId(), $this->errorMessages);?></td>
+			</tr>
+			
+			<!-- ======================================================================================================================= -->
+			<!-- =========================== tipos de classificações possíveis cadastradas na rede ===================================== -->
+			<!-- ======================================================================================================================= -->
+			<tr>
+				<td class="alignRight">
+					<b><?php echo $this->controller->entity->admin->selectClassification;?>:</b>
+				</td>
+				
+				<td>
+					<?php if(sizeof($this->allClassifications) > 0):?>
+						<select name="<?php echo EntityForm::classificationId();?>[]" multiple>
+							<?php
+								foreach($this->allClassifications as $classification)
+								{	
+									echo "<option value='";echo $classification->{ECT_ID_ENTITY_CLASSIFICATION}."' title='".$classification->{ECT_ENTITY_CLASSIFICATION}."' ";
+									if(in_array($classification->{ECT_ID_ENTITY_CLASSIFICATION},$this->form->getClassificationId()))
+									{
+										echo "selected>"; 	
+									}	
+									else
+									{
+										echo ">";	
+									}
+									echo $classification->{ECT_ENTITY_CLASSIFICATION};
+									"</option>";
+								}
+							?>
+						</select>
+					<?php else:?>
+						<b class="bigWriteRed"><?php echo $this->controller->entity->admin->noClassification;?></b>
+					<?php endif;?>
+				</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td><?php printErrorsByField($this->entityForm->classificationId(), $this->errorMessages);?></td>
+			</tr>
+			
+			<!-- ======================================================================================================================= -->
+			<!-- ========================= áreas de atuação possíveis cadastradas na rede ============================================== -->
+			<!-- ======================================================================================================================= -->
+			<tr>
+				<td class="alignRight">
+					<b><?php echo $this->controller->entity->admin->selectArea;?>:</b>
+				</td>
+				
+				<td>
+					<?php if(sizeof($this->allAreas) > 0):?>
+						<select name="<?php echo EntityForm::areaId();?>[]" multiple>
+							<?php
+								foreach($this->allAreas as $area)
+								{	
+									echo "<option value='";echo $area->{EAT_ID_ENTITY_AREA}."' title='".$area->{EAT_ENTITY_AREA}."'";
+									if(in_array($area->{EAT_ID_ENTITY_AREA},$this->form->getAreaId()))
+									{
+										echo "selected>"; 	
+									}	
+									else
+									{
+										echo ">";	
+									}
+									echo $area->{EAT_ENTITY_AREA};
+									"</option>";
+								}
+							?>
+						</select>
+					<?php else:?>
+						<b class="bigWriteRed"><?php echo $this->controller->entity->admin->noArea;?></b>
+					<?php endif;?>
+				</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td><?php printErrorsByField($this->entityForm->areaId(), $this->errorMessages);?></td>
+			</tr>
+			<tr>
+				<td align="right">
+					<b><?php echo $this->controller->entity->text->group;?>:</b>
+				</td>
+				<td colspan="3" align="left">
+					<select name="<?php echo $this->form->groupEntity();?>[]" multiple size="5">
+						<?php foreach($this->groups as $current):?>
+							<option 
+								value="<?php echo $current->{AGP_ID_GROUP};?>" 
+								title="<?php echo $current->{AGP_GROUP};?>"
+								<?php if(in_array($current->{AGP_ID_GROUP},$this->form->getGroupEntity())) echo "selected";?>
+							>
+									<?php echo $current->{AGP_GROUP};?>
+							</option>
+						<?php endforeach;?>
+					</select>					
+				</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td><?php printErrorsByField($this->form->groupEntity(), $this->errorMessages);?></td>
+			</tr>
+		</table>
+		<br><br>
+	</td>
+</tr>
+
+

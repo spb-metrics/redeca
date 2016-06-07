@@ -1,0 +1,53 @@
+<?php echo $this->render('header/header.phtml');?>
+
+<?php echo $this->render('submenu/subMenuRelationship.phtml');?>
+
+<table width="100%" class="withoutEdge">
+	<tr>
+		<td width="100%" align="center">
+			<h1>
+				<?php echo ($this->labels->confirm->delete->title);?>
+			</h1>
+			<?php printErrorsByField($this->form->id(), $this->errorMessages);?>
+			<?php printErrorsByField($this->form->idFamily(), $this->errorMessages);?>
+			<?php printErrorsByField($this->form->idExpenseType(), $this->errorMessages);?>
+			<form action="" method="post">
+				<p>
+					<?php if(!$this->errorMessages){?>
+						<?php echo $this->labels->confirm->delete->text;?> ? <br>
+						<?php 
+							foreach($this->result as $result):
+								if(!$result->{EXP_STATUS}){
+									$type = $result->findParentRow(CLS_EXPENSETYPE);
+									foreach($this->form->getIdExpenseType() as $idType){
+										if($idType == $result->{EXP_ID_EXPENSE_TYPE}){
+											echo "<b>";
+											echo $type->{EXT_EXPENSE}."<br>";
+											echo "</b>";
+										}
+									}
+						?><br>
+						<?php } endforeach;?>
+					<?php } ?>
+				</p>
+				<div>					
+					<?php foreach($this->form->getIdExpenseType() as $type):?>
+						<input type="hidden" value="<?php echo $type;?>" name="<?php echo $this->form->idExpenseType();?>[]"/>
+					<?php endforeach;?>
+					<input type="hidden" value="<?php echo $this->form->getId();?>" name="<?php echo $this->form->id();?>"/>					
+					<input type="hidden" value="<?php echo $this->form->getIdFamily();?>" name="<?php echo $this->form->idFamily();?>"/>
+					<?php if(!$this->errorMessages){?>
+					<input type="submit" value="<?php echo $this->labels->confirm->button->yes;?>" name="<?php echo E_CONFIRM; ?>"
+						onClick="javascript: return actionName('<?php echo $this->baseUrl;?><?php echo FAMILYEXPENSE_CONTROLLER;?>/<?php echo DEFAULT_DROP_ACTION;?>', this.form);">
+					<?php }?>
+					<input type="submit" value="<?php echo $this->labels->confirm->button->cancel;?>" 
+						onClick="javascript: return actionName('<?php echo $this->baseUrl;?><?php echo FAMILYEXPENSE_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>', this.form);">
+				</div>
+			</form>			
+		</td>
+	</tr>
+</table>
+
+<?php echo $this->render('footer/footer.phtml');?>
+ 
+

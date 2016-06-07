@@ -1,0 +1,31 @@
+<?php 
+	//variável utilizada para setar background do submenu 
+	$stringUri = $_SERVER["REQUEST_URI"];
+?>
+
+<?php if(UserLogged::isManager() || UserLogged::isCoordinator()):?>
+<table class="withoutEdge" width="99%" cellpadding="0">
+	<tr>
+		<td>
+			<div>
+				<ul class="menuRoot">
+				  <?php if(ResourcePermission::isAllowResource(ENTITY_CONTROLLER)){?>
+				  <li <?php $stringmatch = ENTITY_CONTROLLER; if (preg_match("%($stringmatch)%", "$stringUri")){echo "class='current'";}?> ><a href="<?php echo $this->baseUrl;?><?php echo ENTITY_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>"><b><?php echo $this->labels->title->common;?></b></a></li>
+				  <?php }?>
+				  <?php if(ResourcePermission::isAllowResource(USER_CONTROLLER)){?>
+				  <li <?php $stringmatch = USER_CONTROLLER; if (preg_match("%($stringmatch)%", "$stringUri")){echo "class='current'";}?> ><a href="<?php echo $this->baseUrl;?><?php echo USER_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>"><b><?php echo $this->labels->title->users;?></b></a></li>
+				  <?php }?>
+				  <?php if(ResourcePermission::isAllowResource(CLASS_CONTROLLER)){?>
+				  <li <?php $stringmatch = CLASS_CONTROLLER; if (preg_match("%($stringmatch)%", "$stringUri")){echo "class='current'";}?> ><a href="<?php echo $this->baseUrl;?><?php echo CLASS_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>"><b><?php echo $this->labels->title->classes;?></b></a></li>
+				  <?php }?>
+				  <?php if(ResourcePermission::isAllowResource(ACTIVITY_DETAIL_CONTROLLER)){?>
+				  <li <?php $stringmatch = ACTIVITY_DETAIL_CONTROLLER; if (preg_match("%($stringmatch)%", "$stringUri")){echo "class='current'";}?> ><a href="<?php echo $this->baseUrl;?><?php echo ACTIVITY_DETAIL_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>"><b><?php echo $this->labels->title->detailActivity;?></b></a></li>
+				  <?php }?>
+				</ul>
+				<font class="fontMenu">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font>
+			</div>
+		</td>
+	</tr>
+</table>
+<?php endif;?>
+

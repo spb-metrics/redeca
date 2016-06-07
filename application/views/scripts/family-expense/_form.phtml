@@ -1,0 +1,73 @@
+<table width="100%" >
+	<?php if(!is_numeric($this->form->getId())){?>
+			<tr>
+				<td>
+					<?php printErrorsByField($this->form->id(), $this->errorMessages);?>		
+				</td>
+			</tr>
+	<?php }else{?>
+	<?php if($this->edit === false) {?>
+		<form action="<?php echo $this->baseUrl;?><?php echo FAMILYEXPENSE_CONTROLLER;?>/<?php echo DEFAULT_ADD_ACTION;?>" method="post">		
+	<?php }else{?>
+		<form action="<?php echo $this->baseUrl;?><?php echo FAMILYEXPENSE_CONTROLLER;?>/<?php echo DEFAULT_EDIT_ACTION;?>" method="post">
+			<input type="hidden" name="<?php echo $this->form->idExpenseType();?>" value="<?php echo $this->form->getIdExpenseType();?>">
+	<?php }?>
+		<tr>
+			<td colspan="2">
+				<?php if($this->edit === false) {?>
+					<h1><?php echo $this->controller->fexpense->title->new;?></h1>
+				<?php }else{?>
+					<h1><?php echo $this->controller->fexpense->title->view;?></h1>
+				<?php }?>
+				<?php printErrorsByField($this->form->id(), $this->errorMessages);?>
+				<?php printErrorsByField($this->form->idFamily(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td width="15%">
+				<b><?php echo $this->controller->fexpense->text->expenseName;?>:</b>
+				<input type="hidden" name="<?php echo $this->form->idFamily();?>" value="<?php echo $this->form->getIdFamily();?>">
+				<input type="hidden" name="<?php echo $this->form->id();?>" value="<?php echo $this->form->getId();?>">
+			</td>
+			<td>
+				<?php if($this->edit === false) {?>
+					<select name="<?php echo $this->form->idExpenseType();?>">
+						<option value=""><?php echo $this->labels->text->select;?>...</option>
+						<?php foreach($this->expType as $type):?>						
+							<option value="<?php echo $type->{EXT_ID_EXPENSE}?>"
+								<?php if($this->form->getIdExpenseType() == $type->{EXT_ID_EXPENSE}) echo 'selected';?>
+							>
+								<?php echo $type->{EXT_EXPENSE}?> 
+							</option>
+						<?php endforeach;?>
+					</select>
+				<?php }else{?>
+					<?php $flag = false;?>
+					<?php foreach($this->expType as $type):?>
+						<?php if($this->form->getIdExpenseType() == $type->{EXT_ID_EXPENSE}) {echo $type->{EXT_EXPENSE}; $flag = true;}?>
+					<?php endforeach;?>
+					<?php if($flag === false):?>
+						<?php echo $this->labels->text->nodata;?>
+					<?php endif;?>
+				<?php }?>
+				<?php printErrorsByField($this->form->idExpenseType(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<b><?php echo $this->controller->fexpense->text->value;?>:</b>
+			</td>
+			<td>
+				<input size="20" type="text" name="<?php echo $this->form->expenseValue();?>" value="<?php echo $this->form->getExpenseValue();?>"/>
+				<?php printErrorsByField($this->form->expenseValue(), $this->errorMessages);?>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<input type="submit" value="<?php echo $this->labels->button->save;?>">
+				<input type="button" value="<?php echo $this->labels->button->back;?>" onClick="document.location='<?php echo $this->baseUrl;?><?php echo FAMILYEXPENSE_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php echo $this->form->id();?>/<?php echo $this->form->getId();?>'"/>
+			</td>
+		</tr>
+	</form>
+	<?php }?>
+</table>

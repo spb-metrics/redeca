@@ -1,0 +1,129 @@
+<?php
+/*
+ * Created on 19/03/2008
+ * Author: Jefferson
+ */
+?>
+	<!-- Inicio do Formulario de CEP -->
+	<form id="importZipCodeFrm" action="<?php echo $this->baseUrl . IMPORT_CONTROLLER.'/'.DEFAULT_ZIPCODE_ACTION;?>" method="post" enctype="multipart/form-data">
+	<div id="importZipCodeDiv" style="<?php if($this->form->getRadioButton()== 'zipcode')echo 'display:inline'; else echo 'display:none'; ?>">
+		<!-- Campo de controle -->
+		<input type="hidden" name="<?php echo $this->form->radioButton()?>" value="<?php echo ImportForm::ZIPCODE_DIV_KEY;?>"/>
+		
+		<?php if(!$this->importedOnce) { //Exibe o form de importação se, e somente se ainda não foi importado ?>
+		<table width="100%" >
+			<tr>
+				<td colspan="2">
+					<h1><?php echo $this->controller->import->title->zipcode;?></h1>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2"><ul><li><?php echo $this->helpcontroller->zipcode3;?></li></ul></td>
+			</tr>
+			<tr>
+				<td colspan="2"><ul><li><?php echo $this->helpcontroller->import;?></li></ul></td>
+			</tr>
+			<tr>
+				<td colspan="2"><ul><li><?php echo $this->helpcontroller->zip;?></li></ul></td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<?php echo $this->controller->import->text->maxFileSize; echo $this->maxFileSize; ?>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="">
+					<div class="stepTitle">
+						<?php echo $this->controller->import->text->importStep; ?>
+					</div>
+						<?php 
+						// Imprime os passos do upload
+						foreach($this->infos as $info)
+						{
+								if($info->hasImported()===TRUE)
+									echo "<div class='importStep out'>".$info->getStep()."</div>";
+								else
+									if($this->upload && $this->upload->getStep() == $info->getStep())
+										echo "<div class='importStep in'>".$info->getStep()."</div>";
+									else
+										echo "<div class='importStep'>".$info->getStep()."</div>";
+						}
+						?>
+				</td>
+			</tr>
+			<tr>
+				<td>
+						<div class="step">
+							<?php 
+							if($this->process)
+								echo $this->controller->import->text->importProcess;
+							else
+								echo $this->controller->import->text->fileToImport; if($this->upload) echo $this->upload->getFolderName();
+							// Mensagem de validação caso a importação já tenha sido executada
+							printErrorsByField(Constants::PROCESS_KEY, $this->errorMessages); 
+							?>
+						</div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<?php /* Mensagem de erro ao carregar o arquivo */ 
+						foreach($this->infos as $info)
+							foreach($info->getMessage() as $msg)
+								printError( $msg );
+					?>
+				</td>
+			</tr>
+			<?php if($this->process):?> 
+				<tr>
+					<td colspan="2"><?php echo $this->helpcontroller->wait;?><p></td>
+				</tr>
+			<?php endif; ?>
+			<tr>
+				<?php if($this->process) {// Exibe botão processar caso todos os arquivos estejam corretos ?> 
+				<td colspan="2" align="center">
+					<input type="submit"  id="buttonProcess"  value="<?php echo $this->controller->button->process;?>" 
+					onClick="actionName('<?php echo $this->baseUrl;?><?php echo IMPORT_CONTROLLER;?>/<?php echo PROCESS_ACTION;?>',this.form);this.form.submit();this.disabled=true;"
+					<?php if(!$this->infos)echo 'disabled';?> />
+				</td>
+				<?php }// end IF (Don´t delete the '}')
+					else { // Caso seja necessário algum arquivo  
+				?>
+				<td colspan="2">
+					<b><?php echo $this->controller->import->text->searchFile;?>:</b>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<input type="hidden" name="<?php echo ImportForm::folder();?>" value="<?php if($this->upload) echo $this->upload->getFolderName();?>">
+					<input type="file" name="<?php echo ImportForm::addressFile()?>" value="" <?php if(!$this->infos)echo 'disabled';?> >
+					<?php printErrorsByField($this->form->addressFile(), $this->errorMessages);?>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="submit" value="<?php echo $this->controller->button->import;?>" <?php if(!$this->infos)echo 'disabled';?> >
+				</td>
+				<?php }// end ELSE  (Don´t delete the '}') ?>
+			</tr>
+			<tr>
+			</tr>
+		</table>
+		<?php } //END IF - Exibe o form de importação se, e somente se ainda não foi importado 
+			else { // Exibe mensagem indicando que o CEP já foi importado
+		?>
+		<table width="100%" >
+			<tr>
+				<td colspan="2" align="center">
+					<div class="">
+						<?php echo $this->controller->import->text->importedOnce;?>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2"><ul><li><?php echo $this->helpcontroller->zipcode3;?></li></ul></td>
+			</tr>
+		</table>
+		<?php } //END ELSE - Exibe mensagem indicando que o CEP já foi importado ?>
+	</div>
+	</form>

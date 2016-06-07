@@ -1,0 +1,42 @@
+<?php 
+	//variável utilizada para setar background do submenu
+	
+	$partialUriHistory	= '/history/view/history_id/';
+	$addressUri			= $_SERVER["REQUEST_URI"];
+	$resultMatch		= stripos($addressUri, $partialUriHistory);
+	
+	$resultMatch === false ? $stringUri = $_SERVER["REQUEST_URI"] : $stringUri = $_SERVER["HTTP_REFERER"];
+?>
+
+<table class="withoutEdge" width="99%" cellpadding="0">
+	<tr>
+		<td>
+			<div>
+				<ul class="menuRoot">
+				  <?php if(ResourcePermission::isAllowResource(PERSON_CONTROLLER)){?>				  
+				  <li <?php $stringmatch = PERSON_CONTROLLER; if (preg_match("%($stringmatch.*$stringmatch)|($stringmatch/edit)%", "$stringUri")){echo "class='current'";}?> ><a href="<?php echo $this->baseUrl;?><?php echo PERSON_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php if($this->form)echo $this->form->personId();?>/<?php if($this->form)echo $this->form->getPersonId();?>"><b><?php echo $this->labels->title->common;?></b></a></li>				  
+				  <?php }?>
+				  <?php if(ResourcePermission::isAllowResource(EDUCATION_CONTROLLER)){?>
+				  <li <?php $stringmatch = EDUCATION_CONTROLLER; if (preg_match("%($stringmatch)%", "$stringUri")){echo "class='current'";}?> ><a href="<?php echo $this->baseUrl;?><?php echo EDUCATION_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php if($this->form)echo $this->form->personId();?>/<?php if($this->form)echo $this->form->getPersonId();?>"><b><?php echo $this->labels->title->education;?></b></a></li>
+				  <?php }?>
+				  <?php if(ResourcePermission::isAllowResource(HEALTH_CONTROLLER)){?>
+				  <li <?php $stringmatch = HEALTH_CONTROLLER; if (preg_match("%($stringmatch)%", "$stringUri")){echo "class='current'";}?> ><a href="<?php echo $this->baseUrl;?><?php echo HEALTH_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php if($this->form)echo $this->form->personId();?>/<?php if($this->form)echo $this->form->getPersonId();?>"><b><?php echo $this->labels->title->health;?></b></a></li>
+				  <?php }?>
+				  <?php if(ResourcePermission::isAllowResource(BENEFIT_CONTROLLER)){?>
+				  <li <?php $stringmatch = BENEFIT_CONTROLLER; if (preg_match("%($stringmatch)%", "$stringUri")){echo "class='current'";}?> ><a href="<?php echo $this->baseUrl;?><?php echo BENEFIT_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php if($this->form)echo $this->form->personId();?>/<?php if($this->form)echo $this->form->getPersonId();?>"><b><?php echo $this->labels->title->benefit;?></b></a></li>
+				  <?php }?>
+				  <?php if(ResourcePermission::isAllowResource(INCOME_CONTROLLER)){?>
+				  <li <?php $stringmatch = INCOME_CONTROLLER; if (preg_match("%($stringmatch)%", "$stringUri")){echo "class='current'";}?> ><a href="<?php echo $this->baseUrl;?><?php echo INCOME_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php if($this->form)echo $this->form->personId();?>/<?php if($this->form)echo $this->form->getPersonId();?>"><b><?php echo $this->labels->title->income;?></b></a></li>
+				  <?php }?>
+				  <?php if(ResourcePermission::isAllowResource(RESIDENCE_CONTROLLER)){?>
+				  <li <?php $stringmatch = RESIDENCE_CONTROLLER; if (preg_match("%($stringmatch)%", "$stringUri")){echo "class='current'";}?> ><a href="<?php echo $this->baseUrl;?><?php echo RESIDENCE_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php if($this->form)echo $this->form->personId();?>/<?php if($this->form)echo $this->form->getPersonId();?>"><b><?php echo $this->labels->title->residence;?></b></a></li>
+				  <?php }?>
+				  <?php if(ResourcePermission::isAllowResource(ATTENDANCE_CONTROLLER)){?>
+				  <li <?php $stringmatch = ATTENDANCE_CONTROLLER; if (preg_match("%($stringmatch)%", "$stringUri")){echo "class='current'";}?> ><a href="<?php echo $this->baseUrl;?><?php echo ATTENDANCE_CONTROLLER;?>/<?php echo DEFAULT_ATTENDANCE_ACTION;?>/<?php if($this->form)echo $this->form->personId();?>/<?php if($this->form)echo $this->form->getPersonId();?>"><b><?php echo $this->labels->title->attendance;?></b></a></li>
+				  <?php }?>
+				</ul>
+			</div>
+			<input type="hidden" id="baseurl" value="<?php echo $this->baseUrl;?>"/>
+		</td>
+	</tr>
+</table>

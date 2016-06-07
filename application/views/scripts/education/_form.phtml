@@ -1,0 +1,194 @@
+<table width="100%" class="withOutEdge">
+	<?php if(!$this->levelInstruction) $existObject=1; else $levelInstruction = $this->levelInstruction;?>
+	<form action="<?php echo $this->baseUrl;?><?php echo EDUCATION_CONTROLLER;?>/<?php echo DEFAULT_EDIT_ACTION;?>" method="post">
+		<?php printErrorsByField($this->form->idPerson(), $this->errorMessages);?>
+		<input type="hidden" name="<?php echo EducationForm::idPerson();?>" value="<?php echo $this->form->getIdPerson();?>"/>
+		<tr>
+			<td colspan="2">
+				<h1><?php echo $this->controller->education->edit->title;?></h1>
+			</td>
+		</tr>
+		
+		<tr>
+			<td width="18%">
+				<b><?php echo $this->controller->education->text->degree;?></b>
+			</td>
+			<td>
+				<select name="<?php echo EducationForm::idDegreeType();?>">
+					<option value=""><?php echo $this->labels->text->select;?>...</option>
+					<?php 
+						if(!$existObject)
+						{
+							$typeDegreeOfBD = $levelInstruction->findParentRow(CLS_DEGREETYPE)->{DTP_ID_DEGREE};
+							
+							$registration = $levelInstruction->findDependentRowset(CLS_REGISTRATION);
+							foreach($registration as $school)
+							{
+								$idSchoolOfBD = $school->findParentRow(CLS_SCHOOL)->{SCH_ID_SCHOOL};
+							}
+						}
+					?>
+					<?php
+						foreach($this->degrees as $degree)
+						{	
+							echo "<option value='";echo $degree->{DTP_ID_DEGREE}."'";
+							if($degree->{DTP_ID_DEGREE} == $this->escape($this->form->getIdDegreeType()) || $degree->{DTP_ID_DEGREE} == $typeDegreeOfBD)
+							{
+								echo "selected>"; 	
+							}	
+							else
+							{
+								echo ">";	
+							}
+							echo $degree->{DTP_DEGREE}.
+							"</option>";
+						}
+					?>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td><?php printErrorsByField($this->form->idDegreeType(), $this->errorMessages);?></td>
+		</tr>
+		<tr>
+			<td colspan="2" height="30">
+				<?php echo $this->helpcontroller->text4?>
+			</td>
+		</tr>
+		<input type="hidden" name="<?php echo EducationForm::idSchool();?>" value="<?php echo $sch->{SCH_ID_SCHOOL}?>"/>
+		<tr>
+			<td width="22%">
+				<b><?php echo $this->controller->education->text->select;?></b>
+			</td>
+			<td>
+				<select name="<?php echo EducationForm::idSchool();?>">
+					<option value=""><?php echo $this->labels->text->select;?>...</option>
+					<?php						
+						foreach($this->allSchool as $school)
+						{	
+							echo "<option value='";echo $school->{SCH_ID_SCHOOL}."'";
+							if($school->{SCH_ID_SCHOOL} == $this->escape($this->form->getIdSchool()) || $school->{SCH_ID_SCHOOL} == $idSchoolOfBD)
+							{
+								echo "selected>"; 	
+							}	
+							else
+							{
+								echo ">";	
+							}
+							echo $school->{SCH_NAME}.
+							"</option>";
+						}
+					?>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td><?php printErrorsByField($this->form->idSchool(), $this->errorMessages);?></td>
+		</tr>
+		
+		<tr>
+			<td width="22%">
+				<b><?php echo $this->controller->education->text->series;?></b>
+			</td>
+			<td>
+				<select name="<?php echo EducationForm::idYearSchoolType();?>">
+					<option value=""><?php echo $this->labels->text->select;?>...</option>
+					<?php 
+						if(!$existObject)
+						{
+							$registration = $levelInstruction->findDependentRowset(CLS_REGISTRATION);
+							foreach($registration as $syt)
+							{
+								$typeSchYearOfBD = $syt->findParentRow(CLS_SCHOOLYEARTYPE)->{SYT_ID_SCHOOL_YEAR};
+							}
+						}
+					?>
+					<?php
+						foreach($this->years as $year)
+						{	
+							echo "<option value='";echo $year->{SYT_ID_SCHOOL_YEAR}."'";
+							if($year->{SYT_ID_SCHOOL_YEAR} == $this->escape($this->form->getIdYearSchoolType()) || $year->{SYT_ID_SCHOOL_YEAR} == $typeSchYearOfBD)
+							{
+								echo "selected>"; 	
+							}	
+							else
+							{
+								echo ">";	
+							}
+							echo $year->{SYT_SCHOOL_YEAR}.
+							"</option>";
+						}
+					?>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td><?php printErrorsByField($this->form->idYearSchoolType(), $this->errorMessages);?></td>
+		</tr>
+		<tr>
+			<td width="22%">
+				<b><?php echo $this->controller->education->text->period;?></b>
+			</td>
+			<td>
+				<select name="<?php echo EducationForm::idPeriodType();?>">
+					<option value=""><?php echo $this->labels->text->select;?>...</option>
+					<?php  
+						if(!$existObject)
+						{
+							foreach($registration as $pt)
+							{
+								$perioOfBD = $pt->findParentRow(CLS_PERIODTYPE)->{PTY_ID_PERIOD};
+							}
+						}
+					?>
+					<?php
+						foreach($this->periods as $period)
+						{	
+							echo "<option value='";echo $period->{PTY_ID_PERIOD}."'";
+							if($period->{PTY_ID_PERIOD} == $this->escape($this->form->getIdPeriodType()) || $period->{PTY_ID_PERIOD} == $perioOfBD)
+							{
+								echo "selected>"; 	
+							}	
+							else
+							{
+								echo ">";	
+							}
+							echo $period->{PTY_PERIOD}.
+							"</option>";
+						}
+					?>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td><?php printErrorsByField($this->form->idPeriodType(), $this->errorMessages);?></td>
+		</tr>
+		
+		<tr>
+			<td colspan="2">
+				<?php echo $this->helpcontroller->text1?>
+				<input size="3" type="text" name="<?php echo EducationForm::year();?>" value="<?php if($levelInstruction->{LIT_LAST_YEAR_STUDIED}) echo $levelInstruction->{LIT_LAST_YEAR_STUDIED}; else echo $this->escape($this->form->getYear());?>"/>
+				<?php echo $this->helpcontroller->text2?>
+				<input size="3" type="text" name="<?php echo EducationForm::month();?>" value="<?php if($levelInstruction->{LIT_LAST_MONTH_STUDIED}) echo $levelInstruction->{LIT_LAST_MONTH_STUDIED}; else echo $this->escape($this->form->getMonth());?>"/>
+				<?php echo $this->helpcontroller->text3;?>
+			</td>
+		</tr>
+		<tr>
+			<td>&nbsp;</td>
+			<td><?php printErrorsByField($this->form->year(), $this->errorMessages);?><br><?php printErrorsByField($this->form->month(), $this->errorMessages);?></td>
+		</tr>
+		
+		<tr>
+			<td colspan="2">
+				<?php if($this->readOnly == FALSE):?>
+					<input type="submit" value="<?php echo $this->labels->button->save;?>"/>
+				<?php endif; ?>
+				<input type="button" value="<?php echo $this->labels->button->back;?>" onClick="document.location='<?php echo $this->baseUrl;?><?php echo EDUCATION_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php echo $this->form->personId();?>/<?php echo $this->form->getPersonId();?>'"/>
+			</td>
+		</tr>
+	</form>
+</table>

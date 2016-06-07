@@ -1,0 +1,143 @@
+	<!-- ========================================================= -->
+	<!-- ============= form que busca pelo nome ================== -->
+	<!-- ========================================================= -->
+	<form action="<?php echo $this->baseUrl;?><?php echo FAMILYRELATIONSHIP_CONTROLLER;?>/<?php echo DEFAULT_SEARCH_BY_NAME_ACTION;?>" method="post">
+		<tr>
+			<td align="center" colspan="4">
+				<h1><?php echo $this->controller->fRelationship->search->title;?></h1>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="4">
+				<b><?php echo $this->controller->fRelationship->text->searchPerson;?></b>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="4">
+				<?php echo $this->controller->fRelationship->search->info;?>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="4">
+				<hr>
+			</td>
+		</tr>
+	
+		<!-- ========================================================= -->
+		<!-- ======================= nome ============================ -->
+		<!-- ========================================================= -->
+		<tr>
+			<td colspan="4">
+				<u><?php echo $this->controller->fRelationship->search->typeName;?></u>
+			</td>
+		</tr>
+		<tr>
+			<td width="5%">
+				<?php echo $this->controller->fRelationship->text->name;?>
+			</td>
+			<td colspan="2">
+				<input size="100" type="text" name="<?php echo $this->form->prsName();?>" value="<?php echo $this->form->getPrsName();?>"/><br>
+				<?php printErrorsByField($this->form->prsName(), $this->errorMessages);?>
+			</td>
+		</tr>
+		
+		<!-- ============================================================= -->
+		<!-- ======================= sexo ================================ -->
+		<!-- ============================================================= -->
+		<tr>
+			<td colspan="4">
+				<?php echo $this->controller->fRelationship->text->option;?>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<?php echo $this->controller->fRelationship->text->sex;?>
+			</td>
+			<td>
+				<select name="<?php echo $this->form->prsSex();?>">
+					<option value=""><?php echo $this->controller->fRelationship->text->both;?></option>
+					<option value="<?php echo Constants::WOMAN;?>" <?php if($this->form->getPrsSex() == Constants::WOMAN) echo "selected";?>>Feminino</option>
+					<option value="<?php echo Constants::MAN;?>" <?php if($this->form->getPrsSex() == Constants::MAN) echo "selected";?>>Masculino</option>
+				</select><br>
+				<?php printErrorsByField($this->form->prsSex(), $this->errorMessages);?>
+			</td>
+		</tr>
+		
+		<!-- ========================================================== -->
+		<!-- ======================= idade ============================ -->
+		<!-- ========================================================== -->
+		<tr>
+			<td colspan="4">
+				<?php echo $this->controller->fRelationship->text->age1;?>
+				<input size="5" type="text" name="<?php echo $this->form->prsFirstAge();?>" value="<?php echo $this->form->getPrsFirstAge();?>"/>
+				<?php echo $this->controller->fRelationship->text->age2;?>
+				<input size="5" type="text" name="<?php echo $this->form->prsSecondAge();?>" value="<?php echo $this->form->getPrsSecondAge();?>"/>
+				<?php echo $this->controller->fRelationship->text->age3;?>
+				<?php printErrorsByField($this->form->prsFirstAge(), $this->errorMessages);?><br>
+				<?php printErrorsByField($this->form->prsSecondAge(), $this->errorMessages);?><br>
+			</td>
+		</tr>
+		
+		<!-- ========================================================= -->
+		<!-- ======================= botoes ========================== -->
+		<!-- ========================================================= -->
+		<tr>
+			<td colspan="4">
+				<input type="submit" value="<?php echo $this->labels->button->filter;?>" />
+				<input type="button" value="<?php echo $this->labels->button->back;?>" onClick="document.location='<?php echo $this->baseUrl;?><?php echo FAMILYRELATIONSHIP_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>'"/>
+			</td>
+		</tr>
+	</form>
+	<!-- ======================================================== -->
+	<!-- ============= fim do form que busca pelo nome ========== -->
+	<!-- ======================================================== -->
+
+
+		<tr>
+			<td colspan="4">
+				<hr>
+			</td>
+		</tr>
+<form action="<?php echo $this->baseUrl;?><?php echo FAMILYRELATIONSHIP_CONTROLLER;?>/<?php echo DEFAULT_NEW_ACTION;?>" method="post">
+		<tr>
+			<td colspan="4">
+				<u><?php echo $this->controller->fRelationship->search->typeDoc;?></u>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="4">
+				<?php echo $this->controller->fRelationship->search->doc;?>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<?php echo $this->controller->fRelationship->text->number;?>
+			</td>
+			<td width="20%">
+				<input type="text" name="" value="" size="20"/>
+			</td>
+			<td width="10%">
+				<?php echo $this->controller->fRelationship->text->document;?>
+			</td>
+			<td>
+				<select name="">
+					<option value="">selecione qual é o documento</option>
+					<option value="">Carteira de Identidade</option>
+					<option value="">CPF</option>
+					<option value="">Carteira de Trabalho</option>
+					<option value="">Título de Eleitor</option>
+					<option value="">Cartão SUS</option>
+					<option value="">NIS</option>
+					<option value="">Atari Club</option>
+					<option value="">Pesquisar em todos</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="4">
+				<input type="button" value="<?php echo $this->labels->button->filter;?>" onClick="document.location='<?php echo $this->baseUrl;?><?php echo FAMILYRELATIONSHIP_CONTROLLER;?>/<?php echo DEFAULT_NEW_ACTION;?>'"/>
+				<input type="button" value="<?php echo $this->labels->button->back;?>" onClick="document.location='<?php echo $this->baseUrl;?><?php echo FAMILYRELATIONSHIP_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>'"/>
+			</td>
+		</tr>
+	</form>
+</table>

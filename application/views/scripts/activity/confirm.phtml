@@ -1,0 +1,55 @@
+<?php
+/*
+ * 
+ * Created on 19/02/2008 
+ * W3S Solutions by Fabricio Meireles Monteiro
+ * 
+ */
+?>
+ 
+<?php echo $this->render('header/header.phtml');?>
+<?php echo $this->render('submenu/submenuAdm.phtml');?>
+
+	<?php echo $this->render('submenu/submenuEntity.phtml');?>
+<table width="100%" class="withoutEdge">
+	<tr>
+		<td class="middleValign" colspan="2" align="right">
+			<h1>
+				<?php echo ($this->labels->confirm->disable->title);?>
+			</h1>
+		</td>
+	</tr>
+	<tr>
+		<td class="middleValign" width="15%" align="right">
+			<img src="<?php echo $this->baseUrl;?>/public/styles/alert.jpg"/>
+		</td>
+		<td width="85%" align="center">
+			<?php printErrorsByField($this->form->idActivity(), $this->errorMessages);?>
+			<form action="<?php echo $this->baseUrl;?><?php echo ACTIVITY_CONTROLLER;?>/<?php echo $this->action;?>" method="post">
+				<p>
+					<?php echo $this->labels->confirm->disable->text;?>
+					<?php 
+					foreach($this->macroActivities as $macro)
+					{
+						echo '<br>'. $macro->{CAT_ID_CATEGORY} .' - ';
+						echo $macro->{CAT_CATEGORY}.'<br>';
+					}
+					?>
+				</p>
+				
+				<div>
+					<?php foreach($this->macroActivities as $macro) {?>
+						<input type="hidden" name="<?php echo $this->form->idActivity();?>[]" value="<?php echo $macro->{CAT_ID_CATEGORY};?>" />
+					<?php } /*end foreach*/ ?>
+				  	<input type="submit" name="<?php echo E_CONFIRM; ?>" value="<?php echo $this->labels->confirm->button->yes;?>" />
+				  	<input type="submit" name="<?php echo E_CONFIRM; ?>" value="<?php echo $this->labels->confirm->button->cancel;?>" 
+				  	onClick="javascript: return actionName('<?php echo $this->baseUrl;?><?php echo ACTIVITY_CONTROLLER;?>/<?php echo DEFAULT_NEW_ACTION;?>',this.form);"/>
+				</div>
+			</form>			
+		</td>
+	</tr>
+</table>
+
+<?php echo $this->render('footer/footer.phtml');?>
+ 
+

@@ -1,0 +1,6 @@
+pt_metaphone - Versão 1.0 
+(C)2008 Prefeitura Municipal de Várzea Paulista <metaphone@varzeapaulista.sp.gov.br>
+
+Este programa e outros arquivos relacionados estão licenciados sob a GPL (GNU General Public License). Mudanças, sugestões e melhorias são bem vindas. Para utilizar o pt_metaphone() você precisa ter o PHP, um servidor HTTP compatível com PHP (ex. Apache).
+
+Visite http://www2.varzeapaulista.sp.gov.br/metaphone/

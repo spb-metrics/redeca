@@ -1,0 +1,184 @@
+<!-- ============================================================================================== -->
+<!-- É necessário informar o nome class da tabela em questão para carregar a cor background correta -->
+<!-- Opções: 
+			#identification
+			#person
+			#education
+			#health
+			#income
+			#familyRelationship
+			#residence
+			#attendance
+			#activity	-->
+<!-- ============================================================================================== -->
+<table class="activity" width="98%" align="center">
+	<?php if(is_string($this->classes)):?>
+		<tr>
+			<td colspan="5">
+				<b><?php echo "<span style=\"color: red; font-size: 10pt;\">";echo $this->classes;echo "</span>\n";?></b>
+			</td>
+		</tr>
+	<?php else:?>
+	<?php if($this->classes && sizeof($this->classes) > 0 ):?>
+	<tr>
+		<td align="center">
+			<tr>
+				<td colspan="5">
+					<h1><?php echo $this->controller->classtemplate->text->title;?></h1>
+				</td>
+			</tr>
+			<tr class="write">
+				<td class="bold" align="center" width="35%"><?php echo $this->controller->classtemplate->text->program;?></td>
+				<td class="bold" align="center" width="20%"><?php echo $this->controller->classtemplate->text->activity;?></td>
+				<td class="bold" align="center" width="20%"><?php echo $this->controller->classtemplate->text->classdescription;?></td>
+				<td colspan="2" class="bold" align="center" width="25%"><?php echo $this->controller->classtemplate->text->action;?></td>
+			</tr>
+			
+			<?php
+				$iterator = 0;
+				foreach($this->classes as $uniqueClass) 
+				{
+					$cl = array();
+					$cl[CLS_ID_CLASS]	= $uniqueClass->{CLS_ID_CLASS};
+					$cl[CLS_ID_PROGRAM] = $uniqueClass->{CLS_ID_PROGRAM};
+					$cl[CLS_NAME]		= $uniqueClass->{CLS_NAME};
+			
+					foreach($this->programs as $prg) 
+					{	
+						if($prg->{PGR_ID_PROGRAM} == $uniqueClass->{CLS_ID_PROGRAM})
+						{
+							$program = $prg->findParentRow(CLS_PROGRAMTYPE)->{PGT_PROGRAM_TYPE};
+						} 
+					}
+					
+					if($this->acts)
+					{
+						$category = null;
+						foreach($this->acts as $act) 
+						{	
+							if($act->{ACC_ID_CLASS} == $uniqueClass->{CLS_ID_CLASS})
+							{		
+								{	
+									if($act->{ACC_END_DATE} == null)
+									{
+										$category = array();
+										$category[CAT_CATEGORY] = $act->findParentRow(CLS_ACTIVITYDETAIL)->findParentRow(CLS_CATEGORY)->{CAT_CATEGORY};
+										$collCategory[]= $category;				
+									}
+								}
+							}	
+						}
+					}
+											
+					echo "<tr>";
+						echo "<td class='middleCenterObject' width='35%'>";
+							echo $program;
+							$program = null;
+						echo "</td>";
+
+						echo "<td class='middleCenterObject' width='20%'>";
+							if(sizeof($collCategory) > 0 )
+							{
+								foreach($collCategory as $ct)
+								{
+									echo $ct[CAT_CATEGORY];
+									echo "<br>";
+								}
+								$collCategory = null;
+							}
+							else
+							{
+								echo "<b class='writeRed'>Não há atividades para essa turma</b>";
+							}					
+						echo "</td>";
+
+						echo "<td class='middleCenterObject' width='20%'>";
+							echo $cl[CLS_NAME];
+						echo "</td>";		
+						
+						echo "<form id='";echo "action_";echo $iterator; echo "' method='post'>";
+							echo "<input type='hidden' name='";
+								echo ClassForm::idEntity(); 
+								echo "' value='";
+								echo $this->form->getIdEntity(); 
+							echo "'/>";
+							echo "<input type='hidden' name='";
+								echo ClassForm::idClass(); 
+								echo "' value='";
+								echo $cl[CLS_ID_CLASS]; 
+							echo "'/>";
+							echo "<input type='hidden' name='";
+								echo ClassForm::idProgram(); 
+								echo "' value='";
+								echo $cl[CLS_ID_PROGRAM]; 
+							echo "'/>";
+							echo "<td class='middleCenterObject' width='10%'>";
+								if($this->readOnly == FALSE)
+								{
+									echo "<input type='button' onclick=\"submitForm('";
+										echo $this->baseUrl;
+										echo CLASS_CONTROLLER;
+										echo "/";
+										echo DEFAULT_VIEW_ACTION;
+										echo "','";
+										echo "action_"; 
+										echo $iterator;
+										echo "');\"";
+										echo " value='";
+										echo $this->labels->button->edit;
+										
+//										echo "SUBIR ID DA ENTIDADE";
+//										echo "SUBIR ID DA ENTIDADE";
+//										echo "SUBIR ID DA ENTIDADE";
+//										echo "SUBIR ID DA ENTIDADE";
+//										echo "SUBIR ID DA ENTIDADE";
+//										echo "SUBIR ID DA ENTIDADE";
+//										echo "SUBIR ID DA ENTIDADE";
+										
+										
+									echo "'/>";
+								}
+							echo "</td>";
+							echo "<td class='middleCenterObject' width='15%'>";
+								if($this->readOnly == FALSE)
+								{
+									echo "<input type='button' onclick=\"submitForm('";
+										echo $this->baseUrl;
+										echo CLASS_CONTROLLER;
+										echo "/";
+										echo DEFAULT_CONFIRM_ACTION;
+										echo "','";
+										echo "action_"; 
+										echo $iterator;
+										echo "');\"";
+										echo " value='";
+										echo $this->controller->classtemplate->button->close;
+									echo "'/>";
+								}
+							echo "</td>";
+						echo "</form>";
+					echo "</tr>";
+					$iterator++;
+				}
+			?>
+	<?php else: ?>
+			<tr>
+				<td align="center">
+					<?php echo $this->helpcontroller->text2?>
+				</td>
+			</tr>
+	<?php endif;?>
+			<?php if($this->readOnly == FALSE):?>
+			<tr class="write">
+				<td class="valignBottom" colspan="5" height="40" align="left">
+					<input type="submit" onclick="document.location='<?php echo $this->baseUrl;?><?php echo CLASS_CONTROLLER;?>/<?php echo DEFAULT_NEW_ACTION;?>'" value="<?php echo $this->controller->classtemplate->button->newclass;?>">
+				</td>
+			</tr>
+			<?php endif;?>
+		</td>
+	</tr>
+	<?php endif;?>
+</table>														  
+<!-- =================================== -->
+<!-- fim : específico para cada template -->					
+<!-- =================================== -->

@@ -1,0 +1,108 @@
+<?php echo $this->render('header/header.phtml');?>						 		  						
+				  
+<!-- ===================================== -->
+<!-- inicio : específico com cada template -->					
+<!-- ===================================== -->						  
+<div>
+	<?php echo $this->render('submenu/submenuNetwork.phtml');?>
+	
+	<!-- ============================================================================================== -->
+	<!-- É necessário informar o nome class da tabela em questão para carregar a cor background correta -->
+	<!-- Opções: 
+				#identification
+				#person
+				#education
+				#health
+				#income
+				#familyRelationship
+				#residence
+				#attendance
+				#activity	-->
+	<!-- ============================================================================================== -->
+	<form action="" id="navigation" method="post">		
+		<table class="network" width="98%">
+			<tr>
+				<td align="center">
+					<table width="100%">
+						<tr>
+							<td colspan="4" height="30">
+								<b><?php echo $this->controller->network->title->registerActivity;?></b>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4">
+								<table width="100%" class="noBorder">
+									<tr>
+										<td colspan="4"  height="30">
+											<?php echo $this->helpcontroller->text2;?>
+										</td>
+									</tr>
+									<tr>
+										<td width="22%">
+											<?php echo $this->escape($this->controller->network->text->searchActivity);?>:
+										</td>
+										<td width="28%">
+											<select name="<?php echo $this->form->idActivity();?>"
+												onChange="javascript: actionName('<?php echo $this->baseUrl;?><?php echo NETWORK_CONTROLLER;?>/<?php echo DEFAULT_VIEWACTIVITY_ACTION;?>',this.form); this.form.submit();">
+												<option value=""><?php echo $this->controller->network->text->all;?></option>
+												<?php foreach($this->activity as $activity):?>
+													<option value="<?php echo $activity->{CAT_ID_CATEGORY};?>" <?php if($this->form->getIdActivity() == $activity->{CAT_ID_CATEGORY}) echo "selected";?>><?php echo $activity->{CAT_CATEGORY};?></option>
+												<?php endforeach;?>
+											</select>
+										</td>
+										<td><?php printErrorsByField($this->form->idActivity(), $this->errorMessages);?></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4">
+								<hr>
+							</td>
+						</tr>
+						<tr class="write">
+							<td width="15%">
+								<b><?php echo $this->controller->network->text->activity;?></b>
+							</td>
+							<td width="30%">
+								<b><?php echo $this->controller->network->text->entity;?></b>
+							</td>
+							<td width="40%">
+								<b><?php echo $this->controller->network->text->program;?></b>
+							</td>
+							<td width="15%">
+								<b><?php echo $this->controller->network->text->vacancy;?></b>(<b><?php echo $this->controller->network->text->vacancyNotEmpty;?></b>)
+							</td>
+						</tr>
+						<?php foreach($this->resActivity as $activity):?>
+							<tr>
+								<td>
+									<?php echo $activity[CAT_CATEGORY];?>
+								</td>
+								<td>
+									<?php echo $activity[ENT_NAME];?>
+								</td>
+								<td>
+									<?php echo $activity[PGT_PROGRAM_TYPE];?>
+								</td>
+								<td>
+									<?php echo $activity[CLS_VACANCY];?>(<?php echo $activity[CLS_SCHEDULE];?>)
+								</td>
+							</tr>
+						<?php endforeach;?>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td align='center' colspan='4'>
+					<?php echo $this->render('/navBar.phtml');?>
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>																  
+<!-- ================================== -->
+<!-- fim : específico com cada template -->					
+<!-- ================================== -->		
+
+<?php echo $this->render('footer/footer.phtml');?>

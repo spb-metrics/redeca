@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<help>
+	<items>
+		<text1>Selecione um tipo de atendimento oferecido por sua entidade e clique em Próxima.</text1>
+		<text2>Este é o primeiro passo para realizar um atendimento. Preencha os campos corretamente e prossiga.</text2>
+		<text3>Aqui você insere as informações referentes ao atendimento geral realizado.</text3>
+		<text4>Aqui você insere as informações referentes ao atendimento especial realizado.</text4>
+		<text5>Aqui você insere as informações referentes as turmas.</text5>
+		<text6>Utilize os filtros abaixo para uma busca mais específica.</text6>
+	</items>
+</help>

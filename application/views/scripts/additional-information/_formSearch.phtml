@@ -1,0 +1,288 @@
+<?php $error = false;
+foreach($this->errorMessages as $k=>$v):
+	if($k == $this->form->tableName()) $error = true;
+endforeach;
+
+if($error == false)
+{ ?>
+	<div>
+		<table width="100%" class="noBorder">
+			<tr>
+				<td colspan="4">
+					<h1>
+						<?php 
+							foreach($this->tableName as $key=>$name):
+								if($key == $this->form->getTableName()) echo $name;
+							endforeach;
+						?>
+					</h1>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4"><?php echo $this->helpcontroller->text2;?><p></td>
+			</tr>
+			<tr class="write">
+				<td align="center" class="bold" width="4%">		
+					<?php echo $this->controller->additional->text->id;?>		
+				</td>
+				<td align="center" class="bold" width="55%" >
+					<?php echo $this->controller->additional->text->value;?>
+				</td>
+				<td align="center" class="bold" width="18%" >
+					<?php echo $this->controller->additional->text->status;?>
+				</td>
+				<td colspan="2" width="23%">
+					&nbsp;
+				</td>
+			</tr>
+		</table>
+	</div>
+	<?php $id = $this->form->getTableId();
+		if(($this->form->getTableName() == TBL_PROGRAM_TYPE) || ($this->form->getTableName() == TBL_SOCIAL_PROGRAM_TYPE))
+		{				
+			$value1 = $this->form->getTableSecondValue();		
+			$value2 = $this->form->getTableFirstValue();
+		}
+		else
+		{
+			$value = $this->form->getTableValue();
+		}
+		$class = 1;		
+		foreach($this->result as $result):			
+			if($class == 0)
+			{
+				$type = 'write';
+				$class= 1;
+			}
+			else
+			{
+				$type='';
+				$class= 0;
+			}
+		?>
+			<div id="view<?php echo $result->$id;?>" style="display:block;">
+				<table width="100%" class="noBorder">	
+					<form action="<?php echo $this->baseUrl;?><?php echo ADDITIONALINFORMATION_CONTROLLER;?>/<?php echo DEFAULT_CONFIRM_ACTION;?>" method="post">
+						<tr class="<?php echo $type;?>">
+							<td align="center" width="4%" class="bold">
+								<?php $count += 1; echo $count;?>
+								<input type="hidden" name="<?php echo $this->form->id();?>" value="<?php echo $result->$id;?>">
+							</td>
+							<?php if(($this->form->getTableName() == TBL_PROGRAM_TYPE) || ($this->form->getTableName() == TBL_SOCIAL_PROGRAM_TYPE)){?>
+							<td align="center" align="58%" valign="top">
+								<table width="100%" class="noBorder">
+									<tr>
+										<td align="center" width="60%" valign="top">
+											<?php echo $result->$value1;?>
+										</td>
+										<td align="center" width="40%" valign="top">
+											<?php if($this->form->getTableName() == TBL_PROGRAM_TYPE){
+													foreach($this->targetMarket as $targetMarket):
+														if($result->$value2 == $targetMarket->{TMK_ID_TARGET_MARKET}) echo $targetMarket->{TMK_TARGET_MARKET};
+													endforeach;
+												}?>
+											<?php if($this->form->getTableName() == TBL_SOCIAL_PROGRAM_TYPE){
+													foreach($this->socialProgramOrigen as $socialProgramOrigen):
+														if($result->$value2 == $socialProgramOrigen->{SPO_ID_ORIGIN}) echo $socialProgramOrigen->{SPO_ORIGIN};
+													endforeach;
+												}?>
+										</td>
+									</tr>
+								</table>
+							</td>
+							<?php }?>
+							<?php if(($this->form->getTableName() != TBL_PROGRAM_TYPE) && ($this->form->getTableName() != TBL_SOCIAL_PROGRAM_TYPE)){?>
+								<td align="center" align="58%" valign="top">
+									<?php echo $result->$value;?>
+								</td>
+							<?php }?>
+							<td align="center" width="18%">
+								<?php if($result->{F_STATUS} == Constants::DISABLE) echo $this->labels->text->disable; else echo $this->labels->text->enable;?>
+							</td>
+							<td align="center" width="10%">
+								<input type="button" onClick="javascript: showOrHideEdit(<?php echo $result->$id;?>,'view')" value="<?php echo $this->labels->button->edit;?>">
+							</td>
+							<td align="left" width="10%">
+								<input type="hidden" value="<?php echo $this->form->getTableName();?>" name="<?php echo $this->form->tableName();?>"/>
+								<input type="hidden" value="<?php echo $this->form->getTableId();?>" name="<?php echo $this->form->tableId();?>"/>
+								<?php if(($this->form->getTableName() == TBL_PROGRAM_TYPE) || ($this->form->getTableName() == TBL_SOCIAL_PROGRAM_TYPE)){?>
+									<input type="hidden" value="<?php echo $this->form->getTableFirstValue();?>" name="<?php echo $this->form->tableFirstValue();?>"/>
+									<input type="hidden" value="<?php echo $this->form->getTableSecondValue();?>" name="<?php echo $this->form->tableSecondValue();?>"/>
+								<?php }else{?>
+									<input type="hidden" value="<?php echo $this->form->getTableValue();?>" name="<?php echo $this->form->tableValue();?>"/>
+								<?php }?>
+								<input type="submit" value="<?php echo $this->labels->button->disable;?>">
+							</td>
+						</tr>
+					</form>
+				</table>
+			</div>
+			<div id="edit<?php echo $result->$id;?>" style="display:none;">	
+				<table width="100%" class="noBorder">
+					<form action="<?php echo $this->baseUrl;?><?php echo ADDITIONALINFORMATION_CONTROLLER;?>/<?php echo DEFAULT_EDIT_ACTION;?>" method="post">	
+						<tr>
+							<td align="center" width="4%" class="bold">
+								<?php echo $count;?>			
+								<input type="hidden" name="<?php echo $this->form->id();?>" value="<?php echo $result->$id;?>">		
+							</td>
+							<?php if(($this->form->getTableName() == TBL_PROGRAM_TYPE) || ($this->form->getTableName() == TBL_SOCIAL_PROGRAM_TYPE)){?>
+								<td align="center" align="36%" class="bold">
+									<input type="text" name="<?php echo $this->form->firstValue();?>" value="<?php echo $result->$value1;?>" />
+								</td>
+								<?php if($this->form->getTableName() == TBL_PROGRAM_TYPE){?>
+									<td align="center" width="20%" class="bold">									
+										<select name="<?php echo $this->form->secondValue();?>">
+											<?php foreach($this->targetMarket as $targetMarket):?>
+												<option	<?php if($result->$value2 == $targetMarket->{TMK_ID_TARGET_MARKET}){echo "selected";}?> value="<?php echo $targetMarket->{TMK_ID_TARGET_MARKET}; ?>"><?php echo $targetMarket->{TMK_TARGET_MARKET};?></option>
+											<?php endforeach;?>
+										</select>
+									</td>
+								<?php }?>									
+								<?php if($this->form->getTableName() == TBL_SOCIAL_PROGRAM_TYPE){?>
+									<td align="center" width="20%" class="bold">	
+										<select name="<?php echo $this->form->secondValue();?>">
+											<?php foreach($this->socialProgramOrigen as $socialProgramOrigen):?>
+												<option	<?php if($result->$value2 == $socialProgramOrigen->{SPO_ID_ORIGIN}){echo "selected";}?>	value="<?php echo $socialProgramOrigen->{SPO_ID_ORIGIN}; ?>"><?php echo $socialProgramOrigen->{SPO_ORIGIN};?></option>
+											<?php endforeach;?>
+										</select>
+									</td>
+								<?php }?>								
+							<?php }?>
+							<?php if(($this->form->getTableName() != TBL_PROGRAM_TYPE) && ($this->form->getTableName() != TBL_SOCIAL_PROGRAM_TYPE)){?>
+							<td align="center" align="56%">
+								<input type="text" name="<?php echo $this->form->value();?>" value="<?php echo $result->$value;?>" >
+							</td>
+							<?php }?>
+							<td width="20%">
+								<select name="<?php echo $this->form->status();?>">
+									<option value="<?php echo Constants::ENABLE;?>"><?php echo $this->labels->text->enable;?></option>
+									<option value="<?php echo Constants::DISABLE;?>" <?php if($this->form->getStatus() == Constants::DISABLE) echo "selected";?>><?php echo $this->labels->text->disable;?></option>
+								</select>
+							</td>
+							<td width="10%">
+								<input type="button" onClick="javascript: showOrHideEdit(<?php echo $result->$id;?>,'edit')" value="<?php echo $this->labels->button->no;?>">
+							</td>
+							<td align="left" width="10%">
+								<input type="hidden" value="<?php echo $this->form->getTableName();?>" name="<?php echo $this->form->tableName();?>"/>
+								<input type="hidden" value="<?php echo $this->form->getTableId();?>" name="<?php echo $this->form->tableId();?>"/>
+								<?php if(($this->form->getTableName() == TBL_PROGRAM_TYPE) || ($this->form->getTableName() == TBL_SOCIAL_PROGRAM_TYPE)){?>
+									<input type="hidden" value="<?php echo $this->form->getTableFirstValue();?>" name="<?php echo $this->form->tableFirstValue();?>"/>
+									<input type="hidden" value="<?php echo $this->form->getTableSecondValue();?>" name="<?php echo $this->form->tableSecondValue();?>"/>
+								<?php }else{?>
+									<input type="hidden" value="<?php echo $this->form->getTableValue();?>" name="<?php echo $this->form->tableValue();?>"/>
+								<?php }?>								
+								<input type="submit" value="<?php echo $this->labels->button->save;?>">
+							</td>
+						</tr>
+					</form>	
+				</table>
+			</div>
+	<?php endforeach;
+	if($class == 0)
+	{
+		$type = 'write';
+		$class= 1;
+	}
+	else
+	{
+		$type='';
+		$class= 0;
+	}
+	?>
+	<div>
+		<table width="100%" class="noBorder">			
+			<form action="<?php echo $this->baseUrl;?><?php echo ADDITIONALINFORMATION_CONTROLLER;?>/<?php echo DEFAULT_ADD_ACTION;?>" method="post">
+			<tr class="<?php echo $type;?>">
+				<td align="center" width="4%" class="bold">					
+					<?php $count += 1; echo $count;?>					
+				</td>
+				<?php if(($this->form->getTableName() == TBL_PROGRAM_TYPE) || ($this->form->getTableName() == TBL_SOCIAL_PROGRAM_TYPE)){?>
+					<td align="center" align="55%">
+						<input type="text" name="<?php echo $this->form->firstValue();?>" value="">
+						<?php if($this->form->getTableName() == TBL_PROGRAM_TYPE){?>
+							<select name="<?php echo $this->form->secondValue();?>" style="width:30%;">
+								<?php foreach($this->targetMarket as $targetMarket):?>
+									<option value="<?php echo $targetMarket->{TMK_ID_TARGET_MARKET}; ?>"><?php echo $targetMarket->{TMK_TARGET_MARKET};?></option>
+								<?php endforeach;?>
+							</select>
+						<?php }?>
+						<?php if($this->form->getTableName() == TBL_SOCIAL_PROGRAM_TYPE){?>
+							<select name="<?php echo $this->form->secondValue();?>" style="width:30%;">
+								<?php foreach($this->socialProgramOrigen as $socialProgramOrigen):?>
+									<option value="<?php echo $socialProgramOrigen->{SPO_ID_ORIGIN}; ?>"><?php echo $socialProgramOrigen->{SPO_ORIGIN};?></option>
+								<?php endforeach;?>
+							</select>
+						<?php }?>
+					</td>
+				<?php }?>
+				<?php if(($this->form->getTableName() != TBL_PROGRAM_TYPE) && ($this->form->getTableName() != TBL_SOCIAL_PROGRAM_TYPE)){?>
+					<td align="center" align="55%">
+						<input type="text" name="<?php echo $this->form->value();?>" value="" />
+					</td>
+				<?php }?>
+				<td width="18%">
+					<select name="<?php echo $this->form->status();?>">
+						<option value="<?php echo Constants::ENABLE;?>"><?php echo $this->labels->text->enable;?></option>
+						<option value="<?php echo Constants::DISABLE;?>" <?php if($this->form->getStatus() == Constants::DISABLE) echo "selected";?>><?php echo $this->labels->text->disable;?></option>
+					</select>
+				</td>
+				<td align="right" colspan="2" width="23%">
+					<input type="hidden" value="<?php echo $this->form->getTableName();?>" name="<?php echo $this->form->tableName();?>"/>
+					<input type="hidden" value="<?php echo $this->form->getTableId();?>" name="<?php echo $this->form->tableId();?>"/>
+					<?php if(($this->form->getTableName() == TBL_PROGRAM_TYPE) || ($this->form->getTableName() == TBL_SOCIAL_PROGRAM_TYPE)){?>
+						<input type="hidden" value="<?php echo $this->form->getTableFirstValue();?>" name="<?php echo $this->form->tableFirstValue();?>"/>
+						<input type="hidden" value="<?php echo $this->form->getTableSecondValue();?>" name="<?php echo $this->form->tableSecondValue();?>"/>
+					<?php }else{?>
+						<input type="hidden" value="<?php echo $this->form->getTableValue();?>" name="<?php echo $this->form->tableValue();?>"/>
+					<?php }?>
+					<input type="submit" value="<?php echo $this->labels->button->save;?>">					
+				</td>
+			</tr>
+			</form>
+		</table>
+	</div>
+	<div>
+		<table width="100%" class="noBorder">
+			<tr>
+				<?php $error = false;
+					foreach($this->errorMessages as $k=>$v):
+						if($k == $this->form->id())$error = true;
+					endforeach;				
+					if($error == true){?>
+				<td align="center" width="10%" class="bold">
+					<?php echo $this->controller->additional->text->id;?>	
+				</td>
+				<td align="90%">
+					<?php printErrorsByField($this->form->id(), $this->errorMessages);?>
+				</td>
+			</tr>						
+				<?php }	$error = false;?>
+			<tr>
+				<?php foreach($this->errorMessages as $k=>$v):
+						if($k == $this->form->value())$error = true;
+					endforeach;				
+					if($error == true){?>
+				<td align="center" width="10%" class="bold">
+					<?php echo $this->controller->additional->text->value;?>
+				</td>
+				<td align="90%">
+					<?php printErrorsByField($this->form->value(), $this->errorMessages);?>
+				</td>
+			</tr>
+				<?php }	$error = false;?>
+			<tr>
+				<?php foreach($this->errorMessages as $k=>$v):
+						if($k == $this->form->status())$error = true;
+					endforeach;				
+					if($error == true){?>
+				<td align="center" width="10%" class="bold">
+					<?php echo $this->controller->additional->text->status;?>
+				</td>
+				<td align="90%">
+					<?php printErrorsByField($this->form->status(), $this->errorMessages);?>
+				</td>			
+				<?php }?>
+			</tr>
+		</table>
+	</div>
+<?php }?>

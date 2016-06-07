@@ -1,0 +1,22 @@
+<?php echo $this->render('header/header.phtml');?>								 		  						
+				  
+<!-- ===================================== -->
+<!-- inicio : específico com cada template -->					
+<!-- ===================================== -->						  
+<div>
+	<?php echo $this->render('submenu/submenuAdm.phtml');?>
+	<?php echo $this->render('success/_success.phtml');?>
+	<form name="<?php echo $this->form->tableName();?>" action="<?php echo $this->baseUrl;?><?php echo ADDITIONALINFORMATION_CONTROLLER;?>/<?php echo DEFAULT_SEARCH_ACTION;?>" method="post">
+		<div>
+			<input type="hidden" value="<?php echo $this->form->getTableName();?>" name="<?php echo $this->form->tableName();?>"/>
+			<a href="javascript: document.<?php echo $this->form->tableName();?>.submit();"><?php echo $this->labels->button->back;?></a>
+		</div>
+	</form>
+</div>																  
+<!-- ================================== -->
+<!-- fim : específico com cada template -->					
+<!-- ================================== -->		
+
+<?php echo $this->render('footer/footer.phtml');?>
+
+

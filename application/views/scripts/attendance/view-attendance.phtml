@@ -1,0 +1,29 @@
+<?php echo $this->render('header/header.phtml');?>
+
+<!-- ====================================== -->
+<!-- inicio : específico para cada template -->					
+<!-- ====================================== -->						  
+<div>
+
+	<?php echo $this->render('submenu/submenuPerson.phtml');?>
+
+	<!-- ============================================================================================== -->
+	<!-- É necessário informar o nome class da tabela em questão para carregar a cor background correta -->
+	<!-- Opções: 
+				#identification
+				#person
+				#education
+				#health
+				#income
+				#familyRelationship
+				#residence
+				#attendance
+				#activity	-->
+	<!-- ============================================================================================== -->
+	<?php echo $this->render('attendance/_view-attendance.phtml');?>
+</div>																  
+<!-- =================================== -->
+<!-- fim : específico para cada template -->					
+<!-- =================================== -->
+
+<?php echo $this->render('footer/footer.phtml');?>

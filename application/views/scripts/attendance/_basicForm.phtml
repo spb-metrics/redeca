@@ -1,0 +1,46 @@
+<form action="<?php echo $this->baseUrl;?><?php echo ATTENDANCE_CONTROLLER;?>/<?php echo ASSISTANCE_ACTION;?>" method="post">
+	<input type="hidden" name="<?php if($this->form)echo $this->form->programType();?>" value="<?php if($this->form)echo $this->form->getProgramType();?>"/>
+	<input type="hidden" name="<?php if($this->form)echo $this->form->personId();?>" value="<?php if($this->form)echo $this->form->getPersonId();?>"/>
+	<?php printErrorsByField($this->form->programType(), $this->errorMessages);?>
+	<?php printErrorsByField($this->form->personId(), $this->errorMessages);?>
+	<table width="100%">
+		<tr>
+			<td colspan="2">
+				<h1><?php echo $this->controller->attendance->text->general;?></h1>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<?php echo $this->helpcontroller->text2?>
+			</td>
+		</tr>
+		<tr>
+			<td width="150px">
+				<b><?php echo $this->controller->attendance->text->previsionEndDate;?><b>
+			</td>
+			<td>
+				<input type="text" maxlength="10" name="<?php echo $this->form->endDate();?>" value="<?php if($this->form)echo $this->form->getEndDate();?>">
+				<?php printErrorsByField($this->form->endDate(), $this->errorMessages);?>
+				<?php echo $this->controller->attendance->text->dateFormat;?>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<b><?php echo $this->controller->attendance->text->confidential;?><b>
+			</td>
+			<td>
+				<input type="radio" name="<?php echo $this->form->confidentiality();?>" value="<?php echo Constants::CONFIDENTIALITY_ENTITY;?>"><?php echo $this->labels->button->yes;?>
+				<input type="radio" name="<?php echo $this->form->confidentiality();?>" value="<?php echo Constants::CONFIDENTIALITY_PUBLIC;?>" checked ><?php echo $this->labels->button->not;?>
+			</td>
+		</tr>
+		<tr>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<input type="submit" value="<?php echo $this->labels->button->save;?>"/>
+				<input type="button" value="<?php echo $this->labels->button->back;?>" onClick="document.location='<?php echo $this->baseUrl;?>
+				<?php echo ATTENDANCE_CONTROLLER;?>/<?php echo DEFAULT_ATTENDANCE_ACTION .'/'.$this->form->personId().'/'.$this->form->getPersonId();?>'">
+			</td>
+		</tr>
+	</table>
+</form>

@@ -1,0 +1,134 @@
+<form id="navigation" method="post">
+	<table class="attendance" width="98%">		
+		<tr>
+			<td colspan="4">
+				<h1><?php echo $this->escape($this->controller->attendance->text->registerAttendance);?></h1>
+			</td>
+		</tr>		
+		<?php if($this->errorMessages):?>
+			<tr>
+				<td colspan="4">
+					<?php printErrorsByField($this->form->personId(), $this->errorMessages);?>
+					<?php printErrorsByField($this->form->entity(), $this->errorMessages);?>
+					<?php printErrorsByField($this->form->endDate(), $this->errorMessages);?>					
+				</td>
+			</tr>					
+		<?php else:?>			
+			<tr>
+				<td colspan="4">
+					<?php echo $this->helpcontroller->text6;?>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4">
+					<b><?php echo $this->controller->attendance->text->searchBy;?></b>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4">
+					<table width="100%" class="noBorder">
+						<tr>
+							<td width="50%">
+								<select name="<?php echo AssistanceForm::entity();?>" 
+									onChange="javascript: actionName('<?php echo $this->baseUrl;?><?php echo ATTENDANCE_CONTROLLER;?>/<?php echo DEFAULT_VIEWATTENDANCE_ACTION;?>', this);this.form.submit();">
+									<option value=""><?php echo $this->controller->attendance->text->entity;?>...</option>
+									<?php foreach($this->entity as $entity):?>	
+										<option value="<?php echo $entity->{ENT_ID_ENTITY};?>" <?php if($this->form->getEntity() == $entity->{ENT_ID_ENTITY}) echo "selected";?>><?php echo $entity->{ENT_NAME};?></option>
+									<?php endforeach;?>
+								</select>
+							</td>
+							<td width="50%">
+								<select name="<?php echo AssistanceForm::endDate();?>"
+									onChange="javascript: actionName('<?php echo $this->baseUrl;?><?php echo ATTENDANCE_CONTROLLER;?>/<?php echo DEFAULT_VIEWATTENDANCE_ACTION;?>', this);this.form.submit();">								
+									<option value="" ><?php echo $this->controller->attendance->text->attendance;?>...</option>
+									<option value="<?php echo Constants::ONE;?>" <?php if($this->form->getEndDate() == Constants::ONE) echo "selected";?>><?php echo $this->controller->attendance->text->inprocess;?></option>
+									<option value="<?php echo Constants::TWO;?>" <?php if($this->form->getEndDate() == Constants::TWO) echo "selected";?>><?php echo $this->controller->attendance->text->closed;?></option>
+								</select>
+							</td>
+							<td></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<?php if($this->attendance):?>
+				<tr class="write">
+					<td width="35%">
+						<b><?php echo $this->controller->attendance->text->attendance;?>:</b>
+					</td>
+					<td width="30%">
+						<b><?php echo $this->controller->attendance->text->type;?>:</b>
+					</td>
+					<td width="22%">
+						<b><?php echo $this->controller->attendance->text->entity;?>:</b>
+					</td>
+					<td width="13%">
+						<b><?php echo $this->controller->attendance->text->dateStart;?></b>
+					</td>
+				</tr>
+			<?php else:?>
+				<tr>
+					<td colspan="4" align="center">
+						<b><?php echo $this->controller->attendance->text->noresults;?></b>
+					</td>
+				</tr>
+			<?php endif;?>
+			<?php $style = 1;?>
+			<?php foreach($this->attendance as $attendance):?>		
+				<?php if($attendance):?>
+					<?php if($style == 0){$type = 'write';$style= 1;}else{$type='';$style= 0;}?>				
+					<tr class="<?php echo $type;?>">
+						<?php if($attendance[ABT_DESCRIPTION]):?>
+							<td>
+								<a href="<?php echo $this->baseUrl;?><?php echo ATTENDANCE_CONTROLLER;?>/<?php echo DEFAULT_DETAIL_ACTION;?>/<?php echo $this->form->assistanceId();?>/<?php echo $attendance[AST_ID_ASSISTANCE];?>">
+									<?php echo $attendance[ABT_DESCRIPTION];?>
+								</a>
+							</td>
+						<?php elseif($attendance[CLS_CLASSMODEL.CLS_NAME]):?>
+							<td>						
+								<a href="<?php echo $this->baseUrl;?><?php echo ATTENDANCE_CONTROLLER;?>/<?php echo DEFAULT_DETAIL_ACTION;?>/<?php echo $this->form->assistanceId();?>/<?php echo $attendance[AST_ID_ASSISTANCE];?>">
+									<?php if($attendance[CLS_CLASSMODEL.CLS_NAME] == Constants::GROUP):?>
+										<?php echo $this->controller->attendance->text->complement;?>
+									<?php else:?>
+										<?php echo $attendance[CLS_CLASSMODEL.CLS_NAME];?>
+									<?php endif;?>
+								</a>
+							</td>
+						<?php elseif($attendance[EAS_RULING]):?>
+							<td>
+								<a href="<?php echo $this->baseUrl;?><?php echo ATTENDANCE_CONTROLLER;?>/<?php echo DEFAULT_DETAIL_ACTION;?>/<?php echo $this->form->assistanceId();?>/<?php echo $attendance[AST_ID_ASSISTANCE];?>">
+									<?php echo $this->controller->attendance->text->especial;?>
+								</a>
+							</td>
+						<?php else:?>
+							<td>
+								<a href="<?php echo $this->baseUrl;?><?php echo ATTENDANCE_CONTROLLER;?>/<?php echo DEFAULT_DETAIL_ACTION;?>/<?php echo $this->form->assistanceId();?>/<?php echo $attendance[AST_ID_ASSISTANCE];?>">
+									<?php echo $this->controller->attendance->text->general;?>
+								</a>
+							</td>
+						<?php endif;?>
+						<td>					
+							<a href="<?php echo $this->baseUrl;?><?php echo ATTENDANCE_CONTROLLER;?>/<?php echo DEFAULT_DETAIL_ACTION;?>/<?php echo $this->form->assistanceId();?>/<?php echo $attendance[AST_ID_ASSISTANCE];?>">
+								<?php echo $attendance[PGT_PROGRAM_TYPE];?>
+							</a>
+						</td>
+						<td>
+							<a href="<?php echo $this->baseUrl;?><?php echo ATTENDANCE_CONTROLLER;?>/<?php echo DEFAULT_DETAIL_ACTION;?>/<?php echo $this->form->assistanceId();?>/<?php echo $attendance[AST_ID_ASSISTANCE];?>">
+								<?php echo $attendance[ENT_NAME];?>
+							</a>
+						</td>
+						<td>
+							<a href="<?php echo $this->baseUrl;?><?php echo ATTENDANCE_CONTROLLER;?>/<?php echo DEFAULT_DETAIL_ACTION;?>/<?php echo $this->form->assistanceId();?>/<?php echo $attendance[AST_ID_ASSISTANCE];?>">
+								<?php echo AssistanceForm::dateFormatForm($attendance[AST_BEGINNING_DATE]);?>
+							</a>
+						</td>
+					</tr>
+				<?php endif;?>
+			<?php endforeach;?>
+			<tr>
+				<td align='center' colspan='4'>
+					<?php echo $this->render('/navBar.phtml');?>
+				</td>
+			</tr>
+		<?php endif;?>
+	</table>
+</form>

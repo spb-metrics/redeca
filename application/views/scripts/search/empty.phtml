@@ -1,0 +1,40 @@
+<?php echo $this->render('header/header.phtml');?>								 		  						
+				  
+<!-- ===================================== -->
+<!-- inicio : específico com cada template -->					
+<!-- ===================================== -->						  
+<div>
+	<table width="60%">		
+		<tr>
+			<td align="center">
+				<b><?php echo $this->controller->search->text->resulttitle;?></b>
+			</td>
+		</tr> 		
+	</table>
+	
+	<br>
+	
+	<table width="60%">
+		<tr>
+			<td height="20" valign="middle" align="center">
+				<?php echo $this->escape($this->controller->search->text->empty);?>
+			</td>
+		</tr>
+	</table>
+		
+	<br>
+		
+	<table class="withoutEdge">
+		<tr>
+			<td>
+				<input type="button" onClick="document.location='<?php echo $this->baseUrl;?><?php echo PERSON_CONTROLLER;?>/<?php echo DEFAULT_NEW_ACTION;?>'" value="<?php echo $this->controller->search->text->newregister;?>"/>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="<?php echo $this->labels->button->back;?>" onClick="document.location='<?php echo $this->baseUrl;?><?php echo SEARCH_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>'" />				
+			</td>
+		</tr>
+	</table><br><br>
+</div>																  
+<!-- ================================== -->
+<!-- fim : específico com cada template -->					
+<!-- ================================== -->		
+
+<?php echo $this->render('footer/footer.phtml');?>

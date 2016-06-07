@@ -1,0 +1,42 @@
+<?php echo $this->render('header/header.phtml');?>										 		  						
+									  
+<!-- ===================================== -->
+<!-- inicio : específico com cada template -->					
+<!-- ===================================== -->						  
+<div>
+	<?php echo $this->render('submenu/submenuPerson.phtml');?>
+
+	<!-- ============================================================================================== -->
+	<!-- É necessário informar o nome class da tabela em questão para carregar a cor background correta -->
+	<!-- Opções: 
+				#identification
+				#person
+				#education
+				#health
+				#income
+				#familyRelationship
+				#residence
+				#attendance
+				#activity	-->
+	<!-- ============================================================================================== -->
+	<table class="attendance" width="98%">
+		<tr>
+			<td align="center">
+				<?php if($this->errorMessages[$this->form->assistanceId()]):?>
+					<?php printErrorsByField($this->form->assistanceId(), $this->errorMessages);?>		
+				<?php elseif($this->errorMessages[$this->form->personId()]):?>
+					<?php printErrorsByField($this->form->personId(), $this->errorMessages);?>
+				<?php else:?>
+					<?php 
+						echo $this->render('attendance/_generalForm.phtml'); // geral
+					?>
+				<?php endif;?>
+			</td>
+		</tr>
+	</table>
+</div>																  
+<!-- =================================== -->
+<!-- fim : específico para cada template -->					
+<!-- =================================== -->		
+					
+<?php echo $this->render('footer/footer.phtml');?>	

@@ -1,0 +1,14 @@
+<?php echo $this->render('header/header.phtml');?>										 		  						
+<?php if($this->errorMessages):?>
+	<div>
+		<?php echo $this->render('submenu/submenuPerson.phtml');?>
+		<br>
+		<b>
+			<?php echo $this->controller->residence->text->paraminvalid;?>
+		</b>
+	</div>
+<?php else:?>
+	<?php echo $this->render('residence/residencePreview.phtml');?>
+<?php endif;?>
+					
+<?php echo $this->render('footer/footer.phtml');?>	

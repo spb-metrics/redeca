@@ -1,0 +1,103 @@
+<tr>
+	<td>
+		<table class="borderBlack" width="100%">
+			<tr>
+				<td>
+					<table class="user" width="100%">
+						<tr>
+							<td colspan="4">
+								<h1><?php echo $this->controller->entity->coordinator->title;?></h1>
+							</td>
+						</tr>
+						<tr>
+							<td align="right" width="17%"><b><?php echo $this->controller->entity->coordinator->name;?>&nbsp;(*):</b></td>
+							<td colspan="3" align="left" width="83%">
+								<input class="small" type="hidden" name="<?php echo UserForm::id();?>" value="<?php if($this->userForm->getId()) echo $this->userForm->getId();else echo $this->entityUser->{AUTH_ID_USER};?>"/>
+									<?php printErrorsByField(UserForm::id(), $this->errorMessages);?>
+								<input size="88" type="text" name="<?php echo UserForm::name();?>" value="<?php if($this->userForm->getName()) echo $this->userForm->getName();else echo $this->entityUser->{AUTH_NAME_USER};?>"/>
+									<?php printErrorsByField(UserForm::name(), $this->errorMessages);?>
+							</td>
+						</tr>
+						<tr>
+							<td align="right" width="17%"><b><?php echo $this->controller->entity->coordinator->document;?>&nbsp;(*):</b></td>
+							<td colspan="3" align="left" width="83%">
+								<input size="88" type="text" name="<?php echo UserForm::cpf();?>" value="<?php if($this->userForm->getCpf()) echo $this->userForm->getCpf();else echo $this->entityUser->{AUTH_CPF_USER};?>"/>
+									<?php printErrorsByField(UserForm::cpf(), $this->errorMessages);?>
+							</td>
+						</tr>
+						<tr>
+							<td align="right" width="17%"><b><?php echo $this->controller->entity->coordinator->username;?>&nbsp;(*):</b></td>
+							<td colspan="3" align="left" width="83%">
+								<input size="88" type="text" name="<?php echo UserForm::login();?>" value="<?php if($this->userForm->getLogin()) echo $this->userForm->getLogin();else echo $this->entityUser->{AUTH_LOGIN_USER};?>"/>
+									<?php printErrorsByField(UserForm::login(), $this->errorMessages);?>
+							</td>
+						</tr>
+
+
+
+						<tr>
+							<td align="right" width="17%">
+								<b><?php echo $this->controller->entity->coordinator->password;?>&nbsp;(*):</b>
+							</td>
+							<td colspan="3" align="left" width="83%">								
+								<div id="question_pwd_field" <?php if(!is_null($this->errorMessages[UserForm::password()])):?> style="display: none;" <?php else:?> style="display:<?php if($this->userForm->getPassword()) echo 'none';?>" <?php endif;?> >
+								</div>
+								<?php if((is_null($this->errorMessages[UserForm::password()]))&&(!($this->userForm->getPassword()))) {?>
+								<input type="checkbox" name="<?php echo UserForm::flagPassword();?>" value="1" onclick="showDiv('new_pwd_field','question_pwd_field');">&nbsp;Selecione para alterar a senha.
+								<?php } ?>
+								<div id="new_pwd_field" <?php if(!is_null($this->errorMessages[UserForm::password()])):?> style="display: block;" <?php else:?> style="display:<?php if($this->userForm->getPassword()) echo 'inline'; else echo 'none';?>" <?php endif;?>>
+								 <?php if((!is_null($this->errorMessages[UserForm::password()]))||($this->userForm->getPassword())) { ?>
+									<input size="88" type="hidden" name="<?php echo UserForm::flagPassword();?>" value="1"/>
+								<?php } ?>
+									<input size="88" type="password" name="<?php echo UserForm::password();?>" value="<?php if($this->userForm->getPassword()) echo $this->userForm->getPassword();?>"/>
+										<?php printErrorsByField(UserForm::password(), $this->errorMessages);?>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td align="right" width="17%"><b><?php echo $this->controller->entity->coordinator->datecreate;?>&nbsp;(*):</b></td>
+							<td colspan="3" align="left" width="83%">
+								<?php
+								$printDate = null;
+								if($this->userForm->getCreationDate()) {
+									$printDate = $this->userForm->getCreationDate(); //j� formatado
+								} else {
+									$date = $this->entityUser->{AUTH_CREATION_DATE_USER};
+									$year = substr($date, 0, 4);
+									$month = substr(substr($date, 5), 0, 2);
+									$day = substr($date, 8, 10);
+									$printDate = $day.'/'.$month.'/'.$year;
+								}?>
+								<?php echo $printDate;?>
+							</td>
+						</tr>
+<!-- 
+						<tr>
+							<td align="right" width="17%"><b><?php echo $this->controller->entity->coordinator->group;?>&nbsp;(*):</b></td>
+							<td colspan="3" align="left" width="83%">
+								<?php if($this->entityUser)echo $this->entityUser->findParentRow(CLS_AUTH_GROUP)->{AGP_GROUP};?>
+							</td>
+						</tr>
+-->
+						<tr>
+							<td align="right" width="17%"><b><?php echo $this->controller->entity->coordinator->email;?>:</b></td>
+							<td colspan="3" align="left" width="83%">
+								<input size="88" type="text" name="<?php echo UserForm::email();?>" value="<?php if($this->userForm->getEmail()) echo $this->userForm->getEmail() ;else echo $this->entityUser->{AUTH_EMAIL_USER};?>"/>
+									<?php printErrorsByField(UserForm::email(), $this->errorMessages);?>
+							</td>
+						</tr>
+						<tr>
+							<td align="right" width="17%"><b><?php echo $this->controller->entity->coordinator->situation;?>&nbsp;(*):</b></td>
+							<td height="30" colspan="3" align="left" width="83%">
+								<?php if($this->entityUser->{AUTH_ACTIVE_USER}) echo $this->controller->entity->coordinator->enable ; else echo $this->controller->entity->coordinator->disable; ?>
+							</td>
+						</tr>
+						<tr>
+							<td height="20" colspan="4" align="center"><b><?php echo $this->controller->entity->coordinator->descriptionfields;?></b></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+	</td>
+</tr>

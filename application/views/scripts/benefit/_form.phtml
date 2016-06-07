@@ -1,0 +1,177 @@
+<?php if($this->errorMessages[$this->form->idPerson()]):?>
+	
+	<?php printErrorsByField($this->form->idPerson(), $this->errorMessages);?>
+
+<?php elseif(!$this->errorMessages[$this->form->idPerson()]): ?>
+<?php
+	foreach($this->programsByPerson as $prog)
+	{
+		$idProgram = array();
+		$idProgram = $prog->{SPG_ID_SOCIAL_PROGRAM};
+		
+		$programsByPerson[] = $idProgram;
+	}
+	
+	$socialProgram = $programsByPerson;
+?>
+<table width="100%" class="withoutEdge">
+	<tr>
+		<td>
+			<h1><?php echo $this->controller->benefit->text->registered;?></h1>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table class="withOutEdge" width="100%">
+				<?php
+					if(count($this->programsByPerson) >= 0)
+					{
+						$count = 0;
+						foreach($this->socialPrograms as $sp)
+						{	
+							if(in_array($sp->{SCP_ID_SOCIAL_PROGRAM}, $socialProgram))
+							{	
+								if(($count%2)==0) echo "<tr class='write'>"; else echo "<tr>";
+									/****************************************************************************
+									 * **************************** form de exclusão ****************************
+									 * **************************************************************************
+									 */
+									echo "<form action='";
+									echo $this->baseUrl;
+									echo BENEFIT_CONTROLLER;
+									echo "/";
+									echo DEFAULT_CONFIRM_ACTION;
+									echo "'";
+									echo "method='post'>";
+									
+									echo "<input type='hidden' name='";
+									echo BenefitForm::idPerson();
+									echo "'";
+									echo " value='";
+									echo $this->form->getIdPerson();
+									echo "'/>";
+									echo "<input type='hidden' name='";
+									echo BenefitForm::idProgram();
+									echo "'";
+									echo " value='";
+									foreach($this->programsByPerson as $id)
+									{
+										if($id->{SPG_ID_SOCIAL_PROGRAM} == $sp->{SCP_ID_SOCIAL_PROGRAM})
+										{
+											echo $id->{SPG_ID_PR_SOCIAL};
+											break;	
+										}
+									}
+									echo "'/>";
+										echo "<td class='alignCenter' width='10%'>";
+											echo "<input type='submit' value='";
+											echo $this->labels->button->drop;
+											echo "'/>";
+										echo "</td>";
+									echo "</form>";
+									/****************************************************************************
+									 * **************************** fim form de exclusão ************************
+									 * **************************************************************************
+									 */
+									
+									/****************************************************************************
+									 * **************************** form de edição ******************************
+									 * **************************************************************************
+									 */
+									echo "<form action='";
+									echo $this->baseUrl;
+									echo BENEFIT_CONTROLLER;
+									echo "/";
+									echo DEFAULT_EDIT_ACTION;
+									echo "'";
+									echo "method='post'>";
+									echo "<input type='hidden' name='";
+									echo BenefitForm::idPerson();
+									echo "'";
+									echo " value='";
+									echo $this->form->getIdPerson();
+									echo "'/>";						
+									
+										echo "<td width='30%'>";
+											echo "&nbsp;&nbsp;";
+											echo $sp->{SCP_BENEFIT};
+										echo "</td>";
+									
+										echo "<td class='small' width='11%'>";
+											foreach($this->programsByPerson as $dateBenefit)
+											{
+												if($dateBenefit->{SPG_ID_SOCIAL_PROGRAM} == $sp->{SCP_ID_SOCIAL_PROGRAM})
+												{
+													echo "<input type='hidden' name='";
+													echo BenefitForm::idProgram();
+													echo "'";	
+													echo " value='";
+													echo $dateBenefit->{SPG_ID_PR_SOCIAL};
+													echo "'/>";
+													echo "<input type='hidden' name='";
+													echo BenefitForm::idSocialProgramType();
+													echo "[]'";
+													echo " value='";
+													echo $sp->{SCP_ID_SOCIAL_PROGRAM};
+													echo "'/>";
+													echo "<input size='15' type='text' name='";
+													echo BenefitForm::dateBenefit();
+													echo "_";
+													echo $sp->{SCP_ID_SOCIAL_PROGRAM};
+													echo "'";
+													echo " value='";
+													$dateCurrent = $this->form->getCollBenefit();
+													if($dateCurrent[$sp->{SCP_ID_SOCIAL_PROGRAM}][SPG_REGISTER_DATE.$sp->{SCP_ID_SOCIAL_PROGRAM}])
+													{	
+														echo $dateCurrent[$sp->{SCP_ID_SOCIAL_PROGRAM}][SPG_REGISTER_DATE.$sp->{SCP_ID_SOCIAL_PROGRAM}];
+													}
+													else
+													{
+														echo BenefitForm::dateFormatForm($dateBenefit->{SPG_REGISTER_DATE});	
+													}
+												echo "'/>";
+												}
+											}
+										echo "</td>";
+									
+										echo "<td class='alignLeft' width='49%'>";
+											echo "<input type='submit' value='";
+											echo $this->controller->benefit->text->dateBenefit;
+											echo "'/>";
+										echo "</td>";
+									echo "</tr>";
+								
+									echo "<tr>";
+										echo "<td colspan='2'>&nbsp;";echo "</td>";
+										echo "<td colspan='2'>";
+											if($dateCurrent[$sp->{SCP_ID_SOCIAL_PROGRAM}][SPG_REGISTER_DATE.$sp->{SCP_ID_SOCIAL_PROGRAM}])
+											{	
+												printErrorsByField($this->form->dateBenefit()."_".$sp->{SCP_ID_SOCIAL_PROGRAM}, $this->errorMessages);	
+											}
+										echo "</td>";										
+									echo "</tr>";
+								
+									echo "</form>";
+								/****************************************************************************
+								 * **************************** fim form de edição **************************
+								 * **************************************************************************
+								 */
+							}
+							$count ++;
+						}
+					}
+					else if((count($this->programsByPerson) <= 0) && !($this->errorMessages))
+					{						
+						echo "<tr>";
+							echo "<td>";
+								echo $this->controller->benefit->text->notBenefit;
+							echo "</td>";
+						echo "</tr>";	
+					}
+				?>
+			</table>
+		</td>
+	</tr>
+</table>
+
+<?php endif;?>

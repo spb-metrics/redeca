@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<help>
+	<items>
+		<!-- Help da tela admin -->
+		<user1>Clique no nome do usuário ou entidade para ver o cadastro completo.</user1>
+		<!-- Help da tela entidade --> 
+		<user2>Insira aqui um texto para facilitar navegação do usuário, caso necessário.</user2>
+	</items>
+</help>

@@ -1,0 +1,35 @@
+<?php
+/*
+ * 
+ * Created on 25/02/2008 
+ * W3S Solutions by Fabricio Meireles Monteiro
+ * 
+ */
+?>
+
+<tr>
+	<td><br>
+		<table class="borderBlack" width="100%">
+			<tr>
+				<td colspan="2">
+					<h1>
+						<?php echo $this->controller->entity->admin->entity;?>
+					</h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="bold" align="left" width="25%"><?php echo $this->controller->entity->admin->namefieldentity;?>:</td>
+				<td align="left" width="75%">
+					<input class="small" type="text" name="<?php echo EntityForm::entityName();?>" value="<?php echo $this->escape($this->entityForm->getEntityName());?>"/>
+				</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+				<td><?php printErrorsByField($this->entityForm->entityName(), $this->errorMessages);?></td>
+			</tr>
+		</table>
+		<br><br>
+	</td>
+</tr>
+
+

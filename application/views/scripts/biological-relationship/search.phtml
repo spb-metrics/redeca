@@ -1,0 +1,59 @@
+<?php echo $this->render('header/header.phtml');?>	
+									  
+<!-- ===================================== -->
+<!-- inicio : específico com cada template -->					
+<!-- ===================================== -->						  
+<div>
+	<?php echo $this->render('submenu/subMenuRelationship.phtml');?>
+
+	<!-- ============================================================================================== -->
+	<!-- É necessário informar o nome class da tabela em questão para carregar a cor background correta -->
+	<!-- Opções: 
+				#identification
+				#person
+				#education
+				#health
+				#income
+				#familyRelationship
+				#residence
+				#attendance
+				#activity	-->
+	<!-- ============================================================================================== -->
+	<table class="familyRelationship" width="98%">
+		<tr>
+			<td align="center">
+				<table width="100%" class="withOutEdge">
+					<tr>
+						<td align="center" colspan="4">
+							<h1><?php echo $this->controller->bioRelation->search->title;?></h1>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4">
+							<b><?php echo $this->controller->bioRelation->text->searchPerson;?></b>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4">
+							<?php echo $this->controller->bioRelation->search->info;?>
+						</td>
+					</tr>
+				</table>
+				<br>
+				<table width="100%">
+					<?php echo $this->render('biological-relationship/_name_form.phtml'); ?>
+				</table>
+				<br><br>
+				<table width="100%">
+					<?php echo $this->render('biological-relationship/_document_form.phtml'); ?>
+				</table>
+				<br>
+			</td>
+		</tr>
+	</table>
+</div>																  
+<!-- ================================== -->
+<!-- fim : específico com cada template -->					
+<!-- ================================== -->		
+
+<?php echo $this->render('footer/footer.phtml');?>

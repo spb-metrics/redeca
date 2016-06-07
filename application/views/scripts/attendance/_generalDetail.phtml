@@ -1,0 +1,80 @@
+<?php 
+$generalAssistance = $this->assistance[Constants::GENERAL_ASSISTANCE_OBJECT];
+if(false):
+?>
+
+<tr>
+	<td width="15%">
+		<b><?php echo $this->controller->attendance->text->description;?></b>
+	</td>
+	<td>
+		<?php ($ast[ABT_DESCRIPTION])? $desc = $ast[ABT_DESCRIPTION]: $desc = $this->labels->text->nodata; echo $desc;?> 
+	</td>
+</tr>
+<tr>
+	<td width="15%">
+		<b><?php echo $this->controller->attendance->text->comment;?></b>
+	</td>
+	<td>
+		<?php ($ast[GAS_ASSISTANCE_COMMENT])? $comment = $ast[GAS_ASSISTANCE_COMMENT]: $comment = $this->labels->text->nodata; echo $comment;?> 
+	</td>
+</tr>
+<?php endif;?>
+	<form id="navigation" name="" action="" method="post">
+		<tr>
+			<td >
+				<input type="hidden" name="<?php echo $this->form->assistanceId();?>" value="<?php echo $assistanceId; ?>" >
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<table class="noBorder" width="100%">
+					<tr>
+						<td>				
+							<table width="100%" cellspacing="0" cellpading="5">
+								<tr>
+									<td width="20%">
+										<b><?php echo $this->controller->attendance->text->date; ?></b>
+									</td>
+									<td width="30%">
+										<b><?php echo $this->controller->attendance->text->activity;?></b>
+									</td>
+									<td width="50%">
+										<b><?php echo $this->controller->attendance->text->comment;?></b>
+									</td>
+								</tr>
+								<?php $i = 0; foreach($generalAssistance as $current):?>
+								<tr <?php if($i++ %2 == 0):?> class="write" <?php endif;?> >
+									<td width="30%">							
+										<?php echo BasicForm::dateFormatForm($current->{GAS_REGISTER_DATA});?>
+									</td>
+									<td width="30%">
+										<?php $benefit = $current->findManyToManyRowset(CLS_ASSISTANCEBENEFITTYPE, CLS_ASSISTANCEBENEFIT)->current();?>
+										<?php echo $benefit->{ABT_DESCRIPTION}; ?>
+									</td>
+									<td width="40%">
+										<table width="100%" class="noBorder">
+											<tr>
+												<td>
+													<!--<div style="width: 40%; word-wrap: break-word;">-->
+														<?php echo $current->{GAS_ASSISTANCE_COMMENT}?>
+													<!--</div>-->					
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<?php endforeach; ?>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		
+		<tr>
+			<td align='center' colspan='2'>
+				<?php echo $this->render('/navBar.phtml');?>
+			</td>
+		</tr>
+	</form>

@@ -1,0 +1,32 @@
+<!-- =========================================================================== -->
+<!-- ============================= começo do footer ============================ -->
+<!-- =========================================================================== -->
+
+				</td>
+				<td width="17%" valign="top">
+				<?php if(!$this->errorMessages[BasicForm::personId()] && !is_null($this->form->getPersonId())):?>
+				<?php if(ResourcePermission::showContainers($this->request)){?>
+					
+					
+					<?php if(ResourcePermission::isAllowResource(FAMILYRELATIONSHIP_CONTROLLER)){?>
+						<?php echo $this->render('container/containerFamilyRelationship.phtml');?><br>
+					<?php }?>
+					
+					<?php if(ResourcePermission::isAllowResource(RESIDENCE_CONTROLLER)){?>
+						<?php echo $this->render('container/containerResidence.phtml');?><br>
+					<?php }?>
+					
+					<?php if(ResourcePermission::isAllowResource(ATTENDANCE_CONTROLLER)){?>						
+						<?php echo $this->render('container/containerAttendance.phtml');?><br>
+					<?php }?>
+					<?php if(ResourcePermission::isAllowResource(NETWORK_CONTROLLER)){?>
+						<?php echo $this->render('container/containerNetworkEntity.phtml');?>
+					<?php }?>
+					
+				<?php }?>
+				<?php endif;?>
+				</td>
+			</tr>
+		</table>
+<?php echo $this->render('footer/footerInfo.phtml');?>		
+<?php echo $this->render('footer/foot.phtml');?>

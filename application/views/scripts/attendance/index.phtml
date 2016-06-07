@@ -1,0 +1,68 @@
+<?php echo $this->render('header/header.phtml');?>
+
+<!-- ====================================== -->
+<!-- inicio : específico para cada template -->					
+<!-- ====================================== -->						  
+<div>
+	<?php echo $this->render('submenu/submenuPerson.phtml');?>
+
+	<!-- ============================================================================================== -->
+	<!-- É necessário informar o nome class da tabela em questão para carregar a cor background correta -->
+	<!-- Opções: 
+				#identification
+				#person
+				#education
+				#health
+				#income
+				#familyRelationship
+				#residence
+				#attendance
+				#activity	-->
+	<!-- ============================================================================================== -->
+	
+	<table class="attendance" width="98%">
+		<tr>
+			<td align="center">
+				<table width="100%">
+					<tr>
+						<td colspan="">
+							<b><?php echo $this->controller->attendance->last;?></b>
+						</td>
+						<td width="25%">
+							&nbsp;<?php printErrorsByField($this->form->assistanceId(), $this->errorMessages); ?>
+						</td>
+					</tr>
+					<tr>
+						<td width="25%">
+							<select name="">
+							<?php foreach($this->programs as $program): ?>
+								<option value=""> <?php echo $type->{PGT_PROGRAM_TYPE}; ?> </option>
+							<?php endforeach;?>
+							</select>
+							<br/>
+							<input type="submit" name="" value="Sub"/>
+						</td>
+						<td width="25%">
+							&nbsp;
+						</td>
+					</tr>
+					<tr>
+						<td colspan="">
+							<?php foreach(range(1,10) as $c): ?>
+								<a href=""><?php echo "Entidade $c <br/>"; ?></a>
+							<?php endforeach;?>
+						</td>
+						<td width="25%">
+							&nbsp;
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+</div>																  
+<!-- =================================== -->
+<!-- fim : específico para cada template -->					
+<!-- =================================== -->
+
+<?php echo $this->render('footer/footer.phtml');?>

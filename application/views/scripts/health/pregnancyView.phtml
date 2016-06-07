@@ -1,0 +1,76 @@
+<tr>
+	<td width="18%">
+		<b><?php echo $this->controller->health->text->pregnant;?></b>
+	</td>
+	<td colspan="2">
+		<?php 
+			if(sizeof($this->pregnancyByPerson) <= 0)
+			{
+				echo $this->labels->text->nodata;
+			}
+			elseif(sizeof($this->pregnancyByPerson) > 0)
+			{
+				echo $this->labels->text->yes;
+			}
+			else
+			{
+				echo $this->labels->text->not;
+			}
+		?>
+	</td>	
+</tr>
+<tr>
+	<td width="18%">
+		<?php echo $this->controller->health->text->answered;?>
+	</td>
+	<td colspan="2">
+		<?php 
+			if(sizeof($this->pregnancyByPerson) <= 0 || $this->pregnancyByPerson->{PRG_MET} == 0)
+			{
+				echo $this->labels->text->nodata;
+			}
+			elseif(sizeof($this->pregnancyByPerson) > 0 && $this->pregnancyByPerson->{PRG_MET} == 1)
+			{
+				echo $this->labels->text->yes;
+			}
+			else
+			{
+				echo $this->labels->text->not;
+			}
+		?>
+	</td>	
+</tr>
+<tr>
+	<td width="18%">
+		<?php echo $this->controller->health->text->sis;?>
+	</td>
+	<td colspan="2">
+		<?php 
+			if(sizeof($this->pregnancyByPerson) > 0 && strlen($this->pregnancyByPerson->{PRG_PRENATAL_SIS}) > 0)
+			{
+				echo $this->pregnancyByPerson->{PRG_PRENATAL_SIS};
+			}
+			else
+			{
+				echo $this->labels->text->nodata;
+			}
+		?>
+	</td>	
+</tr>
+<tr>
+	<td width="18%">
+		<?php echo $this->controller->health->text->startpregnant;?>
+	</td>
+	<td colspan="2">
+		<?php 
+			if(sizeof($this->pregnancyByPerson) > 0 && strlen($this->pregnancyByPerson->{PRG_BEGINNING_PREGNANCY}) > 0)
+			{
+				echo $this->form->dateFormatForm($this->pregnancyByPerson->{PRG_BEGINNING_PREGNANCY});
+			}
+			else
+			{
+				echo $this->labels->text->nodata;
+			}
+		?>
+	</td>	
+</tr>

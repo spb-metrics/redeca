@@ -1,0 +1,420 @@
+<!-- ===================================== -->
+<!-- inicio : específico com cada template -->					
+<!-- ===================================== -->						  
+<div>
+	<?php echo $this->render('submenu/submenuPerson.phtml');?>
+
+	<!-- ============================================================================================== -->
+	<!-- É necessário informar o nome class da tabela em questão para carregar a cor background correta -->
+	<!-- Opções: 
+				#identification
+				#person
+				#education
+				#health
+				#income
+				#familyRelationship
+				#residence
+				#attendance
+				#activity	-->
+	<!-- ============================================================================================== -->
+	<table class="education" width="98%">
+	<?php $levelInstruction = $this->levelInstruction;?>
+	
+	<?php if($this->errorMessages) {echo $this->form->idPerson()." : &nbsp;"; printErrorsByField($this->form->idPerson(), $this->errorMessages);};?>
+		<tr>
+			<td align="center">
+				<table width="100%" class="withOutEdge">
+					<tr>
+						<td colspan="2" align="right">
+							<?php if(!$this->history_view):?>
+								<?php if($this->readOnly == FALSE):?>
+									|&nbsp;<a href="<?php echo $this->baseUrl;?><?php echo EDUCATION_CONTROLLER;?>/<?php echo DEFAULT_VIEW_ACTION;?>/<?php echo $this->form->idPerson();?>/<?php echo $this->form->getIdPerson();?>"><?php echo $this->labels->button->edit;?></a>
+								<?php endif;?>
+							<?php endif;?>
+							<?php printHistoryLink($this, $this->resource_key, EDUCATION_CONTROLLER); ?>
+						</td>
+					</tr>
+					
+					<?php 						
+						try
+						{
+							if(count($levelInstruction) > 0)
+							{
+								$obj = $levelInstruction->findDependentRowset(CLS_REGISTRATION);
+							}
+							else
+							{
+								$obj = null;
+							}
+						}
+						catch(Zend_Exception $e)
+						{
+							$obj = null;
+						}
+						
+						if($obj){
+						if($levelInstruction && count($obj) > 0)
+						{	
+							foreach($levelInstruction->findDependentRowset(CLS_REGISTRATION) as $syt)
+							{
+								if($syt->findParentRow(CLS_SCHOOLYEARTYPE)->{SYT_SCHOOL_YEAR} && strlen($syt->findParentRow(CLS_SCHOOLYEARTYPE)->{SYT_SCHOOL_YEAR}) <= 0 )
+								{
+									$yesSchool = $this->controller->education->text->yesSchool;		
+								}
+							}
+						}
+					?>
+					
+					<?php if($levelInstruction->{LIT_LAST_YEAR_STUDIED} && $levelInstruction->{LIT_LAST_MONTH_STUDIED}):?>						
+						<tr>
+							<td colspan="2">
+								<b>
+									<?php echo $this->controller->education->text->notfrequency;?>
+									<?php echo $levelInstruction->{LIT_LAST_YEAR_STUDIED};?>
+									<?php echo $this->controller->education->text->yearfrequency;?>
+									<?php echo $this->controller->education->text->andfrequency;?>
+									<?php echo $levelInstruction->{LIT_LAST_MONTH_STUDIED};?>
+									<?php echo $this->controller->education->text->monthfrequency;?>.
+								</b>						
+							</td>
+						</tr>
+					<?php elseif($levelInstruction->{LIT_LAST_YEAR_STUDIED} && !$levelInstruction->{LIT_LAST_MONTH_STUDIED}):?>
+						<tr>
+							<td colspan="2">
+								<b>
+									<?php echo $this->controller->education->text->notfrequency;?>
+									<?php echo $levelInstruction->{LIT_LAST_YEAR_STUDIED};?>
+									<?php echo $this->controller->education->text->yearfrequency;?>.
+								</b>														
+							</td>
+						</tr>
+					<?php elseif(!$levelInstruction->{LIT_LAST_YEAR_STUDIED} && $levelInstruction->{LIT_LAST_MONTH_STUDIED}):?>
+						<tr>
+							<td colspan="2">
+								<b>
+									<?php echo $this->controller->education->text->notfrequency;?>									
+									<?php echo $levelInstruction->{LIT_LAST_MONTH_STUDIED};?>
+									<?php echo $this->controller->education->text->monthfrequency;?>.
+								</b>						
+							</td>
+						</tr>
+					<?php endif;?>
+					
+					<tr>
+						<td width="18%">
+							<b><?php echo $this->controller->education->text->degree;?></b>
+						</td>
+						<td>
+							<?php
+								if(!$levelInstruction || !$levelInstruction->findParentRow(CLS_DEGREETYPE)->{DTP_DEGREE} || $levelInstruction->findParentRow(CLS_DEGREETYPE)->{DTP_STATUS} == Constants::DISABLE)
+								{
+									echo $this->labels->text->nodata; 	
+								}
+								else
+								{
+									echo $levelInstruction->findParentRow(CLS_DEGREETYPE)->{DTP_DEGREE};
+								}  
+							?>
+						</td>
+					</tr>
+					<tr>
+						<td width="18%">
+							<b><?php echo $this->controller->education->text->series;?></b>
+						</td>
+						<td>
+							<?php
+								if(count($levelInstruction) > 0 && $levelInstruction->findDependentRowset(CLS_REGISTRATION))
+								{
+									if(count($levelInstruction->findDependentRowset(CLS_REGISTRATION)) > 0)
+									{
+										foreach($levelInstruction->findDependentRowset(CLS_REGISTRATION) as $syt)
+										{											
+											if(!$syt->findParentRow(CLS_SCHOOLYEARTYPE)->{SYT_SCHOOL_YEAR} || strlen($syt->findParentRow(CLS_SCHOOLYEARTYPE)->{SYT_SCHOOL_YEAR}) <= 0 )
+											{
+												echo $this->labels->text->nodata;
+											}
+											else
+											{
+												echo $syt->findParentRow(CLS_SCHOOLYEARTYPE)->{SYT_SCHOOL_YEAR};	
+											}
+										}
+									}
+									else
+									{
+										echo $this->labels->text->nodata;
+									}
+								}
+								else
+								{
+									echo $this->labels->text->nodata;
+								}
+							?>
+						</td>
+					</tr>
+					<tr>
+						<td width="18%">
+							<b><?php echo $this->controller->education->text->period;?></b>
+						</td>
+						<td>
+							<?php  
+								if(count($levelInstruction) > 0 && $levelInstruction->findDependentRowset(CLS_REGISTRATION))
+								{
+									if(count($levelInstruction->findDependentRowset(CLS_REGISTRATION)) > 0)
+									{
+										foreach($levelInstruction->findDependentRowset(CLS_REGISTRATION) as $pt)
+										{
+											if($pt->findParentRow(CLS_PERIODTYPE)->{PTY_PERIOD} == '')
+											{
+												echo $this->labels->text->nodata;
+											}
+											else
+											{
+												echo $pt->findParentRow(CLS_PERIODTYPE)->{PTY_PERIOD};	
+											}
+										}
+									}
+									else
+									{
+										echo $this->labels->text->nodata;
+									}	
+								}
+								else
+								{
+									echo $this->labels->text->nodata;
+								}
+							?>
+						</td>
+					</tr>
+					<tr>
+						<td width="18%">
+							<b><?php echo $this->controller->education->text->inep;?></b>
+						</td>
+						<td>
+							<?php
+								if(count($levelInstruction) > 0 && $levelInstruction->findDependentRowset(CLS_REGISTRATION))
+								{
+									if(count($levelInstruction->findDependentRowset(CLS_REGISTRATION)) > 0)
+									{
+										foreach($levelInstruction->findDependentRowset(CLS_REGISTRATION) as $school)
+										{
+											if(count($school->findParentRow(CLS_SCHOOL)) > 0)
+											{
+												if(is_null($school->findParentRow(CLS_SCHOOL)->{SCH_INEP}))
+												{
+													echo $this->labels->text->nodata;
+												}
+												else
+												{
+													echo $school->findParentRow(CLS_SCHOOL)->{SCH_INEP};
+												}
+											}
+											else
+											{
+												echo $this->labels->text->nodata;
+											}
+										}
+									}
+									else
+									{
+										echo $this->labels->text->nodata;
+									}	
+								}
+								else
+								{
+									echo $this->labels->text->nodata;
+								}
+							?>
+						</td>
+					</tr>
+					<tr>
+						<td width="18%">
+							<b><?php echo $this->controller->education->text->school;?></b>
+						</td>
+						<td>
+							<?php
+								if(count($levelInstruction) > 0 && $levelInstruction->findDependentRowset(CLS_REGISTRATION))
+								{	
+									if(count($levelInstruction->findDependentRowset(CLS_REGISTRATION)) > 0)
+									{
+										foreach($levelInstruction->findDependentRowset(CLS_REGISTRATION) as $school)
+										{	
+											if(count($school->findParentRow(CLS_SCHOOL)) > 0)
+											{
+												if(is_null($school->findParentRow(CLS_SCHOOL)->{SCH_NAME}))
+												{
+													echo $this->labels->text->nodata;
+												}
+												else
+												{
+													echo $school->findParentRow(CLS_SCHOOL)->{SCH_NAME};
+												}
+											}
+											else
+											{
+												echo $this->labels->text->nodata;
+											}
+										}
+									}
+									else
+									{
+										echo $this->labels->text->nodata;
+									}
+								}
+								else
+								{
+									echo $this->labels->text->nodata;
+								}	
+							?>
+						</td>
+					</tr>
+					<?php }else {?>
+						<tr>
+							<td width="18%">
+								<b><?php echo $this->controller->education->text->degree;?></b>
+							</td>
+							<td>
+								<?php																	
+									if(!$levelInstruction || !$levelInstruction->findParentRow(CLS_LEVELINSTRUCTION)->{LIT_ID_DEGREE} || $levelInstruction->findParentRow(CLS_LEVELINSTRUCTION)->findParentRow(CLS_DEGREETYPE)->{DTP_STATUS} == Constants::DISABLE)
+									{
+										echo $this->labels->text->nodata; 	
+									}
+									else
+									{
+										echo $levelInstruction->findParentRow(CLS_LEVELINSTRUCTION)->findParentRow(CLS_DEGREETYPE)->{DTP_DEGREE};
+									} 
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td width="18%">
+								<b><?php echo $this->controller->education->text->series;?></b>
+							</td>
+							<td>
+								<?php
+									if(count($levelInstruction) > 0 && $levelInstruction->findParentRow(CLS_SCHOOLYEARTYPE))
+									{
+										if(count($levelInstruction->findParentRow(CLS_SCHOOLYEARTYPE)) > 0)
+										{																						
+											if(!$levelInstruction->findParentRow(CLS_SCHOOLYEARTYPE)->{SYT_SCHOOL_YEAR} || strlen($levelInstruction->findParentRow(CLS_SCHOOLYEARTYPE)->{SYT_SCHOOL_YEAR}) <= 0 )
+											{
+												echo $this->labels->text->nodata;
+											}
+											else
+											{
+												echo $levelInstruction->findParentRow(CLS_SCHOOLYEARTYPE)->{SYT_SCHOOL_YEAR};	
+											}
+										}
+										else
+										{
+											echo $this->labels->text->nodata;
+										}
+									}
+									else
+									{
+										echo $this->labels->text->nodata;
+									}
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td width="18%">
+								<b><?php echo $this->controller->education->text->period;?></b>
+							</td>
+							<td>
+								<?php  
+									if(count($levelInstruction) > 0)
+									{
+										if(count($levelInstruction->findParentRow(CLS_PERIODTYPE)) > 0)
+										{
+											if($levelInstruction->findParentRow(CLS_PERIODTYPE)->{PTY_PERIOD} == '')
+											{
+												echo $this->labels->text->nodata;
+											}
+											else
+											{
+												echo $levelInstruction->findParentRow(CLS_PERIODTYPE)->{PTY_PERIOD};	
+											}
+										}
+										else
+										{
+											echo $this->labels->text->nodata;
+										}	
+									}
+									else
+									{
+										echo $this->labels->text->nodata;
+									}
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td width="18%">
+								<b><?php echo $this->controller->education->text->inep;?></b>
+							</td>
+							<td>
+								<?php
+									if(count($levelInstruction) > 0)
+									{
+										if(count($levelInstruction->findParentRow(CLS_SCHOOL)) > 0)
+										{
+											if(is_null($levelInstruction->findParentRow(CLS_SCHOOL)->{SCH_INEP}))
+											{
+												echo $this->labels->text->nodata;
+											}
+											else
+											{
+												echo $levelInstruction->findParentRow(CLS_SCHOOL)->{SCH_INEP};
+											}
+										}
+										else
+										{
+											echo $this->labels->text->nodata;
+										}	
+									}
+									else
+									{
+										echo $this->labels->text->nodata;
+									}
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td width="22%">
+								<b><?php echo $this->controller->education->text->school;?></b>
+							</td>
+							<td>
+								<?php
+									if(count($levelInstruction) > 0)
+									{	
+										if(count($levelInstruction->findParentRow(CLS_SCHOOL)) > 0)
+										{
+											if(is_null($levelInstruction->findParentRow(CLS_SCHOOL)->{SCH_NAME}))
+											{
+												echo $this->labels->text->nodata;
+											}
+											else
+											{
+												echo $levelInstruction->findParentRow(CLS_SCHOOL)->{SCH_NAME};
+											}
+										}
+										else
+										{
+											echo $this->labels->text->nodata;
+										}
+									}
+									else
+									{
+										echo $this->labels->text->nodata;
+									}	
+								?>
+							</td>
+						</tr>
+					<?php }?>
+				</table>
+			</td>
+		</tr>
+	</table>
+</div>																  
+<!-- =================================== -->
+<!-- fim : específico para cada template -->					
+<!-- =================================== -->

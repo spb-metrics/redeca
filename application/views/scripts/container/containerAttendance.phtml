@@ -1,0 +1,110 @@
+<?php $show = Zend_Registry::get(CONFIG)->container->lastattendance;?>
+<script type="text/javascript">		
+	$('#imgFakeHideAtt').hide();
+	<?php if($show):?>
+		$().ajaxSend(function(){$('#loading7').show();});		
+		$.post('<?php echo $this->baseUrl;?><?php echo ATTENDANCE_CONTROLLER;?>/<?php echo DEFAULT_CONTAINER_ACTION;?>/<?php if($this->form)echo $this->form->personId();?>/<?php if($this->form)echo $this->form->getPersonId();?>', function(data){ $('#attendance').append(data);$('#loading7').hide();});
+	<?php else:?>
+		function showAttendance()
+		{
+			$('#maxAttendance').hide();
+			$('#mainAttendance').show();
+			$().ajaxSend(function(){$('#loading7').show();$('#imgHideAtt').hide();$('#imgFakeHideAtt').show();$('#tableHideAtt').hide();$('#tableFakeHideAtt').show();});		
+			$.post('<?php echo $this->baseUrl;?><?php echo ATTENDANCE_CONTROLLER;?>/<?php echo DEFAULT_CONTAINER_ACTION;?>/<?php if($this->form)echo $this->form->personId();?>/<?php if($this->form)echo $this->form->getPersonId();?>', 
+				function(data)
+				{ 
+					if(data.search(/<?php echo $this->labels->login->title;?>/i) != -1)
+					{
+						window.location.reload();
+					}
+					else
+					{
+						$('#attendance').append(data);
+						$('#loading7').hide();
+						$('#imgFakeHideAtt').hide();
+						$('#imgHideAtt').show();
+						$('#tableFakeHideAtt').hide();
+						$('#tableHideAtt').show();
+					}
+				}
+			);
+		}
+		
+		function hideAttendance()
+		{
+			$('#maxAttendance').show();
+			$('#attendance').empty();
+			$('#mainAttendance').hide();
+		}
+	<?php endif;?>	
+	
+</script>
+
+<?php if(!$show):?>
+<div id="maxAttendance" class="health">
+	<table class="attendance" width="100%">
+		<tr>
+			<td>
+				<table width="100%" class="tableContainer" onClick="showAttendance()">
+					<tr>
+						<td width="10%" class="fontContainer">
+							<img src="<?php echo $this->baseUrl;?>/public/images/show.png" title="<?php echo $this->labels->title->show;?>"/>							
+						</td>				
+						<td width="90%" class="fontContainer">
+							<b><?php echo $this->labels->title->lastAttendance;?></b>
+						</td>
+					</tr>
+				</table>				
+			</td>
+		</tr>
+	</table>
+</div>
+<?php endif;?>
+
+<div id="mainAttendance" <?php if(!$show):?>style="display: none;"<?php endif;?>>
+	<table class="attendance" width="100%">
+		<tr>
+			<td class="container">
+				
+				<?php if(!$show):?>
+					<table width="100%" class="tableContainer" id="tableHideAtt" onClick="hideAttendance()">
+						<tr>
+							<td width="10%" class="fontContainer">
+								<img id="imgHideAtt" src="<?php echo $this->baseUrl;?>/public/images/hide.png" title="<?php echo $this->labels->title->hide;?>"/>
+								<img id="imgFakeHideAtt" src="<?php echo $this->baseUrl;?>/public/images/hide.png" title="<?php echo $this->labels->title->hide;?>"/>
+							</td>				
+							<td width="90%" class="fontContainer">
+								<b><?php echo $this->labels->title->lastAttendance;?></b>
+							</td>
+						</tr>
+					</table>
+					<table width="100%" class="tableContainer" id="tableFakeHideAtt">
+						<tr>
+							<td width="10%" class="fontContainer">
+								<img id="imgHideAtt" src="<?php echo $this->baseUrl;?>/public/images/hide.png" title="<?php echo $this->labels->title->hide;?>"/>							
+							</td>				
+							<td width="90%" class="fontContainer">
+								<b><?php echo $this->labels->title->lastAttendance;?></b>
+							</td>
+						</tr>
+					</table>
+				<?php else:?>
+					<table width="100%" class="tableContainer">
+						<tr>
+							<td width="10%" class="fontContainer">								
+							</td>				
+							<td width="90%" class="fontContainer">
+								<b><?php echo $this->labels->title->lastAttendance;?></b>
+							</td>
+						</tr>
+					</table>
+				<?php endif;?>
+				<p>	
+				<div id="loading7">	<center><img src="<?php echo $this->baseUrl;?>/public/images/loading.gif"/></center></div>			
+				
+				<div id="attendance"></div>
+												
+			</td>
+		</tr>
+	</table> 
+</div>

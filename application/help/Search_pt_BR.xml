@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<help>
+	<items>
+		<text1>Se você estiver de posse do número de algum documento da pessoa pode procurá-la diretamente. Para isso basta digitar o número e selecionar o tipo de documento. Se estiver em dúvida sobre qual é o tipo de documento selecione "Pesquisar em todos".</text1>
+		<text2>Se você está em dúvida de como proceder, entre em contato com a administração da sua instituição ou com a administração da rede.</text2>
+		<text3>Aqui você irá pesquisar o cadastro de pessoas. Digite o 'NOME' ou 'APELIDO' e pressione o botão 'PROCURAR'. Se você desejar detalhar um pouco mais você poderá definir o 'SEXO' e a 'IDADE'.</text3>
+		<text4>Pesquisas pelo nome pedem que você digite, ao menos, duas palavras.</text4>
+		<text5>Atenção: A pesquisa é fonética, ou seja, ela se baseia no som das palavras e não na grafia. Se você não sabe como escrever o nome digite-o na forma como ele é pronunciado.</text5>
+	</items>
+</help>

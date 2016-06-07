@@ -1,0 +1,4 @@
+pt_metaphone was written by:
+
+Prefeitura Municipal de Várzea Paulista <metaphone@varzeapaulista.sp.gov.br>
+  Primary developer

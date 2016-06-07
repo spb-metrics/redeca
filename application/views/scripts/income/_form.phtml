@@ -1,0 +1,427 @@
+<?php if($this->errorMessages[$this->form->personId()]):?>
+	<?php printErrorsByField($this->form->personId(), $this->errorMessages);?>
+<?php else:?>
+<?php if(count($this->incomeType) > 0):?>
+<form action="" method="post">
+<input type="hidden" name="<?php echo $this->form->personId();?>" value="<?php echo $this->form->getPersonId();?>">
+<input type="hidden" name="<?php echo $this->form->idCompany();?>" value="<?php echo $this->form->getIdCompany();?>">
+<table width="100%">
+	<tr>
+		<td>
+			<table width="100%" class="noBorder">
+				<tr>
+					<td colspan="5">
+						<h1><?php echo $this->controller->income->edit->title;?></h1>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4">
+						<?php echo $this->helpcontroller->text1;?>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4">
+						<b><?php echo $this->controller->income->title;?></b><br>
+						<?php printErrorsByField($this->form->idSalary(), $this->errorMessages);?>
+					</td>
+				</tr>
+				<?php $x=0;foreach($this->incomeType as $incomeType):?>					
+					<?php if($incomeType->{ICT_ID_INCOME} != 1):?>
+						<tr>
+							<td width="30%">
+								<?php $x++;echo '- '.$incomeType->{ICT_INCOME};?>
+							</td>
+							<td colspan="4">
+								<input size="20" type="text" name="<?php echo $this->form->valueSalary();?>[<?php echo $incomeType->{ICT_ID_INCOME};?>]" 
+									<?php 
+										if($this->form->getValueSalary())
+										{													
+											foreach($this->form->getValueSalary() as $valueSalary)
+											{
+												(is_array($valueSalary))?$flag = true:$flag=false;
+											}
+											if($flag)
+											{
+												foreach($this->form->getValueSalary() as $valueSalary)
+												{
+													foreach($valueSalary as $k=>$v){
+														if($k == $incomeType->{ICT_ID_INCOME})
+															echo 'value="'.str_replace('.',',',$v).'"';				
+													}
+												}		
+											}
+											else
+											{
+												foreach($this->form->getValueSalary() as $k=>$v){
+													if($k == $incomeType->{ICT_ID_INCOME})
+														echo 'value="'.str_replace('.',',',$v).'"';				
+												}
+											}
+										}
+									?>>
+								<?php printErrorsByField($this->form->valueSalary().$incomeType->{ICT_ID_INCOME}, $this->errorMessages);?>
+							</td>
+						</tr>
+					<?php else: $idType = $incomeType->{ICT_ID_INCOME};?>						
+					<?php endif;?>
+				<?php endforeach;?>
+				<?php if($x == 0):?>
+					<tr>
+						<td colspan="4">
+							<?php echo $this->labels->text->nodata;?>
+						</td>
+					</tr>
+				<?php endif;?>
+				</table>
+				<?php if(is_null($idType)):?>
+					<hr>
+					<b><?php echo $this->controller->income->text->situation;?>&nbsp;</b>
+					<?php $flag = false; foreach($this->employmentStatus as $employmentType):?>
+							<?php 	
+								if($this->form->getIdEmploymentType() == $employmentType->{EMS_ID_EMPLOYMENT_STATUS})
+								{ 
+									echo $employmentType->{EMS_EMPLOYMENT_STATUS};
+									$flag = true;
+								}
+							?>
+					<?php endforeach;?>
+					<?php if($flag === false) echo $this->labels->text->nodata;?>
+				<?php else:?>
+				<table width="100%" class="noBorder">				
+				
+					<!-- ======================================= -->
+					<!-- ============ linha divisória ========== -->
+					<!-- ======================================= -->
+					<tr><td colspan="4"><hr></td></tr>
+					<!-- ======================================= -->
+					<!-- ============ linha divisória ========== -->
+					<!-- ======================================= -->
+					
+					<tr>
+						<td colspan="4">
+							<?php echo $this->helpcontroller->text2;?>						
+						</td>
+					</tr>			
+					<tr>
+						<td colspan="4">
+							<b><?php echo $this->controller->income->text->situation;?></b>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4">
+							<table width="100%" class="noBorder"> 
+								<tr>
+									<td width="51%">
+										<select name="<?php echo $this->form->idEmploymentType();?>" id="<?php echo $this->form->idEmploymentType();?>"
+											onChange="javascript: showEmployment('employmentArea', '<?php echo $this->form->idEmploymentType();?>', <?php echo $this->notEmployment;?>);"										
+										>
+											<option value=""><?php echo $this->labels->text->select;?>...</option>
+											<?php foreach($this->employmentStatus as $employmentType):?>
+												<option value="<?php echo $employmentType->{EMS_ID_EMPLOYMENT_STATUS}?>"
+													<?php if($this->form->getIdEmploymentType() == $employmentType->{EMS_ID_EMPLOYMENT_STATUS}) echo 'selected';?>><?php echo $employmentType->{EMS_EMPLOYMENT_STATUS}?></option>
+											<?php endforeach;?>
+										</select>									
+									</td>
+									<td><?php printErrorsByField($this->form->idEmploymentType(), $this->errorMessages);?></td>
+								</tr>
+							</table>						
+						</td>
+					</tr>
+				</table>		
+				
+				<div id="employmentArea" 
+					<?php if(strlen($this->form->getIdEmploymentType()) == 0):?>
+						style="display: none;"
+					<?php elseif(($this->form->getIdEmploymentType() != $this->notEmployment)):?>						
+						style="display: block;"		
+					<?php else:?>
+						style="display: none;"
+					<?php endif;?>	
+				>					
+					<?php printErrorsByField($this->form->idCompany(), $this->errorMessages);?><br>
+					<table width="100%" class="noBorder">
+						<tr>
+							<td width="30%">							
+								<b><?php echo $this->controller->income->text->company;?></b>
+							</td>
+							<td colspan="3">
+								<input type="text" name="<?php echo $this->form->companyName();?>" value="<?php echo $this->form->getCompanyName();?>" size="50px">
+								<?php printErrorsByField($this->form->companyName(), $this->errorMessages);?>							
+							</td>
+						</tr>
+						<tr>
+							<td width="">
+								<b><?php echo $this->controller->income->text->ocupation;?></b>
+							</td>
+							<td colspan="3">
+								<input type="text" name="<?php echo $this->form->occupation();?>" value="<?php echo $this->form->getOccupation();?>" size="30px">
+								<?php printErrorsByField($this->form->occupation(), $this->errorMessages);?>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<b><?php echo $this->controller->income->text->startDate;?></b>
+							</td>
+							<td colspan="3">
+								<input type="text" name="<?php echo $this->form->startDate();?>" value="<?php echo $this->form->getStartDate();?>" size="30px">
+								<?php printErrorsByField($this->form->startDate(), $this->errorMessages);?>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<b><?php echo $this->controller->income->text->endDate;?></b>
+							</td>
+							<td colspan="3">
+								<input type="text" name="<?php echo $this->form->endDate();?>" value="<?php echo $this->form->getEndDate();?>" size="30px">
+								<?php printErrorsByField($this->form->endDate(), $this->errorMessages);?>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<b><?php echo $this->controller->income->text->wage;?></b>
+							</td>
+							<td colspan="3">
+								<input type="text" name="<?php echo $this->form->valueSalary();?>[<?php echo $idType;?>]" 
+									<?php if($this->form->getValueSalary()):?>
+										<?php if($flag):?>
+											<?php foreach($this->form->getValueSalary() as $valueSalary):?>
+												<?php foreach($valueSalary as $k=>$v):?>
+													<?php if($k == 1):?>
+														<?php echo 'value="'.str_replace('.',',',$v).'"';?>
+													<?php endif;?>
+												<?php endforeach;?>
+											<?php endforeach;?>
+										<?php else:?>
+											<?php foreach($this->form->getValueSalary() as $k=>$v):?>
+												<?php if($k == 1):?>
+													<?php echo 'value="'.str_replace('.',',',$v).'"';?>
+												<?php endif;?>
+											<?php endforeach;?>
+										<?php endif;?>
+									<?php endif;?> size="15px">
+									<?php if(!empty($this->errorMessages[$this->form->employment()])):
+										printErrorsByField($this->form->employment(), $this->errorMessages);
+									?>
+									<br>
+									<?php 
+										else:
+											printErrorsByField($this->form->valueSalary().$idType, $this->errorMessages);
+										endif;
+									?>			
+							</td>
+						</tr>				
+					</table>
+				
+				
+				<!-- =================================================================== -->
+				<!-- =========================== buscar endereco ======================= -->
+				<!-- =================================================================== -->
+				<table width="100%" class="noBorder">				
+					<tr>
+						<td colspan="4">
+							<?php echo $this->helpcontroller->text3;?>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="4" width="100%">						
+							<br><br>
+							<div id="iframeSearch" style="display: none;">								
+								<?php echo $this->render(SEARCHADDRESS_CONTROLLER.'/iframe_search.phtml');?>
+							</div>
+							<div id="buttonIframe" style="display: block;">
+								<input type="button" value="Alterar endereço" onClick="javascript: showDiv('iframeSearch','buttonIframe');"/>
+							</div>
+							<?php 
+								if(count($this->errorMessages[$this->form->adr_idAddress()]) > 1):
+									echo "<span style=\"color: red; font-size: 10pt;\">";
+									echo $this->errorMessages[$this->form->adr_idAddress()][0][0];
+									echo "</span>\n";
+								else:
+									printErrorsByField($this->form->adr_idAddress(), $this->errorMessages);
+								endif;
+							?>
+							<br><br>
+							<?php echo $this->render(SEARCHADDRESS_CONTROLLER.'/_address.phtml');?>						
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<table width="100%" class="noBorder">
+								<tr>
+									<td width="16%" align="right">
+										<b><?php echo $this->controller->income->text->number;?></b>
+									</td>
+									<td>
+										<input size="20" type="text" name="<?php echo $this->form->adr_number();?>" value="<?php echo $this->form->getAdrNumber();?>">
+										<?php printErrorsByField($this->form->adr_number(), $this->errorMessages);?>
+									</td>
+								</tr>
+								<tr>
+									<td align="right">
+										<b><?php echo $this->controller->income->text->complement;?></b>
+									</td>
+									<td>
+										<input size="20" type="text" name="<?php echo $this->form->adr_complement();?>" value="<?php echo $this->form->getAdrComplement();?>">
+										<?php printErrorsByField($this->form->adr_complement(), $this->errorMessages);?>
+									</td>
+								</tr>
+								<tr>
+									<td align="right">
+										<b><?php echo $this->controller->income->text->reference;?></b>
+									</td>
+									<td>
+										<input size="20" type="text" name="<?php echo $this->form->adr_reference();?>" value="<?php echo $this->form->getAdrReference();?>">
+										<?php printErrorsByField($this->form->adr_reference(), $this->errorMessages);?>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+				
+				
+				<?php if($this->form->getIdCompany()):?>
+					<!-- ============================================================= -->
+					<!-- =========================== telefones ======================= -->
+					<!-- ============================================================= -->
+					<table width="100%" class="noBorder">				
+						<tr>
+							<td colspan="4">
+								<?php echo $this->helpcontroller->text4;?>
+							</td>
+						</tr>
+						<tr>
+							<td width="7%">
+								<b><?php echo $this->controller->income->text->ddd;?></b>
+							</td>
+							<td width="15%">
+								<b><?php echo $this->controller->income->text->phone;?></b>
+							</td>
+							<td width="15%"></td>
+							<td></td>
+							<td></td>
+						</tr>
+														
+						<tr>
+							
+							<td>				
+								<?php foreach($this->form->getPhoneCodeArea() as $ddd):?>	
+									<input type="text" name="<?php echo $this->form->phoneCodeArea();?>[]" value="<?php echo $ddd;?>" size="5px"><br><br>
+								<?php endforeach;?>	
+							</td>
+							
+							<td>
+								<?php foreach($this->form->getPhoneNumber() as $number):?>
+									<input type="text" name="<?php echo $this->form->phoneNumber();?>[]" value="<?php echo $number;?>" size="15px"><br><br>
+								<?php endforeach;?>
+							</td>
+							<td>
+								<?php foreach($this->form->getPhoneType() as $type):?>
+									<select name="<?php echo $this->form->phoneType();?>[]">
+										<option value=""><?php echo $this->labels->text->select;?>...</option>
+										<?php foreach($this->phoneType as $phoneType):?>
+											<option value="<?php echo $phoneType->{TTP_ID_TELEPHONE};?>"
+												<?php if($type == $phoneType->{TTP_ID_TELEPHONE}) echo "selected";?>><?php echo $phoneType->{TTP_TELEPHONE};?></option>
+										<?php endforeach;?>
+									</select><br><br>
+								<?php endforeach;?>
+							</td>
+							
+							<td>
+								<?php foreach($this->form->getIdPhone() as $idPhone):?>
+									<input type="hidden" name="<?php echo $this->form->idPhone();?>[]" value="<?php echo $idPhone;?>"><br><br>
+								<?php endforeach;?>
+							</td>
+						</tr> 
+							
+						<?php if(!$this->errorMessages):?>
+						<tr>
+							<td>
+								<input size="5" type="text" name="<?php echo $this->form->phoneCodeArea();?>[]" value=""><br><br>
+							</td>
+							
+							<td>
+								<input size="15" type="text" name="<?php echo $this->form->phoneNumber();?>[]" value=""><br><br>
+							</td>
+							<td>
+								<select name="<?php echo $this->form->phoneType();?>[]">
+									<option value=""><?php echo $this->labels->text->select;?>...</option>
+									<?php foreach($this->phoneType as $phoneType):?>
+										<option value="<?php echo $phoneType->{TTP_ID_TELEPHONE};?>"><?php echo $phoneType->{TTP_TELEPHONE};?></option>
+									<?php endforeach;?>
+								</select><br><br>
+							</td>
+							
+							<td>
+								<input type="hidden" name="<?php echo $this->form->idPhone();?>[]" value=""/><br><br>
+							</td>
+						</tr>					
+					<?php endif;?>
+						<tr>
+							<td>						
+								<?php 
+									if(count($this->errorMessages[$this->form->phoneCodeArea()]) > 1)
+									{
+										echo "<span style=\"color: red; font-size: 10pt;\">";
+										echo $this->errorMessages[$this->form->phoneCodeArea()][0][0];
+										echo "</span>\n";
+									}
+									else
+									{
+										printErrorsByField($this->form->phoneCodeArea(), $this->errorMessages);
+									}
+								?>
+							</td>
+							<td >
+								<?php 
+									if(count($this->errorMessages[$this->form->phoneNumber()]) > 1)
+									{
+										echo "<span style=\"color: red; font-size: 10pt;\">";
+										echo $this->errorMessages[$this->form->phoneNumber()][0][0];
+										echo "</span>\n";
+									}
+									else
+									{
+										printErrorsByField($this->form->phoneNumber(), $this->errorMessages);
+									}
+								?>
+							</td>
+							<td>
+								<?php printErrorsByField($this->form->phoneType(), $this->errorMessages);?>
+							</td>
+							<td>
+								<?php printErrorsByField($this->form->idPhone(), $this->errorMessages);?>
+							</td>
+							<td></td>
+						</tr>				
+						<tr>
+							<td colspan="2">
+								<?php if($this->readOnly == FALSE):?>
+									<input type="submit" value="<?php echo $this->controller->income->button->savephone;?>" 
+									onClick="javascript: return actionName('<?php echo $this->baseUrl;?><?php echo INCOME_CONTROLLER;?>/<?php echo DEFAULT_TELEPHONE_ACTION;?>', this.form);">
+								<?php endif;?>
+							</td>
+						</tr>				
+					</table>
+				<?php endif;?>
+			</div>
+			<?php endif;?>			
+			
+			<table width="100%" class="noBorder">
+				<tr>
+					<td>
+						<?php if($this->readOnly == FALSE):?>
+							<input type="submit" value="<?php echo $this->labels->button->save;?>" onClick="javascript: actionName('<?php echo $this->baseUrl;?><?php echo INCOME_CONTROLLER;?>/<?php echo DEFAULT_EDIT_ACTION;?>', this.form);"/>
+						<?php endif; ?>
+						<input type="button" value="<?php echo $this->labels->button->back;?>" onClick="document.location='<?php echo $this->baseUrl;?><?php echo INCOME_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php echo $this->form->personId();?>/<?php echo $this->form->getPersonId();?>'">
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+</form>
+<?php else:?>
+	<b><?php echo $this->controller->income->text->notincometype;?><b>
+<?php endif;?>
+<?php endif;?>

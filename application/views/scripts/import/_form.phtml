@@ -1,0 +1,40 @@
+<?php if($this->errorMessages[ImportForm::folder().'1']):?>
+	<?php printErrorsByField(ImportForm::folder().'1', $this->errorMessages);?>
+<?php else:?>
+<form id="importFrm" action="<?php echo $this->baseUrl . IMPORT_CONTROLLER.'/'.DEFAULT_INDEX_ACTION;?>" method="post">
+	<table width="100%" >
+		<tr>
+			<td colspan="2">
+				<h1><?php echo $this->controller->import->title->index;?></h1>
+			</td>
+		</tr>
+		<tr>
+			<td width="10%">
+				<b><?php echo $this->controller->import->text->import;?>:</b>
+			</td>
+			<td>
+				<input type="radio" name="<?php echo $this->form->radioButton()?>" value="<?php echo ImportForm::ZIPCODE_DIV_KEY; ?>" 
+					<?php if($this->form->getRadioButton()== ImportForm::ZIPCODE_DIV_KEY) echo 'checked'; ?> onclick="this.form.submit();" /> <?php echo $this->controller->import->text->zipcode;?><br>
+				<input type="radio" name="<?php echo $this->form->radioButton()?>" value="<?php echo ImportForm::SINGLEREGISTER_DIV_KEY; ?>" 
+					<?php if($this->form->getRadioButton()== ImportForm::SINGLEREGISTER_DIV_KEY) echo 'checked'; ?> onclick="this.form.submit();" /> <?php echo $this->controller->import->text->singleRegister;?><br>
+				<input type="radio" name="<?php echo $this->form->radioButton()?>" value="<?php echo ImportForm::SCHOOL_DIV_KEY; ?>"
+					<?php if($this->form->getRadioButton()== ImportForm::SCHOOL_DIV_KEY) echo 'checked'; ?> onclick="this.form.submit();" /><?php echo $this->controller->import->text->school;?>
+				<input type="hidden" name="<?php echo $this->form->schoolSuccess();?>" value="<?php echo $this->form->getSchoolSuccess();?>"/>
+			</td>
+		</tr>
+	</table>
+</form>
+<?php 
+if($this->form->getRadioButton() == ImportForm::ZIPCODE_DIV_KEY)
+	echo $this->render('import/_zipcode.phtml');
+
+if($this->form->getRadioButton()== ImportForm::SINGLEREGISTER_DIV_KEY)
+	echo $this->render('import/_singleregister.phtml');
+
+if($this->form->getRadioButton()== ImportForm::SCHOOL_DIV_KEY)
+	if($this->processSchool === true || $this->form->getSchoolSuccess() == DEFAULT_SUCCESS_ACTION)
+		echo $this->render('import/_school-success.phtml');
+	else
+		echo $this->render('import/_school.phtml');
+?>
+<?php endif;?>

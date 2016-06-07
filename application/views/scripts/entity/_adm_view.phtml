@@ -1,0 +1,44 @@
+	<form name="enable_disable_entity" id="navigation" action="" method="post">
+	<tr>
+		<td colspan="3">
+			<?php if($this->errorMessages) printErrorsByField(EntityForm::id(), $this->errorMessages);?>
+		</td>
+	</tr>
+	<tr class="write">
+		<td class="bold" align="center" width="2%" height="20">&nbsp;</td>
+		<td class="bold" align="center" width="90%"><?php echo $this->controller->entity->admin->entity;?></td>
+		<td class="bold" align="center" width="8%"><?php echo $this->controller->entity->admin->status;?></td>
+	</tr>
+	<?php $indexEntity = 1; foreach($this->entities as $entity): ?>		 
+	<?php  if($indexEntity++ %2 == 0) $tr = 'write'; else $tr = ''; ?>
+			<tr class="<?php echo $tr ?>">
+				<td align='left' width='2%'><input type='checkbox' name='<?php echo EntityForm::id();?>[]' value='<?php echo $entity->{ENT_ID_ENTITY}; ?>'/></td>
+				<td class='bold' align='left' width='90%'> 
+					<?php echo $entity->{ENT_NAME}; ?>					
+				</td>
+				<td class='centerObject' width='8%'> 
+					<?php 
+					if($entity->{ENT_STATUS})
+					{
+						echo "<b class='styleGreenWrite'>".$this->controller->entity->text->status->enable."<b>";
+					} 
+					else 
+					{
+						echo "<b class='styleRedWrite'>".$this->controller->entity->text->status->disable."<b>";
+					} 
+					?>
+				</td>
+			</tr>
+			<tr class="<?php echo $tr ?>">
+				<td>&nbsp;</td>
+				<?php $coordinator = $this->coordinatorMap[$entity->{ENT_ID_ENTITY}];?>
+				<td align='left' colspan='2'><?php echo $this->controller->entity->admin->coordinator.' : '. $coordinator->{AUTH_NAME_USER}; ?></td>
+			</tr>
+	<?php endforeach; ?>
+			<tr>
+				<td align='center' colspan='3'>
+					<?php echo $this->render('/navBar.phtml');?>
+				</td>
+			</tr>
+  	</form>
+  

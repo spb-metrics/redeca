@@ -1,0 +1,97 @@
+<?php if(!$this->errorMessages[$this->form->personId()] && !is_null($this->form->getPersonId())):?>
+	<?php if(ResourcePermission::showContainers($this->request)){?>
+		<?php echo $this->render('header/head.phtml');?>		
+		<?php if(ResourcePermission::isAllowResource(PERSON_CONTROLLER)){?>			
+			<?php $show = Zend_Registry::get(CONFIG)->container->identification;?>
+			<?php if($show):?>
+				<div id="personDiv">
+					<?php echo $this->render('person/container.phtml');?>	
+				</div>
+			<?php endif;?>
+		<?php }?>
+		
+		<?php if(ResourcePermission::isAllowResource(EDUCATION_CONTROLLER)){?>
+			<?php $show = Zend_Registry::get(CONFIG)->container->education;?>
+			<?php if($show):?>
+				<div id="educationDiv">
+					<?php $hideHeader = false;?>
+					<?php echo $this->render('education/container.phtml');?>
+				</div>
+			<?php endif;?>
+		<?php }?>
+		
+		<?php if(ResourcePermission::isAllowResource(HEALTH_CONTROLLER)){?>
+			<?php $show = Zend_Registry::get(CONFIG)->container->health;?>
+			<?php if($show):?>	
+				<div id="healthDiv">
+					<?php $hideHeader = false;?>
+					<?php echo $this->render('health/container.phtml');?>		
+				</div>
+			<?php endif;?>
+		<?php }?>
+		
+		<?php if(ResourcePermission::isAllowResource(INCOME_CONTROLLER)){?>
+			<?php $show = Zend_Registry::get(CONFIG)->container->income;?>
+			<?php if($show):?>
+				<div id="incomeDiv">
+					<?php $hideHeader = false;?>
+					<?php echo $this->render('income/container.phtml');?>		
+				</div>	
+			<?php endif;?>
+		<?php }?>
+		
+		<?php if(ResourcePermission::isAllowResource(PERSON_LOG_CONTROLLER)){?>
+			<?php $show = Zend_Registry::get(CONFIG)->container->personlog;?>
+			<?php if($show):?>	
+				<div id="personLogDiv">
+					<?php $hideHeader = false;?>
+					<?php echo $this->render('person-log/container.phtml');?>									
+				</div>
+			<?php endif;?>
+		<?php }?>	
+		
+		<?php if(ResourcePermission::isAllowResource(FAMILYRELATIONSHIP_CONTROLLER)){?>
+			<?php $show = Zend_Registry::get(CONFIG)->container->family;?>
+			<?php if($show):?>	
+				<div id="familyDiv">
+					<div style="height: 30">
+						<?php $hideHeader = false;?>
+						<?php echo $this->render('family-relationship/container.phtml');?>
+					</div>
+				</div>			
+			<?php endif;?>
+		<?php }?>
+		
+		<?php if(ResourcePermission::isAllowResource(RESIDENCE_CONTROLLER)){?>
+			<?php $show = Zend_Registry::get(CONFIG)->container->residence;?>
+			<?php if($show):?>
+				<div id="residenceDiv">
+					<?php $hideHeader = false;?>
+					<?php echo $this->render('residence/container.phtml');?>	
+				</div>
+			<?php endif;?>
+		<?php }?>
+		
+		<?php if(ResourcePermission::isAllowResource(ATTENDANCE_CONTROLLER)){?>
+			<?php $show = Zend_Registry::get(CONFIG)->container->lastattendance;?>
+			<?php if($show):?>
+				<div id="attendanceDiv">
+					<?php $hideHeader = false;?>
+					<?php echo $this->render('attendance/container.phtml');?>		
+				</div>
+			<?php endif;?>
+		<?php }?>
+		
+		<?php if(ResourcePermission::isAllowResource(NETWORK_CONTROLLER)){?>
+			<?php $show = Zend_Registry::get(CONFIG)->container->network;?>
+			<?php if($show):?>
+				<div id="netDiv">
+					<?php $hideHeader = false;?>
+					<?php echo $this->render('network/container.phtml');?>							
+				</div>
+			<?php endif;?>
+			<?php //echo $this->render('container/containerNetworkEntity.phtml');?>
+		<?php }?>
+					
+	<?php }?>
+<?php endif;?>

@@ -1,0 +1,316 @@
+<table width="100%" class="noBorder">
+	<form action="<?php echo $this->baseUrl;?><?php echo FAMILYRELATIONSHIP_CONTROLLER;?>/<?php echo DEFAULT_ADD_ACTION;?>" method="post">
+		<input type="hidden" name="<?php echo SearchForm::idPerson();?>" value="<?php echo $this->form->getIdPerson();?>"/>
+		<input id="elementParent" type='hidden' name="<?php echo SearchForm::idParent()?>" value=""/>
+		
+		<?php printErrorsByField($this->form->idPerson(), $this->errorMessages);?>
+		<tr>
+			<td colspan="2">
+				<h1><?php echo $this->controller->fRelationship->text->result?></h1>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" align="right" height="30">
+				<table class="withOutEdge">
+					<tr>
+						<td>
+
+							|<a href="<?php echo $this->baseUrl;?><?php echo FAMILYRELATIONSHIP_CONTROLLER;?>/<?php echo DEFAULT_SEARCH_ACTION;?>/<?php echo SearchForm::idPerson();?>/<?php echo $this->form->getIdPerson();?>"><?php echo $this->controller->fRelationship->result->newSearch;?></a>&nbsp;|
+							<a href="<?php echo $this->baseUrl;?><?php echo PERSON_CONTROLLER;?>/<?php echo DEFAULT_NEW_ACTION;?>/<?php echo SearchForm::idPerson();?>/<?php echo $this->form->getIdPerson();?>"><?php echo $this->controller->fRelationship->result->newPerson;?></a>&nbsp;|
+						</td>
+					</tr>
+				</table>
+				<br>
+			</td>
+		</tr>
+		
+		<?php 
+			if($this->form->getDocNumber() != null && strlen($this->form->getDocNumber()) > 0)
+			{	
+				$paramSearch = $this->form->getDocNumber();
+			}
+			elseif($this->form->getPrsName() != null && strlen($this->form->getPrsName()) > 0)
+			{	
+				$paramSearch = $this->form->getPrsName();
+			}
+			else
+			{
+				$paramSearch = $this->controller->fRelationship->searchempty;
+			}
+			
+			$countMan = 0;
+			$countWoman = 0;
+			
+			if($this->resultSearchByDocument)
+			{	
+				$selected = false;
+				foreach($this->resultSearchByDocument as $unique)
+				{
+					if($unique->findParentRow(CLS_PERSON)->{PRS_SEX} == 'f')
+					{
+						$countWoman ++;
+					}
+					
+					if($unique->findParentRow(CLS_PERSON)->{PRS_SEX} == 'm')
+					{	
+						$countMan ++;
+					}
+				}
+			}
+			elseif($this->resultSearchByName)
+			{
+				$selected = false;
+				foreach($this->resultSearchByName as $unique)
+				{
+					if($unique->{PRS_SEX} == 'f')
+					{
+						$countWoman ++;
+					}
+					
+					if($unique->{PRS_SEX} == 'm')
+					{	
+						$countMan ++;
+					}
+				}
+			}
+			
+			if($countMan != 0)
+			{
+				echo "<tr>";
+					echo "<td colspan='2' height='20'>";
+							echo "<table class='withOutEdge'>";
+								echo "<tr>";
+									echo "<td>";	
+										echo $this->controller->fRelationship->result->info1;
+										echo "<b>";
+										echo "&nbsp;".$countMan;
+										echo "</b>&nbsp;";
+										echo $this->controller->fRelationship->result->info2;
+										echo "<b>&nbsp;";
+										echo $this->controller->fRelationship->text->man;
+										echo "</b>&nbsp;";
+										echo $this->controller->fRelationship->result->info3;
+										echo "<b>&nbsp;";
+										echo $paramSearch;
+										echo "</b>";
+										echo ".&nbsp;";
+										echo $this->controller->fRelationship->result->info4;
+									echo "</td>";
+								echo "</tr>";
+							echo "</table>";
+							echo "<br>";
+					echo "</td>";
+				echo "</tr>";
+			}
+			
+			if($countWoman != 0)
+			{
+				echo "<tr>";
+					echo "<td colspan='2' height='20'>";
+							echo "<table class='withOutEdge'>";
+								echo "<tr>";
+									echo "<td>";
+										echo $this->controller->fRelationship->result->info1;
+										echo "<b>";
+										echo "&nbsp;".$countWoman;
+										echo "</b>&nbsp;";
+										echo $this->controller->fRelationship->result->info2;
+										echo "<b>&nbsp;";
+										echo $this->controller->fRelationship->text->woman;
+										echo "</b>&nbsp;";
+										echo $this->controller->fRelationship->result->info3;
+										echo "<b>&nbsp;";
+										echo $paramSearch;
+										echo "</b>";
+										echo ".&nbsp;";
+										echo $this->controller->fRelationship->result->info4;
+									echo "</td>";
+								echo "</tr>";
+							echo "</table>";
+							echo "<br>";
+					echo "</td>";
+				echo "</tr>";
+			}
+			
+			if($countWoman == 0 && $countMan == 0)
+			{
+				echo "<tr>";
+					echo "<td colspan='2' height='20'>";
+							echo "<table class='withOutEdge'>";
+								echo "<tr>";
+									echo "<td>";
+										echo $this->controller->fRelationship->notfound;
+										echo "&nbsp;<b>";
+										echo $paramSearch;
+										echo "</b>";
+										echo ".";
+									echo "</td>";
+								echo "</tr>";
+							echo "</table>";
+							echo "<br>";
+					echo "</td>";
+				echo "</tr>";
+			}
+			
+			$countLine = 0;
+			if($this->resultSearchByDocument)
+			{	
+				foreach($this->resultSearchByDocument as $rbd)
+				{
+					$obFam = $rbd->findParentRow(CLS_PERSON)->findDependentRowset(CLS_FAMILY);
+					echo "<tr>";
+						echo "<td colspan='2'>";
+							echo "<table width='100%' class='withOutEdge'>";	
+								if(($countLine%2) == 0) echo "<tr class='write'>"; else echo "<tr>";
+									echo "<td>";
+										if(sizeof($obFam) > 0)
+										{
+											foreach($obFam as $family)
+											{
+												$cfi = $family->findParentRow(CLS_FAMILY_ID);
+												$i = 0;
+												foreach($cfi->findDependentRowset(CLS_REPRESENTATIVE) as $fr)
+												{
+													echo "<input type='radio' onClick='setChecked(\"document_".$i."\");' name='";
+													echo SearchForm::idFamily();
+													echo "' value='";
+													echo $fr->{REP_ID_FAMILY};
+													echo "'/>";
+													echo abbreviate($rbd->findParentRow(CLS_PERSON)->{PRS_NAME},31);
+													echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+													echo "<b class='bigWriteRed'>";
+													echo $this->controller->fRelationship->text->representativeSearch;
+													echo "</b>";			
+													echo "<b>";			
+													echo "&nbsp;".abbreviate($fr->findParentRow(CLS_PERSON)->{PRS_NAME}, 31);
+													echo "</b>";
+													echo "<input id='document_".$i."' type='hidden'";
+													echo "' value='";
+													echo $fr->findParentRow(CLS_PERSON)->{PRS_ID_PERSON};
+													echo "'/>";
+													$selected = true;
+													$i++;
+												}
+											}
+										}
+										else
+										{
+											echo "<input type='radio' disabled";
+											echo "'/>";
+											echo abbreviate($rbd->findParentRow(CLS_PERSON)->{PRS_NAME},31);
+											echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+											echo "<b class='bigWriteRed'>";
+											echo $this->controller->fRelationship->text->personNotFamily;
+											echo "</b>";
+										}
+									echo "</td>";
+								echo "</tr>";
+							echo "</table>";
+						echo "</td>";
+					echo "</tr>";
+					$countLine ++;
+				}
+			}
+			else
+			{
+				$j = 0;
+				foreach($this->resultSearchByName as $rbn)
+				{
+					$obFam = $rbn->findDependentRowset(CLS_FAMILY);
+					echo "<tr>";
+						echo "<td colspan='2'>";
+							echo "<table width='100%' class='withOutEdge'>";
+								if( ($countLine%2) == 0) echo "<tr class='write'>"; else echo "<tr>";
+									echo "<td>";
+										if(sizeof($obFam) > 0)
+										{	
+											foreach($obFam as $family)
+											{	
+												$cfi = $family->findParentRow(CLS_FAMILY_ID);
+												foreach($cfi->findDependentRowset(CLS_REPRESENTATIVE) as $fr)
+												{	
+													echo "<input type='radio' onClick='setChecked(\"name_".$j."\");' name='";
+													echo SearchForm::idFamily();
+													echo "' value='";
+													echo $fr->{REP_ID_FAMILY};
+													echo "'/>";
+													echo $rbn->{PRS_NAME};
+													echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+													echo "<b class='bigWriteRed'>";
+													echo $this->controller->fRelationship->text->representativeSearch;
+													echo "</b>";			
+													echo "<b>";			
+													echo "&nbsp;".abbreviate($fr->findParentRow(CLS_PERSON)->{PRS_NAME},31);
+													echo "</b>";
+													echo "<input type='hidden' name='name_".$j."' id='name_".$j."'";
+													echo "' value='";
+													echo abbreviate($fr->findParentRow(CLS_PERSON)->{PRS_ID_PERSON},31);
+													echo "'/>";
+													$selected = true;
+													$j++;
+												}
+											}
+										}
+										else
+										{	
+											echo "<input type='radio' disabled";
+											echo "'/>";
+											echo abbreviate($rbn->{PRS_NAME}, 31);
+											echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+											echo "<b class='bigWriteRed'>";
+											echo $this->controller->fRelationship->text->personNotFamily;
+											echo "</b>";
+										}
+									echo "</td>";
+								echo "</tr>";
+							echo "</table>";
+						echo "</td>";
+					echo "</tr>";
+					$countLine ++;
+				}
+			}
+		?>
+		
+		<?php if($selected):?>
+			<?php if($countWoman != 0 || $countMan != 0):?>
+				<tr>
+					<td><br>
+						<table width="100%">
+							<tr class='writeRed'>
+								<td width="60%" height="40" class="middleValign">
+									<?php echo $this->controller->fRelationship->result->searchRelation->partOne; echo "<b><u>".$this->controller->fRelationship->text->representative."</u></b>"; echo $this->controller->fRelationship->result->searchRelation->partTwo;?>
+								</td>
+								<td width="40%" height="40" class="middleValign">
+									<select name="<?php echo SearchForm::idkinship();?>">
+										<option value=""><?php echo $this->labels->text->select;?>...</option>
+										<?php 
+											foreach($this->kinship as $kinship)
+											{
+												echo "<option value='";
+												echo $kinship->{KST_ID_KINSHIP};
+												echo "'>";
+												echo $kinship->{KST_KINSHIP};
+												echo "</option>";		
+											}
+										?>
+									</select>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td><br>
+						<table width="100%" class="withOutEdge">
+							<tr>
+								<td class="alignCenter">
+									<input type="submit" value="<?php echo $this->labels->button->save;?>"/>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			<?php endif; ?>
+		<?php endif; ?>
+	</form>
+</table>

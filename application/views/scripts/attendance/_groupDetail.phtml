@@ -1,0 +1,49 @@
+<?php $ast = $this->assistance;?>
+<tr class="write">
+	<td width="17%">
+		<b><?php echo $this->controller->attendance->text->class;?></b>
+	</td>
+	<td >
+		<b><?php echo $this->controller->attendance->text->activity;?></b>
+	</td>
+	<td >
+		<b><?php echo $this->controller->attendance->text->vacancy;?></b>
+	</td>
+	<td >
+		<b><?php echo $this->controller->attendance->text->hour;?></b>
+	</td>
+	<td >
+		<b><?php echo $this->controller->attendance->text->period;?></b>
+	</td>
+	<td >
+		<b><?php echo $this->controller->attendance->text->hourLoad;?></b>
+	</td>
+	<td >
+		<b><?php echo $this->controller->attendance->text->category;?></b>
+	</td>
+</tr>
+<?php for($i = 0; $i < sizeof($ast[CLS_NAME]); $i++):?>
+<tr>
+	<td>
+		<?php ($ast[CLS_NAME][$i])? $name= $ast[CLS_NAME][$i]: $name= $this->labels->text->nodata; echo $name;?>
+	</td>
+	<td>
+		<?php ($ast[ACD_ACTIVITY_DETAIL][$i])? $activity = $ast[ACD_ACTIVITY_DETAIL][$i]: $activity = $this->labels->text->nodata; echo $activity;?>
+	</td>
+	<td>
+		<?php ($ast[CLS_VACANCY][$i])? $vacancy = $ast[CLS_VACANCY][$i]: $vacancy = $this->labels->text->nodata;; echo $vacancy;?>
+	</td>
+	<td>
+		<?php ($ast[CLS_SCHEDULE][$i])? $schedule = $ast[CLS_SCHEDULE][$i]: $schedule = $this->labels->text->nodata;; echo $schedule;?>
+	</td>
+	<td>
+		<?php ($ast[CLS_PERIOD][$i])? $period = $ast[CLS_PERIOD][$i]: $period = $this->labels->text->nodata;; echo $period;?>
+	</td>
+	<td>
+		<?php ($ast[ACD_HOURLY_LOAD][$i])? $hourly = $ast[ACD_HOURLY_LOAD][$i]."h": $hourly = $this->labels->text->nodata;; echo $hourly;?>
+	</td>
+	<td>
+		<?php ($ast[CAT_CATEGORY][$i])? $cat = $ast[CAT_CATEGORY][$i]: $cat = $this->labels->text->nodata;; echo $cat;?>
+	</td>
+</tr>
+<?php endfor;?>

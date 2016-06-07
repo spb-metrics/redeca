@@ -1,0 +1,162 @@
+<?php echo $this->render('header/header.phtml');?>										 		  						
+									  
+<!-- ===================================== -->
+<!-- inicio : específico com cada template -->					
+<!-- ===================================== -->						  
+<div>
+	<?php echo $this->render('submenu/subMenuRelationship.phtml');?>
+
+	<!-- ============================================================================================== -->
+	<!-- É necessário informar o nome class da tabela em questão para carregar a cor background correta -->
+	<!-- Opções: 
+				#identification
+				#person
+				#education
+				#health
+				#income
+				#familyRelationship
+				#residence
+				#attendance
+				#activity	-->
+	<!-- ============================================================================================== -->
+	<table class="familyRelationship" width="98%">
+		<tr>
+			<td align="center">
+				<?php if($this->expense == null):?>
+					<div>
+						<table width="100%">
+							<tr>
+								<td align="center" colspan="2">
+									<h1><?php echo $this->controller->fexpense->title->index;?></h1>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<b><?php echo $this->controller->fexpense->text->notHave;?></b>
+								</td>
+							</tr>
+							<tr>
+								<td width="25%">
+									<input type="button" value="<?php echo $this->controller->fexpense->button->registerExpense;?>" onClick="document.location='<?php echo $this->baseUrl;?><?php echo FAMILYEXPENSE_CONTROLLER;?>/<?php echo DEFAULT_NEW_ACTION;?>/<?php echo $this->form->idFamily();?>/<?php echo $this->form->getIdFamily();?>'"/>
+								</td>
+								<td>
+									<input type="button" value="<?php echo $this->labels->button->no;?>" onClick="document.location='<?php echo $this->baseUrl;?><?php echo PERSON_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php echo $this->form->id();?>/<?php echo $this->form->getId();?>'"/>
+								</td>
+							</tr>
+						</table>
+					</div>
+				<?php else:?>
+					<div>
+						<table width="100%">
+							<tr>
+								<td align="center" colspan="4">
+									<h1><?php echo $this->controller->fexpense->title->index;?></h1>
+								</td>
+							</tr>
+							<tr>
+								<td width="3%"></td>
+								<td width="60%">
+									<b><?php echo $this->controller->fexpense->text->expenseName;?></b>
+								</td>
+								<td width="20%">
+									<b><?php echo $this->controller->fexpense->text->value;?></b>
+								</td>
+								<td>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<form action="" name="dropAction" method="post">
+										<table width="100%" class="noBorder">
+											<?php foreach($this->expense as $exp):?>
+												<tr>													
+													<td height="50">
+														<input type="checkbox" name="<?php echo $this->form->idExpenseType();?>[]" value="<?php echo $exp->{EXP_ID_EXPENSE_TYPE};?>">
+														<input type="hidden" name="<?php echo $this->form->idFamily();?>" value="<?php echo $exp->{EXP_ID_FAMILY};?>">
+														<input type="hidden" name="<?php echo $this->form->id();?>" value="<?php echo $this->form->getId();?>">
+													</td>
+												</tr>
+											<?php endforeach;?>
+										</table>
+									</form>
+								</td>
+								<td colspan="2">
+									<table width="100%" class="noBorder">
+										<?php foreach($this->expense as $exp):?>
+											<?php $type = $exp->findParentRow(CLS_EXPENSETYPE);?>
+											<?php $idFamily = $exp->{EXP_ID_FAMILY};?>
+											<tr>
+												<td width="82%">
+													<?php echo $type->{EXT_EXPENSE};?>
+												</td>
+												<td width="20%">
+													<?php 
+														echo $exp->{EXP_EXPENSE_VALUE};
+														$count += $exp->{EXP_EXPENSE_VALUE};
+													?>
+												</td>
+												<td height="33">
+													<form name="<?php echo $this->form->idExpenseType().$exp->{EXP_ID_EXPENSE_TYPE};?>"
+														action="<?php echo $this->baseUrl;?><?php echo FAMILYEXPENSE_CONTROLLER;?>/<?php echo DEFAULT_VIEW_ACTION;?>"
+														method="post">
+														<input type="hidden" name="<?php echo $this->form->idFamily();?>" value="<?php echo $exp->{EXP_ID_FAMILY};?>">
+														<input type="hidden" name="<?php echo $this->form->expenseValue();?>" value="<?php echo $exp->{EXP_EXPENSE_VALUE};?>">
+														<input type="hidden" name="<?php echo $this->form->idExpenseType();?>" value="<?php echo $exp->{EXP_ID_EXPENSE_TYPE};?>">
+														<input type="hidden" name="<?php echo $this->form->id();?>" value="<?php echo $this->form->getId();?>">
+														<?php $readOnly = ResourcePermission::isResourceReadOnly($this->_request); ?>
+														<?php if(!$readOnly):?>
+															<a href="javascript: document.<?php echo $this->form->idExpenseType().$exp->{EXP_ID_EXPENSE_TYPE};?>.submit();">
+																<?php echo $this->labels->button->edit;?>
+															</a>
+														<?php endif; ?>
+													</form>
+												</td>
+											</tr>
+											<tr>
+												<td>
+												</td>
+											</tr>
+										<?php endforeach;?>
+									</table>										
+								</td>
+							</tr>
+							<tr>
+								<td align="right" colspan="2">
+									<b><?php echo $this->controller->fexpense->text->allExpense;?>:&nbsp;</b>
+								</td>
+								<td>
+									<?php echo $count;?>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<table width="100%" class="noBorder">
+										<tr>
+											<td>
+												<input type="submit" value="<?php echo $this->labels->button->drop;?>"
+													onClick="javascript: actionName('<?php echo $this->baseUrl;?><?php echo FAMILYEXPENSE_CONTROLLER;?>/<?php echo DEFAULT_DROP_ACTION;?>', document.forms['dropAction'] );document.forms['dropAction'].submit();"/>
+											</td>
+											<td>
+												<form action="" method="post">
+													<input type="hidden" name="<?php echo $this->form->idFamily();?>" value="<?php echo $idFamily;?>">
+													<input type="hidden" name="<?php echo $this->form->id();?>" value="<?php echo $this->form->getId();?>">
+													<input type="submit" value="<?php echo $this->controller->fexpense->button->registerExpense;?>"
+														onClick="javascript: actionName('<?php echo $this->baseUrl;?><?php echo FAMILYEXPENSE_CONTROLLER;?>/<?php echo DEFAULT_NEW_ACTION;?>', this.form);"/>
+												</form>
+											</td>
+										</tr>
+									</table>			
+								</td>
+							</tr>
+						</table>
+					</div>
+				<?php endif;?>
+			</td>
+		</tr>
+	</table>
+</div>																  
+<!-- =================================== -->
+<!-- fim : específico para cada template -->					
+<!-- =================================== -->		
+					
+<?php echo $this->render('footer/footer.phtml');?>	

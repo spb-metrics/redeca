@@ -1,0 +1,34 @@
+<?php echo $this->render('header/container.phtml');?>
+<table class="icontainer" width="98%">
+	<tr>
+		<td>
+			<b><?php echo $this->controller->income->title;?></b>
+		</td>
+	</tr>
+	<?php foreach($this->person as $person) $income = $person->findDependentRowset(CLS_INCOME);?>
+	<?php if(count($income) > 0):?>
+		<?php foreach($income as $inc):?>
+			<?php if($inc->{ICM_STATUS} != Constants::HISTORY):?>
+				<?php if($inc->{ICM_ID_INCOME} != 1 && $inc->{ICM_VALUE} != 0):?>
+					<tr>
+						<td width="21%">
+							<?php $incType = $inc->findParentRow(CLS_INCOMETYPE);?>
+							<?php echo '- '.$incType->{ICT_INCOME};?>
+						</td>
+					</tr>								
+				<?php endif;?>
+			<?php endif;?>
+		<?php endforeach;?>
+	<?php else:?>
+		<tr>
+			<td width="21%">
+				<?php echo '- '.$this->labels->text->nodata;?>
+			</td>
+		</tr>
+	<?php endif;?>
+	<tr>
+		<td>
+			<input class="small" type="submit" onclick="parent.document.location='<?php echo $this->baseUrl;?><?php echo INCOME_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php if($this->form)echo $this->form->personId();?>/<?php if($this->form)echo $this->form->getPersonId();?>'" value="<?php echo $this->labels->button->showDetail;?>"/>
+		</td>
+	</tr>
+</table>

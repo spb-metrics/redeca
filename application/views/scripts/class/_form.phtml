@@ -1,0 +1,181 @@
+<!-- ==================================================== -->
+<!-- formulário que visualiza as informações para edição  -->
+<!-- este formulário é visualizado a partir do view.phtml -->					
+<!-- ==================================================== -->
+<?php printErrorsByField($this->form->idEntity(), $this->errorMessages);?>
+<form id="classForm" action="<?php echo $this->baseUrl;?><?php echo CLASS_CONTROLLER;?>/<?php echo DEFAULT_ADD_ACTION;?>" method="post">
+	<?php if(sizeof($this->programs) > 0 ):?>
+	
+		<?php 
+			if($this->errorMessages[$this->form->idProgram()])
+			{
+				$existActivityAssociated = true;
+			}
+			else
+			{
+				foreach($this->activities as $activity)
+				{
+					$aad = $activity->findDependentRowset(CLS_ACTIVITYDETAIL);
+					foreach($aad as $act)
+					{
+						$existActivityAssociated = true;
+						break;
+					}	
+				}
+			}
+		?>
+	
+		<?php if($existActivityAssociated):?>
+		
+			<input type="hidden" name="<?php echo ClassForm::idEntity();?>" value="<?php echo $this->form->getIdEntity();?>"/>
+			<tr>
+				<td colspan="2">
+					<h1><?php echo $this->controller->classtemplate->text->newclass;?></h1>
+				</td>
+			</tr>
+			<tr>
+				<td class="bold" align="right" width="10%"><?php echo $this->controller->classtemplate->text->program;?>:</td>
+				<td width="90%">
+					<select name="<?php echo ClassForm::idProgram();?>" onchange="javascript: submitForm('<?php echo $this->baseUrl;?><?php echo CLASS_CONTROLLER;?>/<?php echo DEFAULT_LOAD_PROGRAM;?>','classForm');">
+						<option value="">Selecione um Programa</option>
+						<?php
+							foreach($this->programs as $program)
+							{	
+								$uniqueActivity = $program->findParentRow(CLS_PROGRAMTYPE);
+								echo "<option value='";echo $program->{PGR_ID_PROGRAM}."'";
+								if($program->{PGR_ID_PROGRAM} == $this->escape($this->form->getIdProgram()))
+								{
+									echo "selected>"; 	
+								}	
+								else
+								{
+									echo ">";	
+								}
+								echo $uniqueActivity->{PGT_PROGRAM_TYPE}.
+								"</option>";
+							}
+						?>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td width="10%"></td>
+				<td width="90%"><?php printErrorsByField($this->form->idProgram(), $this->errorMessages);?></td>
+			</tr>
+			<tr>
+				<td class="bold" align="right" width="10%"><?php echo $this->controller->classtemplate->text->activity;?>:</td>
+				<td width="90%">
+					<select name="<?php echo ClassForm::idActivityDetail();?>[]" size="10" multiple>
+						<?php
+							foreach($this->activities as $activity)
+							{
+								$aad = $activity->findDependentRowset(CLS_ACTIVITYDETAIL);
+								foreach($aad as $act)
+								{
+									echo "<option value='";echo $act->{ACD_ID_ACTIVITY_DETAIL}."'";
+									if($uniqueActivity == $this->escape($this->form->getIdActivityDetail()))
+									{
+										echo 'selected>';
+									}	
+									else
+									{
+										echo '>';
+									}		
+									echo $uniqueActivity = $act->findParentRow(CLS_CATEGORY)->{CAT_CATEGORY}.
+                                                                        ' - '.$act->{ACD_ACTIVITY_DETAIL}.
+									'</option>';
+								}
+							}
+						?>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td width="10%"></td>
+				<td width="90%"><?php printErrorsByField($this->form->idActivityDetail(), $this->errorMessages);?></td>
+			</tr>
+			
+			<tr>
+				<td class="bold" align="right" width="10%"><?php echo $this->controller->classtemplate->text->name;?>:</td>
+				<td align="left" width="90%">
+					<input size="50" type="text" name="<?php echo ClassForm::className();?>" value="<?php echo $this->escape($this->form->getClassName());?>"/>
+				</td>
+			</tr>
+			<tr>
+				<td width="10%"></td>
+				<td width="90%"><?php printErrorsByField($this->form->className(), $this->errorMessages);?></td>
+			</tr>
+			
+			<tr>
+				<td class="bold" align="right" width="10%"><?php echo $this->controller->classtemplate->text->vacancies;?>:</td>
+				<td align="left" width="90%">
+					<input size="10" type="text" name="<?php echo ClassForm::vacancy();?>" value="<?php echo $this->escape($this->form->getVacancy());?>"/>
+				</td>
+			</tr>
+			<tr>
+				<td width="10%"></td>
+				<td width="90%"><?php printErrorsByField($this->form->vacancy(), $this->errorMessages);?></td>
+			</tr>
+			
+			
+			<tr>
+				<td class="bold" align="right" width="10%"><?php echo $this->controller->classtemplate->text->period;?>:</td>
+				<td width="90%">
+					<select class="period" name="<?php echo ClassForm::period();?>">
+						<?php foreach($this->allPeriod as $k => $value): ?>
+							<option value="<?php echo $k; ?>" <?php if($this->escape($this->form->getPeriod() == $k)) echo selected;?>><?php echo $value; ?></option>
+						<?php endforeach; ?>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td width="10%"></td>
+				<td width="90%"><?php printErrorsByField($this->form->period(), $this->errorMessages);?></td>
+			</tr>
+			
+			<tr>
+				<td class="bold" align="right" width="10%"><?php echo $this->controller->classtemplate->text->time;?>:</td>
+				<td align="left" width="90%">
+					<input size="50" type="text" name="<?php echo ClassForm::timeClass();?>" value="<?php echo $this->escape($this->form->getTimeClass());?>"/>
+				</td>
+			</tr>
+			<tr>
+				<td width="10%"></td>
+				<td width="90%"><?php printErrorsByField($this->form->timeClass(), $this->errorMessages);?></td>
+			</tr>
+			
+			<tr>
+				<td colspan="2" align="center"><br>
+					<input type="submit" value="<?php echo $this->controller->classtemplate->button->register;?>"/>
+				</td>
+			</tr>
+		<?php else:?>
+			<tr>
+				<td colspan="2">
+					<b><?php echo $this->helpcontroller->text5?></b>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<b><?php echo $this->helpcontroller->text4?></b>
+				</td>
+			</tr>
+		<?php endif;?>
+	<?php else :?>
+		<tr>
+			<td colspan="2">
+				<b><?php echo $this->helpcontroller->text3?></b>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<b><?php echo $this->helpcontroller->text1?></b>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<b><?php echo $this->helpcontroller->text4?></b>
+			</td>
+		</tr>
+	<?php endif ;?>
+</form>

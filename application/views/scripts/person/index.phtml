@@ -1,0 +1,725 @@
+<?php echo $this->render('header/header.phtml');?>										 		  						
+									  
+<!-- ===================================== -->
+<!-- inicio : específico com cada template -->					
+<!-- ===================================== -->						  
+
+<div>
+	<?php echo $this->render('submenu/submenuPerson.phtml');?>
+
+	<!-- ============================================================================================== -->
+	<!-- É necessário informar o nome class da tabela em questão para carregar a cor background correta -->
+	<!-- Opções: 
+				#identification
+				#person
+				#education
+				#health
+				#income
+				#familyRelationship
+				#residence
+				#attendance
+				#activity	-->
+	<!-- ============================================================================================== -->
+
+	<?php if($this->errorMessages):?>
+		<div>
+			<br>
+			<b>
+				<?php echo $this->controller->person->text->paraminvalid;?>
+			</b>
+		</div>
+	<?php else:?>
+	<table class="person" width="98%">
+		<tr>
+			<td align="center">
+				<?php					
+					if(array_key_exists($this->form->id(), $this->errorMessages)){?>
+					<table width="100%">
+						<tr>
+							<td>
+								<?php printErrorsByField($this->form->id(), $this->errorMessages);?>		
+							</td>
+						</tr>
+					</table>
+				<?php }else{?>
+					<table width="100%" class="noBorder">
+						<tr>
+							<td colspan="4" align="right">
+								<?php if($this->readOnly == FALSE):?>
+									|&nbsp;<a href="<?php echo $this->baseUrl;?><?php echo PERSON_CONTROLLER;?>/<?php echo DEFAULT_VIEW_ACTION;?>/<?php echo $this->form->id();?>/<?php echo $this->form->getId();?>"><?php echo $this->labels->button->edit;?></a>&nbsp;|
+								<?php endif; ?>
+							</td>
+						</tr>
+						<tr>
+							<td width="25%">
+								<b><?php echo $this->controller->person->text->nick;?></b>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getNickname())
+										echo $this->form->getNickname();
+									else
+										echo $this->controller->person->text->nodata;
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<b><?php echo $this->controller->person->text->name;?></b>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getName())
+										echo $this->form->getName();
+									else
+										echo $this->controller->person->text->nodata;
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td >
+								<b><?php echo $this->controller->person->text->sex;?></b>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getSex() == MAN)
+										echo $this->controller->person->text->male;
+									else if($this->form->getSex() == WOMAN)
+										echo $this->controller->person->text->female;
+									else
+										echo $this->controller->person->text->nodata;
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td >
+								<b><?php echo $this->controller->person->text->race;?></b>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getRace())
+									{
+										foreach($this->races as $race)
+											if($race->{RAC_ID_RACE} == $this->form->getRace())
+												echo $race->{RAC_RACE};
+									}
+									else
+										echo $this->controller->person->text->nodata;
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td >
+								<b><?php echo $this->controller->person->text->tattoo;?></b>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getTattoo())
+										echo $this->form->getTattoo();
+									else
+										echo $this->controller->person->text->nodata;
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td >
+								<b><?php echo $this->controller->person->text->civilState;?></b>
+							</td>
+							<td  colspan="2">
+								<?php 
+									if($this->form->getMaritalStatus())
+									{
+										foreach($this->marital as $marital)
+											if($marital->{MST_ID_MARITAL_STATUS} == $this->form->getMaritalStatus())
+												echo $marital->{MST_MARITAL_STATUS};
+									}
+									else
+										echo $this->controller->person->text->nodata;
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<b><?php echo $this->controller->person->text->birth;?></b>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getBirthDate())
+										echo $this->form->getBirthDate();
+									else
+										echo $this->controller->person->text->nodata;
+								?>
+							</td>
+						</tr>
+						<?php if($this->form->getDeathDate()) {?>
+							<tr>
+								<td >
+									<b><?php echo $this->controller->person->text->death;?></b>
+								</td>
+								<td >
+									<?php 
+										if($this->form->getDeathDate())
+											echo $this->form->getDeathDate();
+										else
+											echo $this->controller->person->text->nodata;
+									?>
+								</td>
+							</tr>
+						<?php }?>
+						<tr>
+							<td >
+								<b><?php echo $this->controller->person->text->nacionality;?></b>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getNationality())
+									{
+										foreach($this->nation as $nation)
+											if($nation->{NTY_ID_NATIONALITY} == $this->form->getNationality())
+												echo $nation->{NTY_NATIONALITY};
+									}
+									else
+										echo $this->controller->person->text->nodata;
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<?php echo $this->controller->person->text->foreign;?>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getNativeCountry())
+										echo $this->form->getNativeCountry();
+									else
+										echo $this->controller->person->text->nodata;
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<?php echo $this->controller->person->text->arrival;?>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getArrivalDate())
+										echo $this->form->getArrivalDate();
+									else
+										echo $this->controller->person->text->nodata;
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<b><?php echo $this->controller->person->text->disability;?></b>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<?php
+									if($this->form->getDeficiency())
+									{
+										$flag = false;
+										foreach($this->form->getDeficiency() as $def)
+										{
+											foreach($this->deficiency as $deficiency)
+											{
+												if($def->{DFY_ID_DEFICIENCY} == $deficiency->{DFT_ID_DEFICIENCY})
+												{
+													echo "- ".$deficiency->{DFT_NAME}."<br>";
+													$flag = true;
+												}
+											}
+										}
+										if($flag === false)
+											echo $this->controller->person->text->nodata;
+									}
+									else
+										echo $this->controller->person->text->nodata;
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4">
+								<hr>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<b><?php echo $this->controller->person->text->cpf;?></b>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getCpf())
+										echo $this->form->getCpf();
+									else
+										echo $this->controller->person->text->nodata;
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<b><?php echo $this->controller->person->text->rg;?></b>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getRg())
+										echo $this->form->getRg();
+									else
+										echo $this->controller->person->text->nodata;
+								?>
+								<?php 
+									if($this->form->getRg())
+										if($this->form->getRgComplement())
+											echo $this->form->getRgComplement();
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td >
+								-&nbsp;<?php echo $this->controller->person->text->emission;?>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getRgEmissionDate())
+										echo $this->form->getRgEmissionDate();
+									else
+										echo $this->controller->person->text->nodata;
+								?>&nbsp;
+								<?php 
+									if($this->form->getRgState())
+									{
+										foreach($this->uf as $uf)
+											if($this->form->getRgState() == $uf->{UF_ID_UF})
+												echo $uf->{UF_ABBREVIATION};
+									}
+								?>&nbsp;
+								<?php 
+									if($this->form->getRgSender())
+										echo $this->form->getRgSender();
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td >
+								<b><?php echo $this->controller->person->text->nis;?></b>
+							</td>
+							<td >
+								<?php 
+									if($this->form->getNisNumber())
+										echo $this->form->getNisNumber();
+									else
+										echo $this->controller->person->text->nodata;
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td >
+								<b><?php echo $this->controller->person->text->sus;?></b>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getSusNumber())
+										echo $this->form->getSusNumber();
+									else
+										echo $this->controller->person->text->nodata;
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td >
+								<b><?php echo $this->controller->person->text->ra;?></b>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getRa())
+										echo $this->form->getRa();
+									else
+										echo $this->controller->person->text->nodata;
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td >
+								<b><?php echo $this->controller->person->text->voter;?></b>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getTitleVoter())
+										echo $this->form->getTitleVoter();
+									else
+										echo $this->controller->person->text->nodata;
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td >
+								-&nbsp;<?php echo $this->controller->person->text->zone;?>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getTitleZone())
+										echo $this->form->getTitleZone();
+									else
+										echo $this->controller->person->text->nodata;
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td >
+								-&nbsp;<?php echo $this->controller->person->text->session;?>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getTitleSession())
+										echo $this->form->getTitleSession();
+									else
+										echo $this->controller->person->text->nodata;
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td >
+								<b><?php echo $this->controller->person->text->ctps;?></b>
+							</td>
+							<td >
+								<?php 
+									if($this->form->getCtpsNumber())
+										echo $this->form->getCtpsNumber();
+									else
+										echo $this->controller->person->text->nodata;
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td >
+								-&nbsp;<?php echo $this->controller->person->text->series;?>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getCtpsSeries())
+										echo $this->form->getCtpsSeries();
+									else
+										echo $this->controller->person->text->nodata;
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td >
+								-&nbsp;<?php echo $this->controller->person->text->emission;?>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getCtpsEmissionDate())
+										echo $this->form->getCtpsEmissionDate();
+									else
+										echo $this->controller->person->text->nodata;
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td >
+								-&nbsp;<?php echo $this->controller->person->text->uf;?>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getCtpsState())
+									{
+										foreach($this->uf as $uf)
+											if($this->form->getCtpsState() == $uf->{UF_ID_UF})
+												echo $uf->{UF_ABBREVIATION};
+									}
+									else
+										echo $this->controller->person->text->nodata;
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td >
+								<b><?php echo $this->controller->person->text->certification;?></b>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getCivilCertificateType())
+										echo $this->form->getCivilCertificateType();
+									else
+										echo $this->controller->person->text->nodata;
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td >
+								-&nbsp;<?php echo $this->controller->person->text->term;?>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getCivilCertificateTerm())
+										echo $this->form->getCivilCertificateTerm();
+									else
+										echo $this->controller->person->text->nodata;
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td >
+								-&nbsp;<?php echo $this->controller->person->text->book;?>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getCivilCertificateBook())
+										echo $this->form->getCivilCertificateBook();
+									else
+										echo $this->controller->person->text->nodata;
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td >
+								-&nbsp;<?php echo $this->controller->person->text->leaf;?>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getCivilCertificateLeaf())
+										echo $this->form->getCivilCertificateLeaf();
+									else
+										echo $this->controller->person->text->nodata;
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td >
+								-&nbsp;<?php echo $this->controller->person->text->emission;?>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getCivilCertificateEmissionDate())
+										echo $this->form->getCivilCertificateEmissionDate();
+									else
+										echo $this->controller->person->text->nodata;
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td >
+								-&nbsp;<?php echo $this->controller->person->text->uf;?>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getCivilCertificateState())
+									{
+										foreach($this->uf as $uf)
+											if($this->form->getCivilCertificateState() == $uf->{UF_ID_UF})
+												echo $uf->{UF_ABBREVIATION};
+									}
+									else
+										echo $this->controller->person->text->nodata;
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td >
+								-&nbsp;<?php echo $this->controller->person->text->office;?>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getCivilCertificateOfficeName())
+										echo $this->form->getCivilCertificateOfficeName();
+									else
+										echo $this->controller->person->text->nodata;
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4">
+								<hr>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4" height="30">
+								<b>
+									<?php echo $this->controller->person->text->addressTemp->dataTitle;?>
+								</b>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<?php echo $this->controller->person->text->addressTemp->typeAddress;?>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getAdrAddressType() != null)
+									{
+										echo $this->form->getAdrAddressType();
+									}
+									else
+									{
+										echo $this->controller->person->text->nodata;
+									}
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<?php echo $this->controller->person->text->addressTemp->address;?>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getAdrAddress() != null)
+									{
+										echo $this->form->getAdrAddress();
+									}
+									else
+									{
+										echo $this->controller->person->text->nodata;
+									}
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<?php echo $this->controller->person->text->addressTemp->codePostal;?>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getAdrZipcode() != null)
+									{
+										echo $this->form->getAdrZipcode();
+									}
+									else
+									{
+										echo $this->controller->person->text->nodata;
+									}
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<?php echo $this->controller->person->text->addressTemp->neighborhood;?>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getAdrNeighborhood() != null)
+									{
+										echo $this->form->getAdrNeighborhood();
+									}
+									else
+									{
+										echo $this->controller->person->text->nodata;
+									}
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<?php echo $this->controller->person->text->addressTemp->city;?>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getAdrCity() != null)
+									{
+										echo $this->form->getAdrCity();
+									}
+									else
+									{
+										echo $this->controller->person->text->nodata;
+									}
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<?php echo $this->controller->person->text->addressTemp->uf;?>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getAdrUf() != null)
+									{
+										echo $this->form->getAdrUf();
+									}
+									else
+									{
+										echo $this->controller->person->text->nodata;
+									}
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<?php echo $this->controller->person->text->addressTemp->number;?>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getAdrNumber() != null)
+									{
+										echo $this->form->getAdrNumber();
+									}
+									else
+									{
+										echo $this->controller->person->text->nodata;
+									}
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<?php echo $this->controller->person->text->addressTemp->complement;?>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getAdrComplement() != null)
+									{
+										echo $this->form->getAdrComplement();
+									}
+									else
+									{
+										echo $this->controller->person->text->nodata;
+									}
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<?php echo $this->controller->person->text->addressTemp->referencePoint;?>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getAdrReference() != null)
+									{
+										echo $this->form->getAdrReference();
+									}
+									else
+									{
+										echo $this->controller->person->text->nodata;
+									}
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<?php echo $this->controller->person->text->addressTemp->liveSince;?>
+							</td>
+							<td colspan="2">
+								<?php 
+									if($this->form->getLiveSince() != null)
+									{	
+										echo $this->form->getLiveSince();
+									}
+									else
+									{
+										echo $this->controller->person->text->nodata;
+									}
+								?>
+							</td>
+						</tr>
+					</table>
+				<?php }?>
+			</td>
+		</tr>
+	</table>
+	<?php endif;?>
+</div>		
+<!-- =================================== -->
+<!-- fim : específico para cada template -->					
+<!-- =================================== -->		
+					
+<?php echo $this->render('footer/footer.phtml');?>	

@@ -1,0 +1,117 @@
+<?php echo $this->render('header/header.phtml');?>
+
+<!-- ====================================== -->
+<!-- inicio : específico para cada template -->					
+<!-- ====================================== -->						  
+<div>
+
+	<?php echo $this->render('submenu/submenuPerson.phtml');?>
+
+	<!-- ============================================================================================== -->
+	<!-- É necessário informar o nome class da tabela em questão para carregar a cor background correta -->
+	<!-- Opções: 
+				#identification
+				#person
+				#education
+				#health
+				#income
+				#familyRelationship
+				#residence
+				#attendance
+				#activity	-->
+	<!-- ============================================================================================== -->
+	<?php $ast = $this->assistance;?>
+	<table class="attendance" width="98%">
+		<tr>
+			<td colspan="2">
+				<h1><?php echo $this->controller->attendance->text->detailAttendance;?></h1>
+			</td>
+		</tr>
+		<?php if($this->errorMessages):?>
+			<tr>
+				<td colspan="2">
+					<?php printErrorsByField(AssistanceForm::assistanceId(), $this->errorMessages);?>
+					<?php printErrorsByField($this->form->programType(), $this->errorMessages);?>
+				</td>
+			</tr>
+		<?php else:?>
+			<?php if($this->general):?>
+				<tr class="write">
+					<td align="center" colspan="7">	
+						<a href="<?php echo $this->baseUrl;?><?php echo ATTENDANCE_CONTROLLER;?>/<?php echo DEFAULT_DETAIL_ACTION;?>/<?php echo $this->form->assistanceId();?>/<?php echo $this->form->getAssistanceId();?>">
+							<?php echo $this->controller->attendance->text->detailast;?>
+						</a>
+						&nbsp;|
+						<a href="<?php echo $this->baseUrl;?><?php echo ATTENDANCE_CONTROLLER;?>/<?php echo DEFAULT_DETAIL_GENERAL_ACTION;?>/<?php echo $this->form->assistanceId();?>/<?php echo $this->form->getAssistanceId();?>">
+							<?php echo $this->controller->attendance->tab->general;?>
+						</a>
+					</td>
+				</tr>
+			<?php endif;?>	
+			<tr>
+				<td width="22%">
+					<b><?php echo $this->controller->attendance->text->entity;?>:</b>
+				</td>
+				<td>
+					<?php ($ast[CLS_ENTITY.ENT_NAME])? $entity = $ast[CLS_ENTITY.ENT_NAME]:$entity = $this->labels->text->nodata; echo $entity;?>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<b><?php echo $this->controller->attendance->text->dateStart;?></b>
+				</td>
+				<td>
+					<?php ($ast[AST_BEGINNING_DATE])? $start = AssistanceForm::dateFormatForm($ast[AST_BEGINNING_DATE]):$start=$this->labels->text->nodata; echo $start;?>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<b><?php echo $this->controller->attendance->text->dateFinish;?></b>
+				</td>
+				<td>
+					<?php ($ast[AST_END_DATE_PREVISION])? $end = AssistanceForm::dateFormatForm($ast[AST_END_DATE_PREVISION]): $end = $this->labels->text->nodata; echo $end;?>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<b><?php echo $this->controller->attendance->text->dateFinishReal;?></b>
+				</td>
+				<td>
+					<?php ($ast[AST_REAL_END_DATE])? $real = AssistanceForm::dateFormatForm($ast[AST_REAL_END_DATE]): $real = $this->labels->text->nodata;echo $real;?>
+				</td>
+			</tr>			
+			<?php if($ast[Constants::AST_SUMMARY_TYPE] == Constants::GENERAL):?>
+				<tr>
+					<td colspan="2">
+						<hr>
+					</td>
+				</tr>
+				<?php echo $this->render('attendance/_generalDetail.phtml');?>
+			<?php elseif($ast[Constants::AST_SUMMARY_TYPE] == Constants::ESPECIAL):?>
+				<tr>
+					<td colspan="2">
+						<hr>
+					</td>
+				</tr>
+				<?php echo $this->render('attendance/_especialDetail.phtml');?>
+			<?php elseif($ast[Constants::AST_SUMMARY_TYPE] == Constants::GROUP):?>
+				<tr>
+					<td colspan="7">
+						<hr>
+					</td>
+				</tr>
+				<?php echo $this->render('attendance/_groupDetail.phtml');?>
+			<?php endif;?>		
+			<tr>
+				<td>
+					<input type="button" value="<?php echo $this->labels->button->back;?>" onClick="document.location='<?php echo $this->baseUrl;?><?php echo ATTENDANCE_CONTROLLER;?>/<?php echo DEFAULT_VIEWATTENDANCE_ACTION;?>/<?php echo AssistanceForm::personId();?>/<?php echo $ast[AST_ID_PERSON];?>'">
+				</td>				
+			</tr>
+		<?php endif;?>
+	</table>
+</div>																  
+<!-- =================================== -->
+<!-- fim : específico para cada template -->					
+<!-- =================================== -->
+
+<?php echo $this->render('footer/footer.phtml');?>

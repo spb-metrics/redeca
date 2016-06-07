@@ -1,0 +1,9 @@
+<?php echo $this->render('header/header.phtml');?>
+
+<h1><?php echo $this->escape($this->controller->accessDenied->title);?></h1>
+
+<?php echo $this->escape($this->helpcontroller->text1);?>
+<br /><br />
+<button onclick="javascript:history.back()">Voltar</button>
+
+<?php echo $this->render('footer/footer.phtml');?>

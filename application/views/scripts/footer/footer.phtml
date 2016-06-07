@@ -1,0 +1,55 @@
+</div> <!-- fim corpo (iniciado no header.phtml) -->
+
+<?php $random = Zend_Registry::get(CONFIG)->container->random;?>
+<?php if($random):?>
+	<?php echo $this->render('footer/footer_random.phtml');?>
+<?php else:?>
+<!-- =========================================================================== -->
+<!-- ============================= começo do footer ============================ -->
+<!-- =========================================================================== -->
+
+<!--
+				</td>
+			</tr>
+		</table>
+				<td width="17%" valign="top">
+-->
+<?php echo $this->render('footer/footerInfo.phtml');?>		
+</div><!-- fim  do 'main' (I am in footer/footer.phtml) -->
+
+	<?php if(!$this->errorMessages[BasicForm::personId()] && !is_null($this->form->getPersonId())):?>
+	<div class=coluna>
+	<?php if(ResourcePermission::showContainers($this->request)){
+
+			// Containers 
+                        $arrContainerConfig = array (
+                                FAMILYRELATIONSHIP_CONTROLLER => array('config' => 'family', 'controllerName' => 'FAMILYRELATIONSHIP_CONTROLLER')
+                                ,RESIDENCE_CONTROLLER=> array( 'config' => 'residence', 'controllerName' => 'RESIDENCE_CONTROLLER')
+                                ,ATTENDANCE_CONTROLLER=> array('config' => 'lastattendance', 'controllerName' => 'ATTENDANCE_CONTROLLER', 'title' => 'lastAttendance')
+                                ,NETWORK_CONTROLLER=> array('config' => 'network', 'controllerName' => 'NETWORK_CONTROLLER', 'title' => 'netEntity')
+                        );
+
+                        foreach( $arrContainerConfig as $k => $v ) {
+
+                                if(ResourcePermission::isAllowResource($k)){
+
+                                        $show = Zend_Registry::get(CONFIG)->container->{$v['config']};
+                                        $hideHeader = true;
+                                        $this->rparam = array();
+                                        $this->rparam['show'] = (int)$show;
+                                        $this->rparam['title'] =  (isset($v['title']) ? $this->labels->title->{$v['title']} : $this->labels->title->{$v['config']});
+                                        $this->rparam['idCSS'] =  $v['config'];
+                                        $this->rparam['controllerName'] =  $k;
+                                        echo $this->render('container/containerGeneric.phtml' );
+                                }
+                        }
+	}
+?>
+	<?php endif;?>
+&nbsp;
+</div><!-- fim do 'coluna', à direita, em footer/footer.phtml -->
+
+</div> <!-- fecha div 'body', q trava o tamanho da tela (hack para IE) -->
+</body>
+</html>
+<?php endif;?>

@@ -1,0 +1,20 @@
+<?php echo $this->render('header/container.phtml');?>
+<table class="icontainer" width="98%">
+	<?php $i = 0;?>
+	<?php foreach($this->entity as $entity):?>
+		<tr>
+			<td>
+				<?php if($i < 4):?>				
+					<?php echo "&loz;&nbsp;".abbreviate($entity->{ENT_NAME}, 20);?>
+				<?php else: echo "..."; break;?>
+				<?php endif;?>
+				<?php $i++;?>
+			</td>
+		</tr>		
+	<?php endforeach;?>
+	<tr>
+		<td>
+			<input class="small" type="submit" onclick="parent.document.location='<?php echo $this->baseUrl;?><?php echo NETWORK_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>'" value="<?php echo $this->labels->button->showDetail;?>"/>
+		</td>
+	</tr>
+</table>

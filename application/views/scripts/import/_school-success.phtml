@@ -1,0 +1,33 @@
+	
+	<form id="importSchoolFrm" method="post" enctype="multipart/form-data">
+	<div id="importSchoolDiv" style="<?php if($this->form->getRadioButton()== 'school')echo 'display:inline'; else echo 'display:none'; ?>">
+		<input type="hidden" name="<?php echo $this->form->radioButton()?>" value="<?php echo ImportForm::SCHOOL_DIV_KEY;?>"/>
+		<table width="100%" >
+			<tr>
+				<td colspan="2">
+					<h1><?php echo $this->escape($this->controller->import->title->school);?></h1>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<?php /* Mensagem de erro ao carregar o arquivo */ 
+						foreach($this->schoolInfos as $info)
+							foreach($info->getMessage() as $msg)
+								printError( $msg );
+					?>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2"><?php echo $this->helpcontroller->wait;?><p></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+					<?php printErrorsByField(Constants::PROCESS_KEY, $this->errorSchoolMessages);?><br>
+					<?php printErrorsByField(ImportForm::addressFile(), $this->errorSchoolEmptyMessages);?><br>
+					<input type="submit" value="<?php echo $this->controller->button->process;?>" 
+					onClick="javascript: actionName('<?php echo $this->baseUrl;?><?php echo IMPORT_CONTROLLER;?>/<?php echo DEFAULT_PROCESS_SCHOOL_ACTION;?>',this.form);this.form.submit();"/>
+				</td>
+			</tr>
+		</table>
+	</div>
+	</form>

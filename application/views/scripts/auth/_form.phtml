@@ -1,0 +1,47 @@
+<div class="ctr">
+	<div class="login" align="center">
+		<h1><?php echo $this->escape($this->labels->login->title);?></h1>
+		<div class="clr"></div>
+		<div class="login-form">
+			<form action="<?php echo $this->baseUrl?><?php echo AUTH_CONTROLLER;?>/login" method="post">
+				
+				<?php printMessage($this->message);?>
+				<div class="form-block">
+					<!-- ======== -->
+					<!-- username -->
+					<!-- ======== -->
+					<div class="inputlabel">
+						<?php echo $this->controller->login->username;?>
+					</div>
+					<div>
+						<input name="<?php echo $this->form->username();?>" value="<?php echo $this->escape(trim($this->form->getUsername()));?>" type="text" class="inputbox" size="15"/>
+						<br><?php printErrorsByField($this->form->username(), $this->errorMessages);?>
+					</div>
+					
+					<!-- ======== -->
+					<!-- password -->
+					<!-- ======== -->
+					<div class="inputlabel">
+						<?php echo $this->controller->login->password;?>
+					</div>
+					<div>
+						<input name="<?php echo $this->form->password();?>" value="<?php echo $this->escape(trim($this->form->getUsername()));?>" type="password" class="inputbox" size="15"/>
+					</div>
+					<div align="left">
+						<input type="submit" class="button" value="<?php echo $this->controller->login->submit; ?>"/>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="ctr">
+			<img src="<?php echo $this->baseUrl;?>/public/styles/security.png" width="64" height="64" alt="security"/>
+		</div>
+		<p>
+			<?php echo $this->helpcontroller->text1;?><?php echo "<b>".$this->helpcontroller->text2."</b>";?><br>
+		</p>
+		<p>
+			<?php echo $this->helpcontroller->text3;?>
+		</p>
+		<div class="clr"></div>
+	</div>
+</div>

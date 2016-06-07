@@ -1,0 +1,147 @@
+<?php if($this->errorMessages){?>
+	<?php echo  $this->render('search/index.phtml');?>
+<?php }else if(is_null($this->people) > 0){?>
+	<?php echo  $this->render('search/empty.phtml');?>
+<?php }else{?>	
+	<?php echo  $this->render('header/header.phtml');?>						 		  						
+											  
+	<div>
+		<table width="59%">		
+			<tr>
+				<td align="center">
+					<b><?php echo  $this->controller->search->text->resulttitle;?></b>
+				</td>
+			</tr> 		
+		</table>
+		<br>
+		<table width="59%">
+			<tr>
+				<td height="20">
+					<?php echo  $this->controller->search->text->commentresultpart1;?>
+					<b>
+						<?php
+							foreach($this->people as $k=>$v){
+								$all += count($v);
+							}
+							echo $all;
+						?>
+					</b>
+					<?php echo  $this->controller->search->text->commentresultpart2;?>&nbsp;<b>"RESULTADO"</b>.
+					<?php echo  $this->controller->search->text->commentresultpart3;?>
+				</td>
+			</tr>
+			
+			<tr>
+				<td>
+					<?php
+						foreach($this->people as $k=>$v)
+							echo "&nbsp;&loz;&nbsp; ".$k." (".count($v).")<br>";
+					?>
+								
+				</td>
+			</tr>
+			
+			<tr>
+				<td height="40" class="middleValign">
+					<?php echo  $this->controller->search->text->descriptionsearchrepeat1;?>
+					<a href="<?php echo  $this->baseUrl;?><?php echo  SEARCH_CONTROLLER;?>/<?php echo  DEFAULT_INDEX_ACTION;?>"><?php echo  $this->controller->search->text->searchrepeat;?></a>,
+					<?php echo  $this->controller->search->text->descriptionsearchrepeat2;?>
+				</td>
+			</tr>
+		</table>
+		
+		<br>
+		<?php foreach($this->people as $k=>$v):?>
+			<table width="59%">
+				<tr>
+					<td class="bold" height="30"><?php echo  $k;?></td>
+				</tr>
+				<?php foreach($v as $person):?>
+					<tr>
+						<td><b><?php echo  $person->{PRS_NAME}; if($person->{PRS_NICKNAME}) echo "('".$person->{PRS_NICKNAME}."')";?></b></td>
+					</tr>
+					<tr>
+						<td>
+							<?php echo  $this->escape($this->controller->search->text->born1);?>
+							<?php 
+								$age = date("Y-m-d")-$person->{PRS_BIRTH_DATE};
+								$day = substr($person->{PRS_BIRTH_DATE},-2);
+								$month = substr($person->{PRS_BIRTH_DATE},5,-3);
+								$year = substr($person->{PRS_BIRTH_DATE},0, -6);
+								echo $day.'/'.$month.'/'.$year.' ';
+								if($month > date("m"))
+								{
+									$age--;
+								}
+								else if($month == date("m") && date("d") < $day)
+								{
+									$age--;
+								}																
+								echo '('.$age.' '.$this->controller->search->text->born2.').';
+							?>						
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<?php
+								foreach($this->families as $k=>$v)
+									if($person->{PRS_ID_PERSON} == $k){
+										$mother = false;
+										$resp = false;
+										$father = false;
+										foreach($v as $fam){
+											if($fam->{FAM_ID_KINSHIP} == 1 && $resp === false){												
+												$famId = $fam->findParentRow(CLS_FAMILY_ID);
+												$response = $famId->findDependentRowset(CLS_REPRESENTATIVE);
+												foreach($response as $r){
+													$prs = $r->findParentRow(CLS_PERSON);
+													echo $this->escape($this->controller->search->text->resp)." ".$prs->{PRS_NAME}."<br>";
+												}
+												$resp = true;
+											}
+											if($fam->{FAM_ID_KINSHIP} == 1 && $mother === false){												
+												$prs = $fam->findParentRow(CLS_PERSON);
+												if($person->{PRS_NAME} != $prs->{PRS_NAME})
+													echo $this->escape($this->controller->search->text->mother)." ".$prs->{PRS_NAME}."<br>";
+												$mother = true;
+											}
+											if($fam->{FAM_ID_KINSHIP} == 5 && $father === false){												
+												$prs = $fam->findParentRow(CLS_PERSON);
+												if($person->{PRS_NAME} != $prs->{PRS_NAME})
+													echo $this->escape($this->controller->search->text->father)." ".$prs->{PRS_NAME};
+												$father = true;
+											}
+										}
+									}
+							?>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							|&nbsp;&nbsp;<a href="<?php echo  $this->baseUrl;?><?php echo  PERSON_CONTROLLER;?>/<?php echo  DEFAULT_INDEX_ACTION;?>/<?php echo  PersonForm::id();?>/<?php echo  $person->{PRS_ID_PERSON};?>"><?php echo  $this->controller->search->text->clickregister;?></a>&nbsp;&nbsp;| 
+			  			</td>
+					</tr>
+					<tr>
+					</tr>
+				<?php endforeach;?>
+			</table>
+			<p>
+		<?php endforeach;?>
+		
+		<table class="withoutEdge">
+			<tr>
+				<td>
+					<input type="button" onClick="document.location='<?php echo  $this->baseUrl;?><?php echo  PERSON_CONTROLLER;?>/<?php echo  DEFAULT_NEW_ACTION;?>'" value="<?php echo  $this->controller->search->text->newregister;?>"/><br>
+					
+				</td>
+			</tr>
+			<tr>
+				<td align="center">
+					<input type="button" value="<?php echo  $this->labels->button->back;?>" onClick="document.location='<?php echo  $this->baseUrl;?><?php echo  SEARCH_CONTROLLER;?>/<?php echo  DEFAULT_INDEX_ACTION;?>'" />					
+				</td>
+			</tr>			
+		</table>
+	</div>				
+	
+	<?php echo  $this->render('footer/footer.phtml');?>
+<?php }?>

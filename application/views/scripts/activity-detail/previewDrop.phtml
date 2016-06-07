@@ -1,0 +1,27 @@
+<tr>
+	<td width="100%" align="center">
+		<h1>
+			<?php echo ($this->labels->confirm->end->title);?>
+		</h1>
+		<!-- ====================================================================================================== -->
+		<!-- =================================== FORM utilizado para excluir uma atividade ======================== -->
+		<!-- ====================================================================================================== -->
+		<form action="<?php echo $this->baseUrl;?><?php echo ACTIVITY_DETAIL_CONTROLLER;?>/<?php echo $this->action;?>" method="post">
+			<p>
+				<?php echo $this->labels->confirm->end->text;?>&nbsp;?<br>
+				<?php
+					echo "<br>".$this->controller->activity->text->activityName.":&nbsp;";
+					echo "<input type='hidden' name='".ActivityForm::idActivityDetail()."' value='".$this->objectActivityDetail->{ACD_ID_ACTIVITY_DETAIL}."'/>";
+					echo "<b>". $this->objectActivityDetail->{ACD_ACTIVITY_DETAIL}."</b><br>";
+				?>
+			</p>
+			<div>
+				<input type="submit" name="<?php echo E_CONFIRM; ?>" value="<?php echo $this->labels->confirm->button->yes;?>" />
+				<input type="button" onClick="document.location='<?php echo $this->baseUrl;?><?php echo ACTIVITY_DETAIL_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>'" value="<?php echo $this->labels->confirm->button->cancel;?>" />
+			</div>
+		</form>	
+		<!-- =================================================================================================================== -->
+		<!-- ================================================ fim do FORM ====================================================== -->
+		<!-- =================================================================================================================== -->		
+	</td>
+</tr>

@@ -1,0 +1,70 @@
+<input type="hidden" name="<?php echo $this->form->id();?>" value="<?php echo $this->form->getId();?>">
+<?php printErrorsByField($this->form->id(), $this->errorMessages);?>
+<tr>
+	<td colspan="2">
+		<?php if($this->form->getId()): ?>
+			<h1>
+				<?php echo $this->controller->person->edit->tempEditTitle;?>
+			</h1>
+		<?php else :?>
+			<h1>
+				<?php echo $this->controller->person->add->tempAddTitle;?>
+			</h1>
+		<?php endif; ?>
+	</td>
+</tr>
+
+<tr>
+	<td colspan="2">
+		<?php printErrorsByField($this->form->personId(), $this->errorMessages);?>
+		<div id="iframeSearch" style="display: none;">
+			<?php echo $this->render(SEARCHADDRESS_CONTROLLER.'/iframe_search.phtml');?>
+		</div>
+		<div id="buttonIframe" style="display: block;">
+			<input type="button" value="Alterar Endereço" onClick="javascript: showDiv('iframeSearch','buttonIframe');"/>
+		</div>
+	</td>
+</tr>
+<tr>
+	<td colspan="2">
+		<?php echo $this->render(SEARCHADDRESS_CONTROLLER.'/_address.phtml');?>
+		<?php printErrorsByField($this->form->adr_idAddress(), $this->errorMessages);?>
+	</td>
+</tr>
+<tr>
+	<td width="17%" class="alignRight">
+		<b><?php echo $this->controller->person->text->addressTemp->number;?></b>
+	</td>
+	<td width="83%">
+		<input size="20" type="text" name="<?php echo $this->form->adr_number();?>" value="<?php echo $this->form->getAdrNumber();?>">
+		<?php printErrorsByField($this->form->adr_number(), $this->errorMessages);?>
+	</td>
+</tr>
+<tr>
+	<td width="" class="alignRight">
+		<b><?php echo $this->controller->person->text->addressTemp->complement;?></b>
+	</td>
+	<td width="" >
+		<input size="20" type="text" name="<?php echo $this->form->adr_complement();?>" value="<?php echo $this->form->getAdrComplement();?>">
+		<?php printErrorsByField($this->form->adr_complement(), $this->errorMessages);?>
+	</td>
+</tr>
+<tr>
+	<td width="" class="alignRight">
+		<b><?php echo $this->controller->person->text->addressTemp->referencePoint;?></b>
+	</td>
+	<td width="">
+		<input size="90" type="text" name="<?php echo $this->form->adr_reference();?>" value="<?php echo $this->form->getAdrReference();?>">
+		<?php printErrorsByField($this->form->adr_reference(), $this->errorMessages);?>
+	</td>
+</tr>
+
+<tr>
+	<td width="" class="alignRight">
+		<b><?php echo $this->controller->person->text->addressTemp->liveSince;?></b>
+	</td>
+	<td width="%">
+		<input size="20" type="text" name="<?php echo $this->form->liveSince();?>" value="<?php echo $this->form->getLiveSince();?>">
+		<?php printErrorsByField($this->form->liveSince(), $this->errorMessages);?>
+	</td>
+</tr>

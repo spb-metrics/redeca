@@ -1,0 +1,15 @@
+<?php echo $this->render('header/header.phtml');?>
+<h1><?php echo $this->escape($this->controller->person->drop->title);?></h1>
+<?php printErrorsByField($this->form->id(), $this->errorMessages);?>
+<form action="<?php echo $this->baseUrl;?><?php echo PERSON_CONTROLLER;?>/<?php echo $this->action;?>" method="post">
+<p><?php echo $this->controller->person->confirmation->drop;?>
+  '<?php echo $this->escape($this->form->getLastName());?>' 
+  '<?php echo $this->escape($this->form->getFirstName());?>'?
+</p>
+<div>
+  <input type="hidden" name="<?php echo $this->form->id();?>" value="<?php echo $this->form->getId();?>" />
+  <input type="submit" name="<?php echo E_CONFIRM; ?>" value="<?php echo $this->labels->button->yes;?>" />
+  <input type="submit" name="<?php echo E_CONFIRM; ?>" value="<?php echo $this->labels->button->no;?>" />
+</div>
+</form>
+<?php echo $this->render('footer/footer.phtml');?>

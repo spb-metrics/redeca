@@ -1,0 +1,48 @@
+<?php if($this->errorMessages[$this->form->assistanceId()]):?>
+	<?php $this->form->setPersonId(null);?>
+<?php endif;?>
+<?php echo $this->render('header/header.phtml');?>
+
+<!-- ====================================== -->
+<!-- inicio : específico para cada template -->					
+<!-- ====================================== -->						  
+<div>
+	<?php echo $this->render('submenu/submenuPerson.phtml');?>
+
+	<!-- ============================================================================================== -->
+	<!-- É necessário informar o nome class da tabela em questão para carregar a cor background correta -->
+	<!-- Opções: 
+				#identification
+				#person
+				#education
+				#health
+				#income
+				#familyRelationship
+				#residence
+				#attendance
+				#activity	-->
+	<!-- ============================================================================================== -->
+	<?php if($this->errorMessages[BasicForm::personId()]):?>
+		<div>
+			<br>
+			<b>
+				<?php echo $this->controller->attendance->text->paraminvalid;?>
+			</b>
+		</div>
+	<?php elseif($this->errorMessages[$this->form->assistanceId()]):?>
+		<?php printErrorsByField($this->form->assistanceId(), $this->errorMessages);?>	
+	<?php else:?>
+		<table class="attendance" width="98%">
+			<tr>
+				<td align="center">
+					<?php echo $this->render('attendance/_attendanceForm.phtml'); ?>
+				</td>
+			</tr>
+		</table>
+	<?php endif;?>
+</div>																  
+<!-- =================================== -->
+<!-- fim : específico para cada template -->					
+<!-- =================================== -->
+
+<?php echo $this->render('footer/footer.phtml');?>

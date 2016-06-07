@@ -1,0 +1,33 @@
+<?php
+/**
+ * Componente de paginação.
+ * 
+ * Requisitos:
+ * Este include deve ser chamado dentro de um form com id 'navigation'.
+ * 
+ * Dentro deste form deve constar todos os controles para filtro e ordenação. 
+ */
+
+$page	= $this->navigation['page'];
+$tpage	= $this->navigation['tpage'];
+$total	= $this->navigation['total'];
+
+if($page == 0 || $page == '' || $page == null) $page = 1;
+($page>1)?$first=true:$first=false;
+($page>1)?$prior=true:$prior=false;
+(($total>$tpage)&&(($total/$tpage)>$page))?$next=true:$next=false;
+(($total/$tpage)>$page)?$last=true:$last=false;
+?>
+<!-- Pagination begin -->
+<div class="navBar">
+<input type="hidden" name="<?php if($this->form)echo $this->form->page();?>" value="<?php echo  $page;?>" id="page" />
+
+<!--<div id="navBar">-->
+<p>Página atual: <?php echo  $page;?> de <?php echo  ceil($total/$tpage);?> - Total de registros: <?php echo  $total;?></p>
+<input type="submit" value="<?php echo  $this->labels->button->first;?>" <?php if(!$first):?>disabled="true"<?php else:?> onclick="javascript: pagination('1')"<?php endif;?> />
+<input type="submit" value="<?php echo  $this->labels->button->prior;?>" <?php if(!$prior):?>disabled="true"<?php else:?> onclick="javascript: pagination('<?php echo  ($page-1);?>')"<?php endif;?> />
+<input type="submit" value="<?php echo  $this->labels->button->next;?>" <?php if(!$next):?>disabled="true"<?php else:?> onclick="javascript: pagination('<?php echo  ($page+1);?>')"<?php endif;?> />
+<input type="submit" value="<?php echo  $this->labels->button->last;?>" <?php if(!$last):?>disabled="true"<?php else:?> onclick="javascript: pagination('<?php echo  ceil($total/$tpage);?>')"<?php endif;?> />
+</div>
+<!-- -->
+<!-- Pagination end -->

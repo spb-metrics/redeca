@@ -1,0 +1,66 @@
+<tr>
+	<td>
+		<table width="100%" class="withOutEdge">
+			<!-- =========================================================== -->
+			<!-- ============= form que busca pelo documento =============== -->
+			<!-- =========================================================== -->
+			<form action="<?php echo $this->baseUrl;?><?php echo BIOLOGICALRELATIONSHIP_CONTROLLER;?>/<?php echo DEFAULT_SEARCH_BY_DOCUMENT_ACTION;?>" method="post">
+				<input type="hidden" name="<?php echo SearchForm::idPerson();?>" value="<?php echo $this->form->getIdPerson();?>"/>
+				<?php printErrorsByField($this->form->idPerson(), $this->errorMessages);?>
+				<tr>
+					<td colspan="5">
+						<h1><?php echo $this->controller->bioRelation->search->typeDoc;?></h1>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="5">
+						<?php echo $this->controller->bioRelation->search->doc;?>
+					</td>
+				</tr>
+				
+				<tr>
+					<td width="7%" height="50" class="middleValign">
+						<?php echo $this->controller->bioRelation->text->number;?>
+					</td>
+					
+					<td width="25%" height="50" class="middleValign">
+						<input size="30" type="text" name="<?php echo $this->form->docNumber();?>" value=""/><br>
+						
+					</td>
+					
+					<td width="8%">&nbsp;</td>
+					
+					<td width="10%" height="50" class="middleValign">
+						<?php echo $this->controller->bioRelation->text->document;?>
+					</td>
+					
+					<td width="50%" height="50" class="middleValign">
+						<select name="<?php echo $this->form->docType();?>">
+							<?php foreach($this->documentOptions as $k=>$v):?>
+								<option value="<?php echo $k;?>"><?php echo $v;?></option>
+							<?php endforeach;?>
+						</select>
+						
+					</td>
+				</tr>
+				<tr>
+					<td colspan="3">
+						<?php printErrorsByField($this->form->docNumber(), $this->errorMessages);?>
+					</td>
+					<td colspan="2">
+						<?php printErrorsByField($this->form->docType(), $this->errorMessages);?>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="5">
+						<input type="submit" value="<?php echo $this->labels->button->filter;?>"/>
+						<input type="button" value="<?php echo $this->labels->button->back;?>" onClick="document.location='<?php echo $this->baseUrl;?><?php echo BIOLOGICALRELATIONSHIP_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php echo SearchForm::idPerson();?>/<?php echo $this->form->getIdPerson();?>'"/>
+					</td>
+				</tr>
+			</form>
+			<!-- ======================================================== -->
+			<!-- ============= fim do form que busca pelo nome ========== -->
+			<!-- ======================================================== -->
+		</table>
+	</td>
+</tr>

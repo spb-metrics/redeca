@@ -1,0 +1,37 @@
+<?php echo $this->render('header/header.phtml');?>
+
+<table width="100%" class="withoutEdge">
+	<tr>
+		<td width="100%" align="center">
+			<h1>
+				<?php echo ($this->labels->confirm->disable->title);?>
+			</h1>
+			<?php printErrorsByField($this->form->id(), $this->errorMessages);?>
+			<form action="<?php echo $this->baseUrl;?><?php echo GROUP_CONTROLLER;?>/<?php echo DEFAULT_DROP_ACTION;?>" method="post">
+				<?php if(!$this->errorMessages){?>
+				<p>
+					<?php echo $this->labels->confirm->disable->text;?>&nbsp;<?php echo $this->escape($this->form->getId());?>&nbsp;?<br>
+					<?php 
+						foreach($this->result as $result)
+						{
+							echo "<br>".$this->controller->permission->title->group.":&nbsp;";
+							echo "<input type='hidden' name='".$this->form->id()."[]' value='".$result->{AGP_ID_GROUP}."'/>";
+							echo "<b>". $result->{AGP_GROUP}."</b><br>";
+						}
+					?>
+				</p>
+				<?php }?>
+				<div>
+					<?php if(!$this->errorMessages){?>
+					<input type="submit" name="<?php echo E_CONFIRM; ?>" value="<?php echo $this->labels->confirm->button->yes;?>" />
+					<?php }?>
+					<input type="button" onClick="document.location='<?php echo $this->baseUrl;?><?php echo GROUP_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>'" value="<?php echo $this->labels->confirm->button->cancel;?>" />
+				</div>
+			</form>			
+		</td>
+	</tr>
+</table>
+
+<?php echo $this->render('footer/footer.phtml');?>
+ 
+

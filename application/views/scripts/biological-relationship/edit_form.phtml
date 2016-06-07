@@ -1,0 +1,56 @@
+<table width="100%">
+	<form action="<?php echo $this->baseUrl;?><?php echo BIOLOGICALRELATIONSHIP_CONTROLLER;?>/<?php echo DEFAULT_EDIT_ACTION;?>" method="post">
+		<?php printErrorsByField($this->form->idPerson(), $this->errorMessages);?>
+		<?php printErrorsByField($this->form->idParent(), $this->errorMessages);?>
+		<?php printErrorsByField($this->form->idFamily(), $this->errorMessages);?>
+		<?php printErrorsByField($this->form->idKinship(), $this->errorMessages);?>
+		<input type="hidden" name="<?php echo SearchForm::idPerson();?>" value="<?php echo $this->form->getIdPerson();?>"/>
+		<tr>
+			<td colspan="2">
+				<h1><?php echo $this->controller->bioRelation->text->result?></h1>
+			</td>
+		</tr>
+		<?php	
+			echo "<tr class='write'>";
+				echo "<td colspan='2'>";
+					echo "<input type='radio' name='";
+					echo SearchForm::idParent();
+					echo "' value='";
+					echo $this->escape($this->form->getIdParent());
+					echo "'checked />";
+					echo $this->escape($this->form->getPrsName());
+				echo "</td>";
+			echo "</tr>";
+		?>
+		<tr class='writeRed'>
+			<td width="62%" height="40" class="middleValign">
+				<?php echo $this->controller->bioRelation->result->searchRelation;?>
+			</td>
+			<td width="38%" height="40" class="middleValign">
+				<select name="<?php echo SearchForm::idkinship();?>">
+					<option value=""><?php echo $this->labels->text->select;?>...</option>
+					<?php 
+						foreach($this->kinship as $kinship)
+						{
+							echo "<option value='";
+							echo $kinship->{CTP_ID_CONSAGUINE_TYPE};
+							echo "'";
+							if($this->form->getIdkinship() == $kinship->{CTP_ID_CONSAGUINE_TYPE})
+							{
+								echo "selected";
+							}
+							echo ">";
+							echo $kinship->{CTP_DESCRIPTION};
+							echo "</option>";		
+						}
+					?>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="alignCenter" colspan="2">
+				<input type="submit" value="<?php echo $this->labels->button->save;?>"/>
+			</td>
+		</tr>
+	</form>
+</table>

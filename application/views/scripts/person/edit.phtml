@@ -1,0 +1,81 @@
+<?php echo $this->render('header/header.phtml');?>						 		  						
+				  
+<!-- ===================================== -->
+<!-- inicio : específico com cada template -->					
+<!-- ===================================== -->						  
+<div>
+	<?php echo $this->render('submenu/submenuPerson.phtml');?>
+
+	<!-- ============================================================================================== -->
+	<!-- É necessário informar o nome class da tabela em questão para carregar a cor background correta -->
+	<!-- Opções: 
+				#identification
+				#person
+				#education
+				#health
+				#income
+				#familyRelationship
+				#residence
+				#attendance
+				#activity	-->
+	<!-- ============================================================================================== -->
+	<table class="person" width="98%">
+		<tr>
+			<td align="center">
+				<table width="100%" class="noBorder">
+					<?php foreach($this->errorMessages as $k=>$v) if($k == $this->form->id()) $error = true;?>
+					<?php if($error === true):?>
+							<tr>
+								<td>
+									<?php printErrorsByField($this->form->id(), $this->errorMessages);?>		
+								</td>
+							</tr>
+					<?php else :?>
+						<?php if($this->form->getId()):?>
+							<form action="<?php echo $this->baseUrl ?><?php echo PERSON_CONTROLLER;?>/<?php echo DEFAULT_EDIT_ACTION;?>" method="post">
+								<input type="hidden" name="<?php echo $this->form->id();?>" value="<?php echo $this->form->getId();?>">
+						<?php else :?>
+							<form action="<?php echo $this->baseUrl ?><?php echo PERSON_CONTROLLER;?>/<?php echo DEFAULT_ADD_ACTION;?>" method="post">
+						<?php endif;?>
+					<?php echo $this->render('person/_form.phtml');?>
+					<?php endif;?>
+			</td>
+		</tr>
+	</table>
+	<br>
+	<table class="person" width="98%">
+		<tr>
+			<td align="center">
+				<table width="100%" class="noBorder">
+					<?php echo $this->render('person/address_temp_form.phtml');?>
+				</table>	
+			</td>
+		</tr>
+	</table>
+	<br>
+	<table width="98%" class="withoutEdge">
+		<tr>
+			<?php if($this->form->getId()):?>
+				<td height="40" class="centerObject">
+					<?php if($this->readOnly == FALSE):?>
+						<input type="submit" value="<?php echo $this->labels->button->save;?>"/>
+					<?php endif; ?>
+					<input type="button" value="<?php echo $this->labels->button->back;?>" onClick="document.location='<?php echo $this->baseUrl;?><?php echo PERSON_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php echo $this->form->id();?>/<?php echo $this->form->getId();?>'">
+				</td>
+			<?php else :?>
+				<td height="40" class="centerObject">
+					<?php if($this->readOnly == FALSE):?>
+						<input type="submit" value="<?php echo $this->labels->button->save;?>"/>
+					<?php endif; ?>
+					<input type="button" value="<?php echo $this->labels->button->back;?>" onClick="document.location='<?php echo $this->baseUrl;?><?php echo SEARCH_CONTROLLER;?>/<?php echo DEFAULT_INDEX_ACTION;?>/<?php echo $this->form->id();?>/<?php echo $this->form->getId();?>'">
+				</td>
+			<?php endif;?>
+		</tr>
+		</form>
+	</table>
+</div>																  
+<!-- ================================== -->
+<!-- fim : específico com cada template -->					
+<!-- ================================== -->		
+
+<?php echo $this->render('footer/footer.phtml');?>

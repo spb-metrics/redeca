@@ -1,0 +1,12 @@
+<?php echo $this->render('header/header.phtml');?>										 		  						
+	<?php
+		if(!$this->errorMessages)
+		{
+			echo $this->render('health/healthPreview.phtml');
+		}
+		else
+		{
+			echo $this->render('health/invalidParam.phtml');
+		}
+	?>			
+<?php echo $this->render('footer/footer.phtml');?>	
